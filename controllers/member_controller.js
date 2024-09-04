@@ -1,5 +1,6 @@
-const {Member}=require('../models/user')
-const controller={
+
+import { Member } from '../models/user';
+export const controller={
     afficher_All: async (req, res) => {
         try {
             const Members = await Member.find();
@@ -66,4 +67,4 @@ const controller={
         }
     }
 }
-module.exports = controller;
+export default controller;
