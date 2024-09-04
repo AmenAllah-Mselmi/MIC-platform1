@@ -1,4 +1,2 @@
-
-export const controller={
-
-}
+const controller = {};
+export default controller;

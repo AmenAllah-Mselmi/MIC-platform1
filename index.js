@@ -1,12 +1,12 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import assignement from './routes/assignement_route.js';
-import attachement from './routes/attachement_route.js';
-import instructor from './routes/instructor_route.js';
-import member from './routes/member_route.js';
-import super_admin from './routes/super_admin_route.js';
-import response from './routes/response_route.js';
-import session from './routes/session_route.js';
+// import assignement from './routes/assignement_route.js';
+// import attachement from './routes/attachement_route.js';
+import Instructor from './routes/instructor_route.js';
+import Member from './routes/member_route.js';
+import Super_admin from './routes/super_admin_route.js';
+// import response from './routes/response_route.js';
+// import session from './routes/session_route.js';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -23,13 +23,13 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/assignement', assignement);
-app.use('/attachement', attachement);
-app.use('/instructor', instructor);
-app.use('/member', member);
-app.use('/super_admin', super_admin);
-app.use('/response', response);
-app.use('/session', session);
+// app.use('/assignement', assignement);
+// app.use('/attachement', attachement);
+app.use('/instructor', Instructor);
+app.use('/member', Member);
+app.use('/super_admin', Super_admin);
+// app.use('/response', response);
+// app.use('/session', session);
 
 async function startServer() {
     try {

@@ -1,2 +1,3 @@
-import express from "express"
-export const route = express.Router();
+import express from "express";
+const route = express.Router();
+export default route;
