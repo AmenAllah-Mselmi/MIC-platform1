@@ -1,7 +1,6 @@
 import express from "express";
 const route = express.Router();
 
-// const authenticationMiddleware = require('../middlewares/Authentication');
 import instructorController from "../controllers/instructor_controller.js";
 
 route.get("/all", instructorController.afficher_All);
