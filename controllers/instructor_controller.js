@@ -10,17 +10,22 @@ const controller = {
   },
   create_Instructor: async (req, res) => {
     try {
+      console.log("Request body before creation:", req.body); // Log request body
+      
       const create = await Instructor.create(req.body);
-      res
-        .status(201)
-        .json({
-          message: "Instructor created successfully",
-          instructor: create,
-        });
+      
+      console.log("Request body after creation:", req.body); // Log request body after creation (if this point is reached)
+      
+      res.status(201).json({
+        message: "Instructor created successfully",
+        instructor: create,
+      });
     } catch (error) {
-      res.status(404).json({ message: "Error in creating Instructors" });
+      console.error("Error in creating Instructor:", error); // Log the error for better insight
+      res.status(400).json({ message: "Error in creating Instructor", error: error.message });
     }
-  },
+  }
+  ,
   update_Instructor: async (req, res) => {
     try {
       const id = req.params.id;

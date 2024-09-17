@@ -59,7 +59,26 @@ const InstructorSchema = new Schema({
   Departement: {
     type: String,
     enum: ["Basic", "Intermediate", "Advanced"],
+    required:true
   },
+  Attachments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Attachment", 
+    },
+  ],
+  Assignement: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Assignment", 
+    },
+  ],
+  Session:[
+     {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Session", 
+  }
+]
 });
 
 // Member Schema
@@ -68,6 +87,12 @@ const MemberSchema = new Schema({
     type: String,
     enum: ["Basic", "Intermediate", "Advanced"],
   },
+  Responses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Response",  
+    },
+  ]
 });
 
 // Discriminators for different user roles
