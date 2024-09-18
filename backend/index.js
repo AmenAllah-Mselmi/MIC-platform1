@@ -7,7 +7,7 @@ import assignment from "./routes/assignment_route.js"; // Fixed typo
 import session from "./routes/session_route.js";
 import dotenv from "dotenv";
 import response from './routes/response_route.js'
-import attachement from './routes/attachement_route.js';
+import attachment from './routes/attachment_route.js';
 import user from './routes/user_route.js'
 dotenv.config();
 
@@ -39,7 +39,7 @@ app.use("/api/member", Member);
 app.use("/api/super_admin", Super_admin);
 app.use("/api/session", session);
 app.use("/api/assignment", assignment); 
-app.use('/api/attachement', attachement);
+app.use('/api/attachment', attachment);
 app.use('/api/response', response);
 app.use('/api/user',user)
 app.listen(PORT, () => {
