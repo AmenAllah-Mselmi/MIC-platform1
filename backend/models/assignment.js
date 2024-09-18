@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import attachementSchema from "./attachment.js";
-import responsesSchema from "./response.js";
+
+
 
 const assignmentSchema = new mongoose.Schema({
   Title: {
@@ -21,11 +21,21 @@ const assignmentSchema = new mongoose.Schema({
   },
   Instructor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Instructor",
+    ref: "Instructor", 
   },
-  Attachments: [attachementSchema],
-  Responses: [responsesSchema],
+  Attachments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Attachment", 
+    },
+  ],
+  Responses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Response",  
+    },
+  ],
 });
 
-const Assignement = mongoose.model("Assignment", assignmentSchema);
-export default Assignement;
+const Assignment  = mongoose.model("Assignment", assignmentSchema);
+export default Assignment;

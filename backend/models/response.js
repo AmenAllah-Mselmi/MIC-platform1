@@ -5,14 +5,14 @@ const responsesSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  User: {
+  User_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "Member",
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
-
-export default responsesSchema;
+const Response = mongoose.model("Response", responsesSchema);
+export default Response;
