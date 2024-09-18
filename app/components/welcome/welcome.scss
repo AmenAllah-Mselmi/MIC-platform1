@@ -1,0 +1,89 @@
+// importing the color from another file
+@import "/app/global.scss";
+
+#welcome {
+  background-color: $dark-green;
+  background-image: url("/images/welcome-accents.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  .container {
+    width: min(97%, 1200px);
+    margin: 0 auto;
+    min-height: 100vh;
+    padding: 1rem;
+    // padding-top: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5rem;
+    transform: translateY(-1rem);
+
+    h1 {
+      color: $soft-white;
+      font-size: calc(2rem + 2vw);
+      text-align: center;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 2rem;
+      font-weight: 400;
+      color: $soft-white;
+      text-align: center;
+    }
+
+    .join {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      background-color: white;
+      color: $dark-green;
+      display: flex;
+      align-items: first baseline;
+      // align-items: center;
+      gap: 1rem;
+      font-size: 1.25rem;
+      text-decoration: none;
+      svg {
+        fill: $dark-green;
+        font-size: 1.15rem;
+      }
+      &:hover {
+        cursor: pointer;
+        box-shadow: 0 0 30px -7px #2ab99f;
+      }
+    }
+  }
+}
+
+@media (max-width: 750px) {
+  #welcome {
+    .container {
+      h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+      p {
+        font-size: 1.75rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  #welcome {
+    .container {
+      h1 {
+        font-size: 2.5rem;
+      }
+      p {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+@import "/app/global.scss";
+
+#team {
+  margin: 7rem 0;
+
+  .container {
+    width: min(97%, 1200px);
+    margin: 3rem auto;
+    padding: 1rem;
+
+    .title {
+      margin-bottom: 2rem;
+
+      text-align: center;
+      h1 {
+        font-size: calc(1.5rem + 0.5vw);
+        margin-bottom: 0.75rem;
+        color: $title-green;
+      }
+      p {
+        font-size: 1rem;
+        color: $dark-grey;
+      }
+    }
+
+    .team-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, 250px);
+      justify-content: space-evenly;
+      gap: 2.25rem;
+      row-gap: 2.5rem;
+    }
+  }
+}
+
+@media (max-width: 450px) {
+  #team {
+    .container {
+      .team-list {
+        grid-template-columns: repeat(auto-fit, min(270px, 100%));
+      }
+    }
+  }
+}

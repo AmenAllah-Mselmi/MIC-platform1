@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  //   &::selection {
+  //     background-color: #0b1d1f;
+  //     color: #efefef;
+  //   }
+}
+
+html {
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background-color: #f9fafb;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+// variables
+$dark-green: #0b1d1f;
+$soft-white: #efefef;
+$soft-black: #111827;
+$dark-grey: #4b5563;
+$title-green: #1b494b;

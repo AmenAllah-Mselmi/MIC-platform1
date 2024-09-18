@@ -1,0 +1,23 @@
+@import "/app/global.scss";
+
+#partners {
+  // min-height: 100vh;
+  margin: 5rem 0;
+  .partners-container {
+    width: 100%;
+    .title {
+      margin-bottom: 2rem;
+
+      text-align: center;
+      h1 {
+        font-size: calc(1.5rem + 0.5vw);
+        margin-bottom: 0.75rem;
+        color: $title-green;
+      }
+      p {
+        font-size: 1rem;
+        color: $dark-grey;
+      }
+    }
+  }
+}

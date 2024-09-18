@@ -1,0 +1,81 @@
+@import "/app/global.scss";
+
+#footer {
+  background-color: white;
+  .container {
+    width: min(1250px, 97%);
+    padding: 1.5rem;
+    margin: 1rem auto 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .links {
+      display: flex;
+      gap: 1rem;
+      color: $soft-black;
+
+      a {
+        color: $soft-black;
+        text-decoration: none;
+        font-size: 1rem;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .socials {
+        margin-left: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        a {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  #footer {
+    .container {
+      gap: 2rem;
+      flex-direction: column-reverse;
+      .rights {
+        align-self: center;
+      }
+      .links {
+        //   flex-direction: column;
+        justify-content: space-between;
+        .socials {
+          margin-left: 0;
+          gap: 1rem;
+          a {
+            font-size: 1.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 450px) {
+  #footer {
+    .container {
+      align-items: start;
+      gap: 2rem;
+      flex-direction: column-reverse;
+      .rights {
+        align-self: center;
+      }
+      .links {
+        flex-direction: column;
+        .socials {
+          margin: 1rem 0;
+        }
+      }
+    }
+  }
+}

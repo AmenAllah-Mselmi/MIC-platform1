@@ -1,0 +1,74 @@
+@import '/app/global.scss';
+
+.team-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: solid 1px #e5e7eb;
+  // box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  box-shadow: 0 5px 19px -12px #3e9993;
+  img {
+    width: 100% !important;
+    object-fit: scale-down;
+    border-radius: 0.5rem;
+  }
+  .image-container {
+    position: relative;
+    overflow: hidden;
+
+    .member-image {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .image-gradient {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to top,
+        #f9fafb 0%,
+        rgba(255, 255, 255, 0) 25%
+      );
+      pointer-events: none;
+    }
+  }
+
+  .infos {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.25rem;
+
+    .name__position {
+      flex: 1;
+      .name {
+        font-size: 1.05rem;
+        font-weight: bold;
+        margin-bottom: 0.25rem;
+        color: $soft-black;
+      }
+      .position {
+        font-size: 0.9rem;
+        color: #a4a4a4;
+        font-size: 1rem;
+      }
+    }
+
+    .linksWrapper {
+      display: flex;
+      gap: 0.3rem;
+      flex-direction: column;
+      a {
+        color: #4b5563;
+        font-size: 1.5rem;
+      }
+    }
+  }
+}

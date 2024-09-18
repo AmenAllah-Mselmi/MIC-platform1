@@ -1,0 +1,119 @@
+@import "/app/global.scss";
+
+#contact {
+  padding-top: 4rem;
+  min-height: 90vh;
+
+  .container {
+    width: min(97%, 1000px);
+    margin: 3rem auto;
+    padding: 1rem;
+    .title {
+      margin-bottom: 2rem;
+
+      text-align: center;
+      h1 {
+        font-size: calc(1.95rem + 0.5vw);
+        margin-bottom: 0.75rem;
+        color: $title-green;
+        font-weight: bold;
+      }
+      p {
+        font-size: 1rem;
+        color: $dark-grey;
+      }
+    }
+
+    .form {
+      margin: 2.5rem auto 1.5rem;
+      display: grid;
+      grid-template-areas:
+        "firstname lastname" "email email"
+        "subject subject" "message message" "submit submit";
+      gap: 1.5rem;
+      @media (max-width: 650px) {
+        grid-template-areas: "firstname" "lastname" "email" "subject" "message" "submit";
+      }
+
+      & > div {
+        width: 100%;
+        label {
+          display: block;
+          margin-bottom: 0.5rem;
+          color: $dark-green;
+          font-weight: 500;
+        }
+
+        input,
+        textarea {
+          width: 100%;
+          padding: 0.75rem 1rem;
+          border: 1px solid #a4a4a4;
+          background-color: transparent;
+          border-radius: 0.25rem;
+          outline: none;
+          font-size: 0.95rem;
+          transition: all 0.25s ease-in-out;
+          &:focus {
+            border-color: $dark-green;
+          }
+          resize: none;
+        }
+      }
+      .firstname {
+        grid-area: firstname;
+      }
+      .lastname {
+        grid-area: lastname;
+      }
+      .email {
+        grid-area: email;
+      }
+      .subject {
+        grid-area: subject;
+      }
+      .message {
+        grid-area: message;
+      }
+      .submit {
+        grid-area: submit;
+        margin-top: 1.5rem;
+        display: flex;
+        gap: 1.25rem;
+        align-items: center;
+        button {
+          outline: none;
+          border: none;
+          background-color: #003236;
+          border-radius: 4px;
+          padding: 1rem 2.25rem;
+          color: white;
+          font-size: 1rem;
+          cursor: pointer;
+        }
+        // .message {
+        //   padding: 1rem 2.5rem;
+        //   font-size: 1rem;
+        //   background-color: #f0fdf4;
+        //   color: #166534;
+        //   border-radius: 5px;
+        // }
+
+        .loading {
+          width: 1.5rem;
+          height: 1.5rem;
+          border-radius: 50%;
+          border: solid 2px #003236;
+          border-top-color: transparent;
+          border-right-color: transparent;
+          animation: spin 0.5s linear infinite;
+          @keyframes spin {
+            to {
+              transform: rotate(360deg);
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+@import "/app/global.scss";
+
+#departments {
+  margin: 5rem 0;
+
+  .container {
+    width: min(97%, 1200px);
+    margin: 3rem auto;
+    padding: 1rem;
+    .title {
+      margin-bottom: 2rem;
+
+      text-align: center;
+      h1 {
+        font-size: calc(1.5rem + 0.5vw);
+        margin-bottom: 0.75rem;
+        color: $title-green;
+      }
+      p {
+        font-size: 1rem;
+        color: $dark-grey;
+      }
+    }
+
+    .departments-list {
+      width: min(100%, 900px);
+      margin: 0 auto;
+      // display: grid;
+      // // grid-template-columns: repeat(auto-fit, 240px);
+      // grid-template-columns: repeat(3, 240px);
+      // justify-content: center;
+      // align-items: center;
+      // column-gap: 2.5rem;
+      // row-gap: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 3.5rem;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  #departments {
+    .container {
+      .departments-list {
+        gap: 1.5rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+@import "/app/global.scss";
+
+#portfolio {
+  padding-top: 4rem;
+  .container {
+    width: min(97%, 1350px);
+    margin: 3rem auto;
+    padding: 1rem;
+
+    .title {
+      margin-bottom: 2rem;
+
+      text-align: center;
+      h1 {
+        font-size: calc(1.95rem + 0.5vw);
+        margin-bottom: 0.75rem;
+        color: $title-green;
+        font-weight: bold;
+      }
+      p {
+        font-size: 1.05rem;
+        color: $dark-grey;
+      }
+    }
+
+    .portfolio-session {
+      margin: 3rem 0;
+      .name {
+        font-size: calc(1.5rem + 0.5vw);
+        margin-bottom: 1.25rem;
+        font-weight: bold;
+        text-align: start;
+        color: $dark-green;
+      }
+
+      .images {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        justify-content: space-between;
+        gap: 1rem;
+
+        img,
+        span {
+          width: 100% !important;
+          min-height: 200px !important;
+          height: 100% !important;
+          object-fit: cover;
+          border-radius: 10px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1015px) {
+  #portfolio {
+    .container {
+      .portfolio-session {
+        .images {
+          grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        }
+      }
+    }
+  }
+}
