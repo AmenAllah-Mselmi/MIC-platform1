@@ -4,6 +4,8 @@ import { useState } from "react";
 import "./contact.scss";
 import { Inter } from "next/font/google";
 import { toast, ToastContainer } from "react-toastify";
+import Navbar from "../components/navbar/Navbar";
+import Footer from "../components/footer/Footer";
 
 const inter = Inter({ subsets: ["latin"], weight: ["600", "400", "500"] });
 
@@ -51,6 +53,7 @@ export default function Page() {
   console.log("loading is ", loading);
   return (
     <div id="contact" className={inter.className}>
+      <Navbar/>
       <ToastContainer />
       <div className="container">
         <div className="title">
@@ -130,6 +133,7 @@ export default function Page() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

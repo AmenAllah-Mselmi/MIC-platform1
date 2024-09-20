@@ -1,6 +1,8 @@
 import PortfolioSessionCard from "./PortfolioSessionCard";
 import "./portfolio.scss";
 import { Inter } from "next/font/google";
+import Navbar from "../components/navbar/Navbar";
+import Footer from "../components/footer/Footer";
 
 const inter = Inter({ subsets: ["latin"], weight: ["600", "400", "500"] });
 
@@ -43,6 +45,7 @@ const sessions = [
 export default function Page() {
   return (
     <div id="portfolio" className={inter.className}>
+      <Navbar />
       <div className="container">
         <div className="title">
           <h1 data-aos="fade-up">Moments Of Our Sessions</h1>
@@ -54,6 +57,7 @@ export default function Page() {
           <PortfolioSessionCard key={session.department} infos={session} />
         ))}
       </div>
+      <Footer />
     </div>
   );
 }
