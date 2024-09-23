@@ -1,5 +1,5 @@
-import express from "express";
-import response_controller from "../controllers/response_controller.js";
+const express = require("express");
+const response_controller = require("../controllers/response_controller");
 
 const route = express.Router();
 
@@ -11,4 +11,4 @@ route.get("/findById/:id", response_controller.findResponsebyId);
 route.get("/findByUserId/:id", response_controller.findResponsebyUserId);
 route.get("/count", response_controller.count);
 
-export default route;
+module.exports = route;

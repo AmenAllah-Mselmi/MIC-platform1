@@ -1,6 +1,4 @@
-import mongoose from "mongoose";
-
-
+const mongoose = require("mongoose");
 
 const assignmentSchema = new mongoose.Schema({
   Title: {
@@ -37,5 +35,5 @@ const assignmentSchema = new mongoose.Schema({
   ],
 });
 
-const Assignment  = mongoose.model("Assignment", assignmentSchema);
-export default Assignment;
+const Assignment = mongoose.model("Assignment", assignmentSchema);
+module.exports = Assignment;

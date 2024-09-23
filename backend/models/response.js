@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const responsesSchema = new mongoose.Schema({
   Content: {
@@ -14,5 +14,6 @@ const responsesSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+
 const Response = mongoose.model("Response", responsesSchema);
-export default Response;
+module.exports = Response;

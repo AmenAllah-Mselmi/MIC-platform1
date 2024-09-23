@@ -6,15 +6,15 @@ import Link from 'next/link'
 import { Inter } from 'next/font/google'
 import { FaBars } from 'react-icons/fa'
 import { useEffect, useRef, useState } from 'react'
-import Login from '../../login/page'
+import Login from '../../(MICPlatform)/login/page'
 
 const inter = Inter({ subsets: ['latin-ext'], weights: 400 })
 
 export default function Navbar() {
   const [showlinks, setShowlinks] = useState(false)
-  const navRef = useRef()
-  const linksRef = useRef()
-  const headerRef = useRef()
+  const navRef = useRef(null)
+  const linksRef = useRef(null)
+  const headerRef = useRef(null)
 
   useEffect(() => {
     let linksHeight = linksRef.current.getBoundingClientRect().height
@@ -22,16 +22,22 @@ export default function Navbar() {
   }, [showlinks])
 
   useEffect(() => {
-    window.addEventListener('scroll', () => {
+    const handleScroll = () => {
+      // Check if headerRef.current exists before trying to access classList
+      if (!headerRef.current) return
+
       if (window.scrollY > 550) {
         headerRef.current.classList.add('fixed')
       } else {
         headerRef.current.classList.remove('fixed')
       }
-    })
+    }
 
+    window.addEventListener('scroll', handleScroll)
+
+    // Cleanup function to remove the event listener when the component unmounts
     return () => {
-      window.removeEventListener('scroll', () => {})
+      window.removeEventListener('scroll', handleScroll)
     }
   }, [])
 
@@ -48,13 +54,13 @@ export default function Navbar() {
               height={37}
             />
           </Link>
-          <div onClick={() => setShowlinks(prev => !prev)} className='burger'>
+          <div onClick={() => setShowlinks((prev) => !prev)} className='burger'>
             <FaBars />
           </div>
         </div>
         <div ref={navRef} className='links-container'>
           <ul
-            onClick={() => setShowlinks(prev => !prev)}
+            onClick={() => setShowlinks((prev) => !prev)}
             ref={linksRef}
             className={`${inter.className} links`}
           >
@@ -77,7 +83,12 @@ export default function Navbar() {
               <Link href='/contact'>Contact</Link>
             </li>
             <li>
-              <Link className='bg-primary px-4 py-1 border rounded-lg hover:bg-secondary transition' href='/login'>Login</Link>
+              <Link
+                className='bg-primary px-4 py-1 border rounded-lg hover:bg-secondary transition'
+                href='/login'
+              >
+                Login
+              </Link>
             </li>
           </ul>
         </div>

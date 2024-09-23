@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const { Schema } = mongoose;
 
@@ -52,33 +52,33 @@ UserSchema.pre("save", async function (next) {
 });
 
 // User model
-export const User = mongoose.model("User", UserSchema);
+const User = mongoose.model("User", UserSchema);
 
 // Instructor Schema
 const InstructorSchema = new Schema({
   Departement: {
     type: String,
     enum: ["Basic", "Intermediate", "Advanced"],
-    required:true
+    required: true,
   },
   Attachments: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Attachment", 
+      ref: "Attachment",
     },
   ],
   Assignement: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Assignment", 
+      ref: "Assignment",
     },
   ],
-  Session:[
-     {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Session", 
-  }
-]
+  Session: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Session",
+    },
+  ],
 });
 
 // Member Schema
@@ -90,12 +90,14 @@ const MemberSchema = new Schema({
   Responses: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Response",  
+      ref: "Response",
     },
-  ]
+  ],
 });
 
 // Discriminators for different user roles
-export const Instructor = User.discriminator("Instructor", InstructorSchema);
-export const SuperAdmin = User.discriminator("SuperAdmin", new Schema({}));
-export const Member = User.discriminator("Member", MemberSchema);
+const Instructor = User.discriminator("Instructor", InstructorSchema);
+const SuperAdmin = User.discriminator("SuperAdmin", new Schema({}));
+const Member = User.discriminator("Member", MemberSchema);
+
+module.exports = { User, Instructor, SuperAdmin, Member };

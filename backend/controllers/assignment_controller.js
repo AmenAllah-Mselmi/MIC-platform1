@@ -1,4 +1,4 @@
-import Assignment from "../models/assignment.js";
+const Assignment = require("../models/assignment");
 
 const assignmentController = {
   addAssignment: async (req, res) => {
@@ -78,4 +78,4 @@ const assignmentController = {
   },
 };
 
-export default assignmentController;
+module.exports = assignmentController;

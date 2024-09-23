@@ -1,11 +1,11 @@
 import './login.scss'
 import { Input } from '@nextui-org/react'
 import Image from 'next/image'
-import Logo from '../../public/images/big-logo.png'
+import Logo from '../../../public/images/big-logo.png'
 import 'react-circular-progressbar/dist/styles.css'
 export default function Login() {
   return (
-    <main className='login-background container'>
+    <main className='login-background w-screen'>
       <div className='m-20 flex h-[40rem] w-2/3 items-center justify-center rounded-2xl border border-primary bg-gradient-to-r from-secondary to-primary shadow-2xl'>
         <div className='relative grid h-full w-full grid-cols-2 items-center justify-center'>
           <svg

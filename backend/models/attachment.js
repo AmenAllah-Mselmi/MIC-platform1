@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const attachmentSchema = new mongoose.Schema({
   Title: {
@@ -17,10 +17,11 @@ const attachmentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Session", 
   },
-  Assignement:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:'Assignment'
-  }
+  Assignement: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Assignment',
+  },
 });
+
 const Attachment = mongoose.model("Attachment", attachmentSchema);
-export default Attachment;
+module.exports = Attachment;

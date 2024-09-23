@@ -1,14 +1,15 @@
-import express from "express";
-import mongoose from "mongoose";
-import Instructor from "./routes/instructor_route.js";
-import Member from "./routes/member_route.js";
-import Super_admin from "./routes/super_admin_route.js";
-import assignment from "./routes/assignment_route.js"; // Fixed typo
-import session from "./routes/session_route.js";
-import dotenv from "dotenv";
-import response from './routes/response_route.js'
-import attachment from './routes/attachment_route.js';
-import user from './routes/user_route.js'
+const express = require("express");
+const mongoose = require("mongoose");
+const Instructor = require("./routes/instructor_route");
+const Member = require("./routes/member_route");
+const Super_admin = require("./routes/super_admin_route");
+const assignment = require("./routes/assignment_route"); // Fixed typo
+const session = require("./routes/session_route");
+const dotenv = require("dotenv");
+const response = require('./routes/response_route');
+const attachment = require('./routes/attachment_route');
+const user = require('./routes/user_route');
+
 dotenv.config();
 
 const app = express();
@@ -41,7 +42,8 @@ app.use("/api/session", session);
 app.use("/api/assignment", assignment); 
 app.use('/api/attachment', attachment);
 app.use('/api/response', response);
-app.use('/api/user',user)
+app.use('/api/user', user);
+
 app.listen(PORT, () => {
   console.log(`The server is running on port ${PORT}`);
 });

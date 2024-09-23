@@ -1,47 +1,46 @@
-import { User } from '../models/user.js';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+const { User } = require('../models/user.js');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const { body, validationResult } = require('express-validator');
 
 const controller = {
-  login: async (req, res) => {
-    try {
-      const { Email, Password } = req.body;
+  login: [
+    // Input validation
+    body('Email').isEmail().withMessage('Invalid email format'),
+    body('Password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
 
-      console.log('Email:', Email);
-      console.log('Password:', Password);
+    async (req, res) => {
+      try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return res.status(400).json({ errors: errors.array() });
+        }
 
-      if (!Email || !Password) {
-        return res.status(400).json({ message: 'Email and Password are required' });
+        const { Email, Password } = req.body;
+
+        const user = await User.findOne({ Email });
+        if (!user) {
+          return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        const isMatch = await bcrypt.compare(Password, user.Password);
+        if (!isMatch) {
+          return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        const token = jwt.sign(
+          { id: user._id, role: user.Role },
+          process.env.JWT_SECRET,
+          { expiresIn: '1h' }
+        );
+
+        res.status(200).json({ message: 'Login successful', token });
+      } catch (error) {
+        console.error('Error in authentication:', error);
+        res.status(500).json({ message: 'Error performing authentication' });
       }
-
-      const user = await User.findOne({ Email });
-
-      console.log('User found:', user);
-
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-
-      const isMatch = await bcrypt.compare(Password, user.Password);
-
-      console.log('Password match:', isMatch);
-
-      if (!isMatch) {
-        return res.status(401).json({ message: 'Invalid credentials' });
-      }
-
-      const token = jwt.sign(
-        { id: user._id, role: user.Role },
-        process.env.JWT_SECRET,
-        { expiresIn: '1h' }
-      );
-
-      res.status(200).json({ message: 'Login successful', token });
-    } catch (error) {
-      console.error('Error in authentication:', error);
-      res.status(500).json({ message: 'Error performing authentication', error: error.message });
     }
-  }
+  ]
 };
 
-export default controller;
+module.exports = controller;

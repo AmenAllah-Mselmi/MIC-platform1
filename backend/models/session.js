@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const sessionSchema = new mongoose.Schema({
   Title: {
@@ -22,5 +22,6 @@ const sessionSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+
 const Session = mongoose.model("Session", sessionSchema);
-export default Session;
+module.exports = Session;
