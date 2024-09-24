@@ -3,7 +3,7 @@ import Logo from "../../../../public/images/big-logo.png"
 import Image from 'next/image';
 const EventCard: React.FC = () => {
   return (
-    <div className="flex flex-wrap    bg-white mb-4 mt-4  w-10/12 mx-auto">
+    <div className="flex flex-wrap bg-white mb-4 mt-4  w-10/12 mx-auto">
       <div className="w-full  md:w-1/3 lg:w-1/4 flex h-full flex-col justify-between items-center md:justify-center  mt-0 md:mt-24 lg:mt-0">
         <Image
           loading="lazy"

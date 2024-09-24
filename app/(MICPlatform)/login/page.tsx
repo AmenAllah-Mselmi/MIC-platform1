@@ -1,15 +1,20 @@
+
 import './login.scss'
 import { Input } from '@nextui-org/react'
 import Image from 'next/image'
 import Logo from '../../../public/images/big-logo.png'
 import 'react-circular-progressbar/dist/styles.css'
+import { TypewriterEffectSmoothDemo } from '../_MICcomponents/typewriterEffect/TypewriterEffectSmoothDemo'
+import { TypewriterEffectSmooth } from '../_MICcomponents/typewriterEffect/typeWriterEffect'
+
 export default function Login() {
+  
   return (
     <main className='login-background w-screen'>
-      <div className='m-20 flex h-[40rem] w-2/3 items-center justify-center rounded-2xl border border-primary bg-gradient-to-r from-secondary to-primary shadow-2xl'>
-        <div className='relative grid h-full w-full grid-cols-2 items-center justify-center'>
+      <div className='m-4 flex h-auto w-full items-center justify-center rounded-2xl border border-primary bg-gradient-to-r from-secondary to-primary shadow-2xl md:m-20 md:h-[40rem] md:w-2/3'>
+        <div className='relative grid h-full w-full grid-cols-1 items-center justify-center py-10 md:grid-cols-2'>
           <svg
-            className='blob blob1'
+            className='blob blob1 hidden md:block'
             viewBox='0 0 200 200'
             xmlns='http://www.w3.org/2000/svg'
           >
@@ -20,7 +25,7 @@ export default function Login() {
             />
           </svg>
           <svg
-            className='blob blob2'
+            className='blob blob2 hidden md:block'
             viewBox='0 0 200 200'
             xmlns='http://www.w3.org/2000/svg'
           >
@@ -31,7 +36,7 @@ export default function Login() {
             />
           </svg>
           <svg
-            className='blob blob3'
+            className='blob blob3 hidden md:block'
             viewBox='0 0 200 200'
             xmlns='http://www.w3.org/2000/svg'
           >
@@ -41,13 +46,13 @@ export default function Login() {
               transform='translate(100 100)'
             />
           </svg>
-          <div className='z-10 text-white'>
+          <div className='z-10 hidden text-white md:block'>
             <div className='logo absolute left-4 top-4'>
               <Image src={Logo} alt='Logo' width={100} height={100} />
             </div>
             <div className='text-center'>
               <h1 className='mb-4 text-4xl font-bold'>
-                We Are Glad That You Are Joining Us !
+                We Are Glad That You Are Joining Us!
               </h1>
               <p className='text-lg font-thin'>
                 Together we'll be creating an impact that matters
@@ -55,21 +60,25 @@ export default function Login() {
             </div>
           </div>
           <form className='flex h-full items-center justify-center rounded-l-3xl border bg-slate-100'>
-            <div className='flex flex-col gap-4'>
-              <h1 className='text-3xl'>Welcome Among Us !</h1>
+            <div className='flex flex-col gap-4 p-4 md:p-0'>
+              <div className='w-full'>
+              <TypewriterEffectSmoothDemo />
+              </div>
+             
+
               <Input
                 label='Email'
                 variant='underlined'
-                className='w-80'
+                className='w-full md:w-80'
                 type='email'
               />
               <Input
                 label='Password'
                 variant='underlined'
-                className='w-80'
+                className='w-full md:w-80'
                 type='password'
               />
-              <button className='mt-5 h-12 w-80 rounded-md bg-gradient-to-r from-secondary to-primary text-white'>
+              <button className='mt-5 h-12 w-full rounded-md bg-gradient-to-r from-secondary to-primary text-white md:w-80'>
                 Login
               </button>
             </div>
