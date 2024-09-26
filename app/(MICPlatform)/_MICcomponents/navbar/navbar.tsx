@@ -84,7 +84,7 @@ export default function Navbar() {
             <li>
               <Link href='/Member/assignments'>Assignments</Link>
             </li>
-            {/* <div className='flex items-center justify-center'>
+            <div className='flex items-center justify-center'>
           <ul  
              className='menu menu-horizontal px-1'>
             <li>
@@ -108,10 +108,10 @@ export default function Navbar() {
               </details>
             </li>
           </ul>
-        </div> */}
+        </div>
           </ul>
         </div>
-        <div className='flex items-center justify-center'>
+        {/* <div className='flex items-center justify-center'>
           <ul className='menu menu-horizontal px-1'>
             <li>
               <div className='avatar'>
@@ -134,7 +134,7 @@ export default function Navbar() {
               </details>
             </li>
           </ul>
-        </div>
+        </div> */}
 
         {/* <div className='flex-none gap-2'>
         
