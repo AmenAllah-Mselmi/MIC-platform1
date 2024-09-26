@@ -3,7 +3,7 @@ import React from 'react'
 import person from '../../../../public/images/Member/person.jpg'
 const assignement_card = () => {
   return (
-    <div className='mx-auto mb-4 mt-4 flex h-fit w-11/12 flex-col flex-wrap rounded-lg bg-white p-5'>
+    <div className='mx-auto mb-4 mt-4 flex h-fit w-1/2 flex-col flex-wrap rounded-lg bg-white p-5'>
       <div className='flex items-center'>
         <Image
           src={person}

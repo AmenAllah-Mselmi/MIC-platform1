@@ -66,9 +66,9 @@ export default function Navbar() {
             <FaBars />
           </div>
         </div>
-        <div className="">
-          <SearchBar />
-        </div>
+
+        <SearchBar />
+
         <div ref={navRef} className='links-container'>
           <ul
             onClick={() => setShowlinks(prev => !prev)}
@@ -84,38 +84,92 @@ export default function Navbar() {
             <li>
               <Link href='/Member/assignments'>Assignments</Link>
             </li>
-            <li className='z-40'>
-              <div className='dropdown dropdown-end'>
-                <div
-                  tabIndex={0}
-                  role='button'
-                  className='avatar btn btn-circle btn-ghost'
-                >
-                  <div className='w-10 rounded-full'>
-                    <img
-                      alt='Tailwind CSS Navbar component'
-                      src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp'
-                    />
-                  </div>
+            {/* <div className='flex items-center justify-center'>
+          <ul  
+             className='menu menu-horizontal px-1'>
+            <li>
+              <div className='avatar'>
+                <div className='w-10 rounded-full'>
+                  <img src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' />
                 </div>
-                <ul
-                  tabIndex={0}
-                  className='menu dropdown-content menu-sm mt-3 w-52 rounded-box bg-base-100 p-2 shadow'
-                >
+              </div>
+            </li>
+            <li className='self-center '>
+              <details>
+                <summary>Student Name</summary>
+                <ul className='rounded-t-none bg-base-100 p-2'>
                   <li>
-                    <a className='justify-between'>
-                      Profile
-                      <span className='badge'>New</span>
-                    </a>
+                    <a>Profile</a>
                   </li>
                   <li>
                     <a>Logout</a>
                   </li>
                 </ul>
+              </details>
+            </li>
+          </ul>
+        </div> */}
+          </ul>
+        </div>
+        <div className='flex items-center justify-center'>
+          <ul className='menu menu-horizontal px-1'>
+            <li>
+              <div className='avatar'>
+                <div className='w-10 rounded-full'>
+                  <img src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' />
+                </div>
               </div>
+            </li>
+            <li className='self-center'>
+              <details>
+                <summary>Student Name</summary>
+                <ul className='rounded-t-none bg-base-100 p-2'>
+                  <li>
+                    <a>Profile</a>
+                  </li>
+                  <li>
+                    <a>Logout</a>
+                  </li>
+                </ul>
+              </details>
             </li>
           </ul>
         </div>
+
+        {/* <div className='flex-none gap-2'>
+        
+          <div className='dropdown dropdown-end'>
+            <div
+              tabIndex={0}
+              role='button'
+              className='avatar btn btn-circle btn-ghost'
+            >
+              <div className='w-10 rounded-full'>
+                <img
+                  alt='Tailwind CSS Navbar component'
+                  src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp'
+                />
+              </div>
+            </div>
+            <ul
+              tabIndex={0}
+              className='menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow'
+            >
+              <li>
+                <a className='justify-between'>
+                  Profile
+                  <span className='badge'>New</span>
+                </a>
+              </li>
+              <li>
+                <a>Settings</a>
+              </li>
+              <li>
+                <a>Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div> */}
       </nav>
     </header>
   )
