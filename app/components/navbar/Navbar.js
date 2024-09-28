@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { Inter } from 'next/font/google'
 import { FaBars } from 'react-icons/fa'
 import { useEffect, useRef, useState } from 'react'
-import Login from '../../(MICPlatform)/login/page'
 
 const inter = Inter({ subsets: ['latin-ext'], weights: 400 })
 

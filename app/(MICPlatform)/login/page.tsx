@@ -1,14 +1,11 @@
-
 import './login.scss'
-import { Input } from '@nextui-org/react'
+
 import Image from 'next/image'
 import Logo from '../../../public/images/big-logo.png'
 import 'react-circular-progressbar/dist/styles.css'
-import { TypewriterEffectSmoothDemo } from '../_MICcomponents/typewriterEffect/TypewriterEffectSmoothDemo'
-import { TypewriterEffectSmooth } from '../_MICcomponents/typewriterEffect/typeWriterEffect'
+import LoginForm from '../_MICcomponents/loginUI/LoginForm'
 
 export default function Login() {
-  
   return (
     <main className='login-background w-screen'>
       <div className='m-4 flex h-auto w-full items-center justify-center rounded-2xl border border-primary bg-gradient-to-r from-secondary to-primary shadow-2xl md:m-20 md:h-[40rem] md:w-2/3'>
@@ -46,7 +43,7 @@ export default function Login() {
               transform='translate(100 100)'
             />
           </svg>
-          <div className='z-10 hidden text-white md:block'>
+          <div className='z-10 flex hidden text-white md:block'>
             <div className='logo absolute left-4 top-4'>
               <Image src={Logo} alt='Logo' width={100} height={100} />
             </div>
@@ -59,30 +56,7 @@ export default function Login() {
               </p>
             </div>
           </div>
-          <form className='flex h-full items-center justify-center rounded-l-3xl border bg-slate-100'>
-            <div className='flex flex-col gap-4 p-4 md:p-0'>
-              <div className='w-full'>
-              <TypewriterEffectSmoothDemo />
-              </div>
-             
-
-              <Input
-                label='Email'
-                variant='underlined'
-                className='w-full md:w-80'
-                type='email'
-              />
-              <Input
-                label='Password'
-                variant='underlined'
-                className='w-full md:w-80'
-                type='password'
-              />
-              <button className='mt-5 h-12 w-full rounded-md bg-gradient-to-r from-secondary to-primary text-white md:w-80'>
-                Login
-              </button>
-            </div>
-          </form>
+          <LoginForm />
         </div>
       </div>
     </main>
