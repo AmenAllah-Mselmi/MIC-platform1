@@ -1,14 +1,20 @@
+'use client'
+
 import Image from 'next/image'
 import React from 'react'
-import person from '../../../../public/images/Member/person.jpg'
-const assignement_card = () => {
+import { useDisclosure, Button } from '@nextui-org/react'
+import AssignmentModal from './AssignmentModal'
+export default function AssignmentCard() {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
   return (
     <div className='mx-auto mb-4 mt-4 flex h-fit w-1/2 flex-col flex-wrap rounded-lg bg-white p-5'>
       <div className='flex items-center'>
         <Image
-          src={person}
+          src={'/images/Member/MemberBackground.png'}
           alt='Person'
           className='mr-4 h-12 w-12 rounded-full'
+          width={48}
+          height={48}
         />
         <div>
           <h5 className='font-extrabold'>Instructor</h5>
@@ -20,12 +26,14 @@ const assignement_card = () => {
         eligendi neque reiciendis sunt laborum nobis.
       </p>
       <div className='flex h-11 items-center justify-end'>
-        <button className='flex h-full w-32 cursor-pointer items-center justify-center rounded-full bg-MIC text-white'>
+        <Button
+          onPress={onOpen}
+          className='flex h-full w-32 cursor-pointer items-center justify-center rounded-full bg-MIC text-white'
+        >
           See More
-        </button>
+        </Button>
       </div>
+      <AssignmentModal isOpen={isOpen} onOpenChange={onOpenChange} />
     </div>
   )
 }
-
-export default assignement_card
