@@ -59,7 +59,7 @@ export default function AssignmentModal({ isOpen, onOpenChange }) {
                     height={48}
                   />
                   <Input
-                    placeholder='Submit your your github repo link here'
+                    placeholder='Submit your github repo link here'
                     className='max-w-3/4 mt-2 rounded-lg border border-solid border-gray-400 md:w-full'
                   />
                   <Button
