@@ -4,9 +4,7 @@ import Editor from '../../_MICcomponents/RichTextEditor/NovelEditor'
 const page = () => {
   return (
     <div className=''>
-      <AssignmentCard />
-      <AssignmentCard />
-      <AssignmentCard />
+    
       <AssignmentCard />
       <AssignmentCard />
       <Editor />
