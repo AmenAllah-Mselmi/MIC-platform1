@@ -1,10 +1,24 @@
 import React from 'react'
 import Logo from '../../../../public/images/big-logo.png'
 import Image from 'next/image'
-const EventCard: React.FC = () => {
+
+interface Session {
+  _id: string
+  Title: string
+  Description: string
+  Instructor: string
+  Date: string
+  createdAt: string
+}
+
+interface EventCardProps {
+  session: Session
+}
+
+const EventCard: React.FC<EventCardProps> = ({ session }) => {
   return (
     <div className='mx-auto mb-4 mt-4 flex w-3/5 flex-wrap rounded-lg border bg-white px-6 py-6'>
-      <div className='mt-0 flex h-full w-full flex-col items-center justify-between py-10 shadow-xl md:mt-24 md:w-1/3 md:justify-center lg:mt-0 lg:w-1/4 '>
+      <div className='mt-0 flex h-full w-full flex-col items-center justify-between py-10 shadow-xl md:mt-24 md:w-1/3 md:justify-center lg:mt-0 lg:w-1/4'>
         <Image
           loading='lazy'
           alt='Logo'
@@ -16,23 +30,23 @@ const EventCard: React.FC = () => {
         <div className='card-body'>
           <ul className='list-unstyled'>
             <li className='mb-2'>
-              Heure de début: <h6>17:00</h6>
+              <h6>title : {session.Title}</h6>
             </li>
             <li className='mb-2'>
-              <span>Salle:</span> <h6>M8</h6>
+              <h6> Description : {session.Description}</h6>
             </li>
             <li className='mb-2'>
-              <span>Duration:</span> <h6>1h 59m</h6>
+              <h6>Instructor : {session.Instructor}</h6>
             </li>
-            <li>
-              <span>Places restantes:</span> <h6>0</h6>
+            <li className='mb-2'>
+              Date : <h6>{session.Date}</h6>
+            </li>
+            <li className='mb-2'>
+              <span>Salle:</span> <h6>{session.room}</h6>
             </li>
           </ul>
           <p className='card-text text-justify'>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi
-            fugiat recusandae possimus quas libero inventore laudantium
-            consequatur nihil molestiae incidunt eos aliquid, magni ducimus
-            veniam?
+            Description : {session.Description}
           </p>
           <div className='mt-2 flex justify-between'>
             <div>{/* Placeholder for potential additional content */}</div>

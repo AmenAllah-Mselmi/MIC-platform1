@@ -1,4 +1,3 @@
-
 import './login.scss'
 import { Input } from '@nextui-org/react'
 import Image from 'next/image'
@@ -8,7 +7,6 @@ import { TypewriterEffectSmoothDemo } from '../_MICcomponents/typewriterEffect/T
 import { TypewriterEffectSmooth } from '../_MICcomponents/typewriterEffect/typeWriterEffect'
 
 export default function Login() {
-  
   return (
     <main className='login-background w-screen'>
       <div className='m-4 flex h-auto w-full items-center justify-center rounded-2xl border border-primary bg-gradient-to-r from-secondary to-primary shadow-2xl md:m-20 md:h-[40rem] md:w-2/3'>
@@ -55,16 +53,16 @@ export default function Login() {
                 We Are Glad That You Are Joining Us!
               </h1>
               <p className='text-lg font-thin'>
-                Together we'll be creating an impact that matters
+                Together !!a corriger ici !! well be creating an impact that
+                matters
               </p>
             </div>
           </div>
           <form className='flex h-full items-center justify-center rounded-l-3xl border bg-slate-100'>
             <div className='flex flex-col gap-4 p-4 md:p-0'>
               <div className='w-full'>
-              <TypewriterEffectSmoothDemo />
+                <TypewriterEffectSmoothDemo />
               </div>
-             
 
               <Input
                 label='Email'

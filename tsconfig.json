@@ -27,7 +27,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "app/(MICPlatform)/_Redux/store.tsx"  ],
   "exclude": [
     "node_modules"
   ]

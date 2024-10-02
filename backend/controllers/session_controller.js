@@ -1,68 +1,72 @@
-const Session = require("../models/session");
+const Session = require('../models/session')
 
 const controller = {
   addSession: async (req, res) => {
     try {
-      const { Title, Description, Date, InstructorId } = req.body;
+      const { Title, Description, Date, InstructorId } = req.body
       const newSession = new Session({
         Title,
         Description,
         Date,
-        InstructorId,
-      });
-      await newSession.save();
-      res.status(201).json({ message: "Session added successfully" });
+        InstructorId
+      })
+      await newSession.save()
+      res.status(201).json({ message: 'Session added successfully' })
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: error.message })
     }
   },
 
   deleteSession: async (req, res) => {
     try {
-      const sessionId = req.params.id;
-      await Session.findByIdAndDelete(sessionId);
-      res.status(200).json({ message: "Session deleted successfully" });
+      const sessionId = req.params.id
+      await Session.findByIdAndDelete(sessionId)
+      res.status(200).json({ message: 'Session deleted successfully' })
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: error.message })
     }
   },
 
   updateSession: async (req, res) => {
     try {
-      const sessionId = req.params.id;
-      const { Title, Description, Date, InstructorId } = req.body;
+      const sessionId = req.params.id
+      const { Title, Description, Date, InstructorId } = req.body
       const updatedSession = await Session.findByIdAndUpdate(
         sessionId,
         { Title, Description, Date, InstructorId },
         { new: true }
-      );
-      res.status(200).json({ message: "Session updated successfully", updatedSession });
+      )
+      res
+        .status(200)
+        .json({ message: 'Session updated successfully', updatedSession })
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: error.message })
     }
   },
 
   getSessions: async (req, res) => {
     try {
-      const sessions = await Session.find();
-      res.status(200).json(sessions);
+      const sessions = await Session.find()
+      res.status(200).json(sessions)
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: error.message })
     }
   },
 
   getSessionById: async (req, res) => {
     try {
-      const sessionId = req.params.id;
-      const session = await Session.findById(sessionId);
+      const sessionId = req.params.id
+      const session = await Session.findById(sessionId)
       if (!session) {
-        return res.status(404).json({ message: "Session not found" });
+        return res.status(404).json({ message: 'Session not found' })
       }
-      res.status(200).json(session);
+      res.status(200).json(session)
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: error.message })
     }
-  },
-};
+  }
+}
 
-module.exports = controller;
+
+
+module.exports = controller

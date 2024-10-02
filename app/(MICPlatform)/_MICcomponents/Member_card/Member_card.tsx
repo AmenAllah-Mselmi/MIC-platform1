@@ -22,16 +22,15 @@ const Member_card = ({ member }) => {
         }}
       >
         <Avatar
-          alt={`${member.firstName} ${member.lastName}`}
-          src={member.image}
+          alt={`${member.NomPrenom} ${member.ImageLink}`}
+          src={member.ImageLink}
           sx={{ width: 120, height: 120, border: '6px solid #3f51b5' }}
         />
       </Box>
-
       {/* Partie inférieure : Infos */}
       <CardContent sx={{ textAlign: 'center' }}>
         <Typography gutterBottom variant='h6' component='div'>
-          {member.firstName} {member.lastName}
+          {member.NomPrenom}
         </Typography>
         <Typography variant='body2' color='text.secondary'>
           Classe: {member.className}

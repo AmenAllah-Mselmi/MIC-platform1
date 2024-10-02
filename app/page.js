@@ -12,6 +12,7 @@ import 'aos/dist/aos.css'
 import Reachus from './components/reachus/Reachus'
 import Navbar from './components/navbar/Navbar'
 
+// modification par Mariem
 export default function Home() {
   useEffect(() => {
     AOS.init({
