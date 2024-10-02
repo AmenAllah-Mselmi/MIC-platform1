@@ -24,6 +24,9 @@
       "@/lib*": ["./lib*"],
       "@/styles*": ["./styles*"],
       "@/utils*": ["./utils*"],
+      "components": ["./components/*"], // Ensure this path is correct
+      "plate-ui": ["./components/plate-ui/*"], // Update this path to the correct directory
+      "ui": ["./components/ui/*"] // Update this path to the correct directory
     },
     "plugins": [
       {
