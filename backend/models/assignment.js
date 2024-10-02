@@ -27,13 +27,15 @@ const assignmentSchema = new mongoose.Schema({
       ref: "Attachment", 
     },
   ],
-  Responses: [
+  Response: 
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Response",  
     },
-  
-  ],
+  Session: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Session", 
+  },
 });
 
 const Assignment = mongoose.model("Assignment", assignmentSchema);

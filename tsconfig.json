@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -16,19 +12,24 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@/ui*": ["./components/ui*"],
+      "@/hooks*": ["./hooks*"],
+      "@/lib*": ["./lib*"],
+      "@/styles*": ["./styles*"],
+      "@/utils*": ["./utils*"],
+      "components": ["./components/*"], // Ensure this path is correct
+      "plate-ui": ["./components/plate-ui/*"], // Update this path to the correct directory
+      "ui": ["./components/ui/*"] // Update this path to the correct directory
+    },
     "plugins": [
       {
         "name": "next"
       }
     ]
   },
-  "include": [
-    "next-env.d.ts",
-    ".next/types/**/*.ts",
-    "**/*.ts",
-    "**/*.tsx"
-, "app/(MICPlatform)/_Redux/store.tsx"  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
