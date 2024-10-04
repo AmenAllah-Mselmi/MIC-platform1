@@ -1,64 +1,21 @@
-import React from 'react';
-import { Container, Grid, Typography } from '@mui/material';
-import Member_card from '../../_MICcomponents/Member_card/Member_card';
+'use client'
+import React, { useEffect, useState } from 'react'
+import { Container, Grid, Typography, TextField, Button } from '@mui/material'
+import Member_card from '../../_MICcomponents/Member_card/Member_card'
+import { useMemberStore } from '../../../store/members'
 
 const Page = () => {
-  const members = [
-    {
-      firstName: 'John',
-      lastName: 'Doe',
-      className: '3ème année Informatique',
-      image: 'https://randomuser.me/api/portraits/men/1.jpg',
-    },
-    {
-      firstName: 'Jane',
-      lastName: 'Smith',
-      className: '2ème année Génie Logiciel',
-      image: 'https://randomuser.me/api/portraits/women/2.jpg',
-    },
-    {
-      firstName: 'Alice',
-      lastName: 'Johnson',
-      className: '1ère année Réseaux',
-      image: 'https://randomuser.me/api/portraits/women/3.jpg',
-    },
-    {
-      firstName: 'John',
-      lastName: 'Doe',
-      className: '3ème année Informatique',
-      image: 'https://randomuser.me/api/portraits/men/1.jpg',
-    },
-    {
-      firstName: 'Jane',
-      lastName: 'Smith',
-      className: '2ème année Génie Logiciel',
-      image: 'https://randomuser.me/api/portraits/women/2.jpg',
-    },
-    {
-      firstName: 'Alice',
-      lastName: 'Johnson',
-      className: '1ère année Réseaux',
-      image: 'https://randomuser.me/api/portraits/women/3.jpg',
-    },
-    {
-      firstName: 'John',
-      lastName: 'Doe',
-      className: '3ème année Informatique',
-      image: 'https://randomuser.me/api/portraits/men/1.jpg',
-    },
-    {
-      firstName: 'Jane',
-      lastName: 'Smith',
-      className: '2ème année Génie Logiciel',
-      image: 'https://randomuser.me/api/portraits/women/2.jpg',
-    },
-    {
-      firstName: 'Alice',
-      lastName: 'Johnson',
-      className: '1ère année Réseaux',
-      image: 'https://randomuser.me/api/portraits/women/3.jpg',
-    },
-  ];
+  const members = useMemberStore(state => state.members)
+  const fetchMembers = useMemberStore(state => state.fetchMembers)
+ 
+  useEffect(() => {
+    const loadMembers = async () => {
+      await fetchMembers() 
+      console.log('Members fetched:', members)
+    }
+
+    loadMembers()
+  }, [fetchMembers]) 
 
   return (
     <Container>
@@ -67,23 +24,27 @@ const Page = () => {
         component='h1'
         align='center'
         gutterBottom
-        sx={{
-          marginTop: { xs: '180px', md: '120px', lg: '100px' },
-          fontWeight: 'bold',
-          color: '#fff',
-        }}
+        sx={{ fontWeight: 'bold', color: '#fff' }}
       >
         Membres du Département
       </Typography>
+
+      {/* Liste des membres */}
       <Grid container spacing={2}>
-        {members.map((member, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-            <Member_card member={member} />
-          </Grid>
-        ))}
+        {members.length > 0 ? ( // S'assurer qu'il y a des membres avant de les afficher
+          members.map((member, index) => (
+            <Grid item xs={12} sm={4} md={2} key={index}>
+              <Member_card member={member} />
+            </Grid>
+          ))
+        ) : (
+          <Typography variant='h6' align='center' sx={{ color: '#fff' }}>
+            Aucun membre disponible pour le moment.
+          </Typography>
+        )}
       </Grid>
     </Container>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page

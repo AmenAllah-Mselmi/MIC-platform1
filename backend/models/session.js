@@ -1,27 +1,27 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const sessionSchema = new mongoose.Schema({
   Title: {
     type: String,
-    required: true,
+    required: true
   },
   Description: {
     type: String,
-    required: true,
+    required: true
   },
   Instructor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Instructor",
+    ref: 'Instructor'
   },
   Date: {
     type: Date,
-    required: true,
+    required: true
   },
   createdAt: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
-});
+})
 
-const Session = mongoose.model("Session", sessionSchema);
-module.exports = Session;
+const Session = mongoose.model('Session', sessionSchema)
+module.exports = Session
