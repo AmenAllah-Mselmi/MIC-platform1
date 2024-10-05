@@ -2,20 +2,20 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Grid, Typography, TextField, Button } from '@mui/material'
 import Member_card from '../../_MICcomponents/Member_card/Member_card'
-import { useMemberStore } from '../../../store/members'
+import { useMemberStore } from '../../../store/MyStore/MembersStore'
 
 const Page = () => {
   const members = useMemberStore(state => state.members)
   const fetchMembers = useMemberStore(state => state.fetchMembers)
- 
+
   useEffect(() => {
     const loadMembers = async () => {
-      await fetchMembers() 
+      await fetchMembers()
       console.log('Members fetched:', members)
     }
 
     loadMembers()
-  }, [fetchMembers]) 
+  }, [fetchMembers])
 
   return (
     <Container>

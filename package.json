@@ -39,6 +39,7 @@
     "@vercel/analytics": "^1.1.1",
     "@zeit/next-css": "^1.0.1",
     "aos": "^2.3.4",
+    "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "express-validator": "^7.2.0",
@@ -73,7 +74,12 @@
     "typewriter-effect": "^2.21.0",
     "website": "file:",
     "zod": "^3.23.8",
+<<<<<<< HEAD
     "zustand": "^4.0.0"
+=======
+    "zustand": "^4.0.0",
+    "zustand-middlewares": "^0.0.1"
+>>>>>>> e6a2cceda9ac2c1bef9eba6a93358dd75a1e97f8
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",

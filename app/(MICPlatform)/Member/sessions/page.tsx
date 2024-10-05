@@ -1,9 +1,9 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import EventCard from '../../_MICcomponents/session_card/session_card'
-import { useSessionsStore } from '../../../store/sessions'
+import { useSessionsStore } from '../../../store/MyStore/SessionsStore'
 
-const page = () => {
+const Page = () => {
   const sessions = useSessionsStore(state => state.sessions)
   const fetchSessions = useSessionsStore(state => state.fetchSessions)
 
@@ -29,4 +29,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
