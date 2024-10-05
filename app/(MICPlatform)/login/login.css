@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background-color: #f9fafb;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+.login-background {
+  background-color: #f9fafb;
+  background-image: url("../../../public/images/login/login-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.blob {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  filter: blur(25px);
+  opacity: 0.6;
+  animation: blobAnimation 20s infinite;
+}
+
+.blob1 {
+  top: 5%;
+  left: 2%;
+  animation-delay: 5s;
+}
+
+.blob2 {
+  top: 50%;
+  bottom: 5%;
+  animation-delay: 10s;
+}
+
+.blob3 {
+  bottom: 20%;
+  left: 15%;
+  animation-delay: 15s;
+}
+
+@keyframes blobAnimation {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(50px, 50px) scale(1.4);
+  }
+}/*# sourceMappingURL=login.css.map */

@@ -13,6 +13,11 @@ const sessionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Instructor'
   },
+  Assignment:
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Assignment'
+    },
   Date: {
     type: Date,
     required: true

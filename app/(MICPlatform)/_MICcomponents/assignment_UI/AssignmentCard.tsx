@@ -10,7 +10,7 @@ export default function AssignmentCard() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   
   return (
-    <div className='mx-auto mb-4 mt-4 flex h-fit w-11/12 sm:w-1/2 flex-col flex-wrap rounded-lg bg-white p-5'>
+    <div className='mx-auto mb-4 mt-4 flex h-fit w-11/12  flex-col flex-wrap rounded-lg bg-white p-5'>
       <div className='flex items-center'>
         <Image
           src={'/images/Member/MemberBackground.png'}

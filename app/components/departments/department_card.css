@@ -1,0 +1,37 @@
+.department-card {
+  flex: calc(220px + 1vw) 0 0;
+  background-color: white;
+  border-radius: 50%;
+  padding: 1rem;
+  box-shadow: 0 2px 4px -2px #e5e7eb;
+  transition: box-shadow 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  aspect-ratio: 1/1;
+  gap: 1rem;
+}
+.department-card:hover {
+  box-shadow: 0 2px 20px -5px #e5e7eb;
+}
+.department-card .name {
+  margin-top: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+  width: 80%;
+}
+
+@media (max-width: 650px) {
+  .department-card {
+    flex-basis: 160px;
+    gap: 0.5rem;
+  }
+  .department-card img {
+    width: 80px !important;
+    height: 80px !important;
+  }
+  .department-card .name {
+    font-size: 0.85rem;
+  }
+}/*# sourceMappingURL=department_card.css.map */

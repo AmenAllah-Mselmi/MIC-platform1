@@ -1,176 +1,130 @@
 'use client'
 
-import Image from 'next/image'
-import '../../../components/navbar/navbar.scss'
 import Link from 'next/link'
+import { useState } from 'react'
+import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import { FaBars } from 'react-icons/fa'
-import { useEffect, useRef, useState } from 'react'
-import SearchBar from '../searchBar/searchBar'
 
+// Import the Inter font from Google Fonts
 const inter = Inter({ subsets: ['latin-ext'], weight: '400' })
 
 export default function Navbar() {
-  const [showlinks, setShowlinks] = useState(false)
-  const navRef = useRef<HTMLDivElement>(null)
-  const linksRef = useRef<HTMLUListElement>(null)
-  const headerRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    if (linksRef.current && navRef.current) {
-      let linksHeight = linksRef.current.getBoundingClientRect().height
-      navRef.current.style.height = showlinks ? `${linksHeight}px` : '0'
-    }
-  }, [showlinks])
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!headerRef.current) return
-
-      if (window.scrollY > 550) {
-        headerRef.current.classList.add('fixed')
-      } else {
-        headerRef.current.classList.remove('fixed')
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false) // State to manage dropdown visibility
+  const [isMenuOpen, setIsMenuOpen] = useState(false) // State to manage mobile menu visibility
 
   return (
-    <header
-      ref={headerRef}
-      id='navbar'
-      className='navbar transition-all duration-300'
-    >
-      <nav>
-        <div className='logo'>
-          <Link href='/#welcome'>
+    <nav className='bg-navbar text-white fixed w-full z-10 top-0'>
+      <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
+        {/* Logo Section with custom logo */}
+        <Link href='/' className='flex items-center space-x-3 rtl:space-x-reverse'>
+          <Image
+            src='/images/main-logo.png' // Updated logo source
+            width={39}
+            height={39}
+            className='h-8 cursor-pointer'
+            alt='Microsoft Issatso Logo' // Alt text for accessibility
+          />
+          <span className={`${inter.className} self-center text-2xl font-semibold whitespace-nowrap hidden md:block`}>
+            Microsoft Issatso
+          </span>
+        </Link>
+
+        {/* Right Section with Profile Dropdown */}
+        <div className='flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse'>
+          {/* Profile Dropdown Toggle */}
+          <button
+            type='button'
+            className='flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600'
+            aria-expanded={isDropdownOpen ? 'true' : 'false'}
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)} // Toggle dropdown on click
+          >
+            <span className='sr-only'>Open user menu</span>
             <Image
-              onClick={() => setShowlinks(false)}
-              src='/images/main-logo.png'
-              alt='microsoft issatso logo'
-              width={37}
-              height={37}
-              className='cursor-pointer'
+              src='/images/big-logo.png' // Updated user image source
+              alt='user photo'
+              width={32}
+              height={32}
+              className='w-8 h-8 rounded-full'
             />
-          </Link>
-          <div
-            onClick={() => setShowlinks(prev => !prev)}
-            className='burger cursor-pointer text-2xl'
-          >
-            <FaBars />
-          </div>
-        </div>
+          </button>
 
-        <SearchBar />
-
-        <div ref={navRef} className='links-container'>
-          <ul
-            onClick={() => setShowlinks(prev => !prev)}
-            ref={linksRef}
-            className={`${inter.className} links`}
-          >
-            <li>
-              <Link href='/#departments'>Departments</Link>
-            </li>
-            <li>
-              <Link href='/Member/sessions'>Sessions</Link>
-            </li>
-            <li>
-              <Link href='/Member/assignments'>Assignments</Link>
-            </li>
-            <div className='flex items-center justify-center'>
-          <ul  
-             className='menu menu-horizontal px-1'>
-            <li>
-              <div className='avatar'>
-                <div className='w-10 rounded-full'>
-                  <img src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' />
-                </div>
-              </div>
-            </li>
-            <li className='self-center '>
-              <details>
-                <summary>Student Name</summary>
-                <ul className='rounded-t-none bg-base-100 p-2'>
-                  <li>
-                    <a>Profile</a>
-                  </li>
-                  <li>
-                    <a>Logout</a>
-                  </li>
-                </ul>
-              </details>
-            </li>
-          </ul>
-        </div>
-          </ul>
-        </div>
-        {/* <div className='flex items-center justify-center'>
-          <ul className='menu menu-horizontal px-1'>
-            <li>
-              <div className='avatar'>
-                <div className='w-10 rounded-full'>
-                  <img src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' />
-                </div>
-              </div>
-            </li>
-            <li className='self-center'>
-              <details>
-                <summary>Student Name</summary>
-                <ul className='rounded-t-none bg-base-100 p-2'>
-                  <li>
-                    <a>Profile</a>
-                  </li>
-                  <li>
-                    <a>Logout</a>
-                  </li>
-                </ul>
-              </details>
-            </li>
-          </ul>
-        </div> */}
-
-        {/* <div className='flex-none gap-2'>
-        
-          <div className='dropdown dropdown-end'>
+          {/* Dropdown Menu */}
+          {isDropdownOpen && (
             <div
-              tabIndex={0}
-              role='button'
-              className='avatar btn btn-circle btn-ghost'
+              className='z-50 absolute top-16 right-10 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600'
+              id='user-dropdown'
             >
-              <div className='w-10 rounded-full'>
-                <img
-                  alt='Tailwind CSS Navbar component'
-                  src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp'
-                />
+              <div className='px-4 py-3'>
+                <span className='block text-sm text-gray-900'>Student Name</span>
+                <span className='block text-sm text-gray-500 truncate'>email@example.com</span>
               </div>
+              <ul className='py-2' aria-labelledby='user-menu-button'>
+                <li>
+                  <Link
+                    href='/profile'
+                    className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'
+                  >
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href='/logout'
+                    className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'
+                  >
+                    Logout
+                  </Link>
+                </li>
+              </ul>
             </div>
-            <ul
-              tabIndex={0}
-              className='menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow'
-            >
-              <li>
-                <a className='justify-between'>
-                  Profile
-                  <span className='badge'>New</span>
-                </a>
-              </li>
-              <li>
-                <a>Settings</a>
-              </li>
-              <li>
-                <a>Logout</a>
-              </li>
-            </ul>
-          </div>
-        </div> */}
-      </nav>
-    </header>
+          )}
+
+          {/* Mobile Menu Button */}
+          <button
+            type='button'
+            className='inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'
+            aria-controls='navbar-user'
+            aria-expanded={isMenuOpen ? 'true' : 'false'}
+            onClick={() => setIsMenuOpen(!isMenuOpen)} // Toggle mobile menu
+          >
+            <span className='sr-only'>Open main menu</span>
+            <svg className='w-5 h-5' aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 17 14'>
+              <path stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M1 1h15M1 7h15M1 13h15' />
+            </svg>
+          </button>
+        </div>
+
+        {/* Main Navigation Links for Desktop and Mobile */}
+        <div
+          className={`${
+            isMenuOpen ? 'block' : 'hidden'
+          } items-center justify-between w-full md:flex md:w-auto md:order-1`}
+          id='navbar-user'
+        >
+          <ul className='flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-navbar dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>
+            <li>
+              <Link href='/' className='block py-2 px-3 text-black md:text-gray-300  rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500'>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link href='/#departments' className='block py-2 px-3   text-black md:text-gray-300 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500'>
+                Departments
+              </Link>
+            </li>
+            <li>
+              <Link href='/Member/sessions' className='block py-2 px-3  text-black md:text-gray-300 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500'>
+                Sessions
+              </Link>
+            </li>
+            <li>
+              <Link href='/Member/assignments' className='block py-2 px-3  text-black md:text-gray-300 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500'>
+                Assignments
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   )
 }
