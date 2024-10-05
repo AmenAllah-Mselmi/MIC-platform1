@@ -3,118 +3,6 @@ const route = express.Router()
 
 const instructorController = require('../controllers/instructor_controller')
 
-route.get('/all', instructorController.afficher_All)
-
-/**
- * @swagger
- * /api/instructor/create:
- *   post:
- *     summary: Créer un nouvel instructeur
- *     description: Crée un instructeur avec les informations fournies dans le corps de la requête.
- *     tags:
- *       - Instructors
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               NomPrenom:
- *                 type: string
- *                 example: "John Doe"
- *                 description: Nom et prénom de l'instructeur
- *               Email:
- *                 type: string
- *                 format: email
- *                 example: "johndoe@example.com"
- *                 description: Email unique de l'instructeur
- *               Password:
- *                 type: string
- *                 format: password
- *                 example: "password123"
- *                 description: Mot de passe de l'instructeur (au moins 8 caractères)
- *               Role:
- *                 type: string
- *                 example: "instructor"
- *                 description: Le rôle de l'utilisateur (ici ce sera "instructor")
- *               Adresse:
- *                 type: string
- *                 example: "123 rue de Paris"
- *                 description: Adresse de l'instructeur
- *               ImageLink:
- *                 type: string
- *                 example: "http://example.com/image.jpg"
- *                 description: Lien vers l'image de profil de l'instructeur (optionnel)
- *               Departement:
- *                 type: string
- *                 example: "Advanced"
- *                 enum: [Basic, Intermediate, Advanced]
- *                 description: Département auquel appartient l'instructeur
- *               DepartementId:
- *                 type: string
- *                 example: "Advanced"
- *                 enum: [Basic, Intermediate, Advanced]
- *                 description: Département auquel appartient l'instructeur
- *     responses:
- *       201:
- *         description: Instructeur créé avec succès
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Instructor created successfully"
- *                 instructor:
- *                   type: object
- *                   properties:
- *                     _id:
- *                       type: string
- *                     NomPrenom:
- *                       type: string
- *                     Email:
- *                       type: string
- *                     Role:
- *                       type: string
- *                     Adresse:
- *                       type: string
- *                     ImageLink:
- *                       type: string
- *                     Departement:
- *                       type: string
- *                     DepartementId:
- *                       type: string
- *                     createdAt:
- *                       type: string
- *                       format: date-time
- *       400:
- *         description: Erreur dans la création de l'instructeur
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Error in creating Instructor"
- *                 error:
- *                   type: string
- *                   example: "Email already exists"
- *       500:
- *         description: Erreur serveur
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Erreur serveur"
- */
-route.post('/create', instructorController.create_Instructor)
-
 /**
  * @swagger
  * /api/instructor/create-with-department:
@@ -447,6 +335,135 @@ route.get(
   instructorController.getSessionsByDepartment
 )
 
+/**
+ * @swagger
+ * paths:
+ *   /api/instructor/department/{departmentId}/session-with-assignment:
+ *     post:
+ *       summary: Ajouter une session avec un assignment pour un département spécifique
+ *       description: Crée une nouvelle session avec un assignment et associe les deux à un département spécifique.
+ *       tags:
+ *         - Sessions
+ *       parameters:
+ *         - name: departmentId
+ *           in: path
+ *           required: true
+ *           schema:
+ *             type: string
+ *             example: "615c1bc5e70b7e6f30f8f99c"
+ *             description: L'ID du département
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 instructorId:
+ *                   type: string
+ *                   description: L'ID de l'instructeur
+ *                   example: "615c1bc5e70b7e6f30f8f99c"
+ *                 sessionData:
+ *                   type: object
+ *                   description: Informations sur la session
+ *                   properties:
+ *                     Title:
+ *                       type: string
+ *                       example: "Session MongoDB"
+ *                     Description:
+ *                       type: string
+ *                       example: "Introduction à MongoDB pour les débutants"
+ *                     Date:
+ *                       type: string
+ *                       format: date-time
+ *                       example: "2024-10-15T10:00:00Z"
+ *                 assignmentData:
+ *                   type: object
+ *                   description: Informations sur l'assignment
+ *                   properties:
+ *                     Title:
+ *                       type: string
+ *                       example: "Devoir MongoDB"
+ *                     Description:
+ *                       type: string
+ *                       example: "Créer une base de données NoSQL"
+ *                     DueDate:
+ *                       type: string
+ *                       format: date-time
+ *                       example: "2024-10-20T23:59:00Z"
+ *       responses:
+ *         '201':
+ *           description: Session et Assignment créés avec succès
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: "Session and Assignment added successfully"
+ *                   session:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: "615c1bc5e70b7e6f30f8f99d"
+ *                       Title:
+ *                         type: string
+ *                         example: "Session MongoDB"
+ *                       Description:
+ *                         type: string
+ *                         example: "Introduction à MongoDB pour les débutants"
+ *                       Date:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2024-10-15T10:00:00Z"
+ *                       Instructor:
+ *                         type: string
+ *                         example: "615c1bc5e70b7e6f30f8f99c"
+ *                   assignment:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: "615c1bc5e70b7e6f30f8f99e"
+ *                       Title:
+ *                         type: string
+ *                         example: "Devoir MongoDB"
+ *                       Description:
+ *                         type: string
+ *                         example: "Créer une base de données NoSQL"
+ *                       DueDate:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2024-10-20T23:59:00Z"
+ *         '404':
+ *           description: Département non trouvé
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: "Department not found"
+ *         '500':
+ *           description: Erreur serveur lors de la création de la session et de l'assignment
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: "Error creating session and assignment"
+ */
+route.post(
+  '/department/:departmentId/session-with-assignment',
+  instructorController.Instructor_add_Session_with_Assignment
+)
+
+route.get('/all', instructorController.afficher_All)
 route.put('/update/:id', instructorController.update_Instructor)
 route.delete('/delete/:id', instructorController.delete_Instructor)
 route.get('/find/:id', instructorController.findInstructor)

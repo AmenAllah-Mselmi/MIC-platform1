@@ -1,35 +1,9 @@
 const { Instructor } = require('../models/user')
 const { department } = require('../models/department')
 const session = require('../models/session')
+const Assignment = require('../models/Assignment')
+
 const controller = {
-  afficher_All: async (req, res) => {
-    try {
-      const Instructors = await Instructor.find()
-      res.status(200).json(Instructors)
-    } catch (error) {
-      res.status(404).json({ message: 'Error in generating Instructors' })
-    }
-  },
-
-  create_Instructor: async (req, res) => {
-    try {
-      console.log('Request body before creation:', req.body) // Log request body
-
-      const create = await Instructor.create(req.body)
-
-      console.log('Request body after creation:', req.body) // Log request body after creation (if this point is reached)
-
-      res.status(201).json({
-        message: 'Instructor created successfully',
-        instructor: create
-      })
-    } catch (error) {
-      console.error('Error in creating Instructor:', error) // Log the error for better insight
-      res
-        .status(400)
-        .json({ message: 'Error in creating Instructor', error: error.message })
-    }
-  },
   // created by Mariem
   create_Instructor_with_department: async (req, res) => {
     try {
@@ -137,7 +111,68 @@ const controller = {
         .json({ message: 'Error retrieving sessions', error: error.message })
     }
   },
-  // end
+  Instructor_add_Session_with_Assignment: async (req, res) => {
+    try {
+      const { departmentId } = req.params
+      const { instructorId, sessionData, assignmentData } = req.body
+
+      // Vérifiez que le département existe
+      const Mydepartment = await department.findById(departmentId)
+      if (!Mydepartment) {
+        return res.status(404).json({ message: 'Department not found' })
+      }
+
+      // Créer une nouvelle session avec les données fournies
+      const newSession = new session({
+        Date: sessionData.Date,
+        Description: sessionData.Description,
+        Title: sessionData.Title,
+        Instructor: instructorId
+      })
+
+      // Sauvegarder la session
+      const savedSession = await newSession.save()
+
+      // Créer l'Assignment et le lier à la session nouvellement créée
+      const newAssignment = new Assignment({
+        Title: assignmentData.Title,
+        Description: assignmentData.Description,
+        DueDate: assignmentData.DueDate,
+        Instructor: instructorId,
+        session: savedSession._id // Lier l'Assignment à la Session
+      })
+
+      // Sauvegarder l'Assignment
+      const savedAssignment = await newAssignment.save()
+
+      // Mettre à jour la session avec l'ID de l'Assignment
+      savedSession.assignment = savedAssignment._id
+      await savedSession.save()
+
+      // Ajouter la session au département
+      Mydepartment.sessions.push(savedSession._id)
+      await Mydepartment.save()
+
+      res.status(201).json({
+        message: 'Session and Assignment added successfully',
+        session: savedSession,
+        assignment: savedAssignment
+      })
+    } catch (error) {
+      res.status(500).json({ message: error.message })
+    }
+  },
+   // end
+  // for test
+  // end test
+  afficher_All: async (req, res) => {
+    try {
+      const Instructors = await Instructor.find()
+      res.status(200).json(Instructors)
+    } catch (error) {
+      res.status(404).json({ message: 'Error in generating Instructors' })
+    }
+  },
   update_Instructor: async (req, res) => {
     try {
       const id = req.params.id
