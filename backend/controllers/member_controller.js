@@ -94,7 +94,7 @@ const controller = {
         .json({ message: 'Error in creating Member', error: error.message })
     }
   },
-  // creer par Mariem for test :
+
   update_Member: async (req, res) => {
     try {
       const id = req.params.id

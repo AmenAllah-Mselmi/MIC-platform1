@@ -130,6 +130,8 @@ route.post('/create', MemberController.create_Member)
  * /api/member/update/{id}:
  *   put:
  *     summary: Mettre à jour un membre existant
+ *     tags:
+ *       - "Member"
  *     parameters:
  *       - in: path
  *         name: id
@@ -158,6 +160,8 @@ route.put('/update/:id', MemberController.update_Member)
  * /api/member/delete/{id}:
  *   delete:
  *     summary: Supprimer un membre
+ *     tags:
+ *       - "Member"
  *     parameters:
  *       - in: path
  *         name: id
