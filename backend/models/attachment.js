@@ -1,27 +1,27 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const attachmentSchema = new mongoose.Schema({
   Title: {
     type: String,
-    required: true,
+    required: true
   },
   Link: {
     type: String,
-    required: true,
+    required: true
   },
   Instructor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Instructor", 
+    ref: 'Instructor'
   },
   Session: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Session", 
+    ref: 'Session'
   },
   Assignement: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Assignment',
-  },
-});
+    ref: 'Assignment'
+  }
+})
 
-const Attachment = mongoose.model("Attachment", attachmentSchema);
-module.exports = Attachment;
+const Attachment = mongoose.model('Attachment', attachmentSchema)
+module.exports = Attachment

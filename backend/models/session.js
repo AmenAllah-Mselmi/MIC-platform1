@@ -11,19 +11,11 @@ const sessionSchema = new mongoose.Schema({
   },
   Instructor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Instructor',
-    required: true // Ensures that a session must have an instructor
-  },
-  assignment: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Assignment',
-    required: false, // A session may not have an assignment
-    unique: true // Ensures that a session can have only one assignment
+    ref: 'Instructor'
   },
   DepartementId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Department', // Ensure this matches the model name exactly
-    required: true // Ensures that a session must belong to a department
+    ref: 'department'
   },
   Date: {
     type: Date,
