@@ -1,176 +1,163 @@
 'use client'
 
-import Image from 'next/image'
-import '../../../components/navbar/navbar.scss'
 import Link from 'next/link'
+import { useState } from 'react'
+import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import { FaBars } from 'react-icons/fa'
-import { useEffect, useRef, useState } from 'react'
-import SearchBar from '../searchBar/searchBar'
 
+// Import the Inter font from Google Fonts
 const inter = Inter({ subsets: ['latin-ext'], weight: '400' })
 
 export default function Navbar() {
-  const [showlinks, setShowlinks] = useState(false)
-  const navRef = useRef<HTMLDivElement>(null)
-  const linksRef = useRef<HTMLUListElement>(null)
-  const headerRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    if (linksRef.current && navRef.current) {
-      let linksHeight = linksRef.current.getBoundingClientRect().height
-      navRef.current.style.height = showlinks ? `${linksHeight}px` : '0'
-    }
-  }, [showlinks])
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!headerRef.current) return
-
-      if (window.scrollY > 550) {
-        headerRef.current.classList.add('fixed')
-      } else {
-        headerRef.current.classList.remove('fixed')
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false) // State to manage dropdown visibility
+  const [isMenuOpen, setIsMenuOpen] = useState(false) // State to manage mobile menu visibility
 
   return (
-    <header
-      ref={headerRef}
-      id='navbar'
-      className='navbar transition-all duration-300'
-    >
-      <nav>
-        <div className='logo'>
-          <Link href='/#welcome'>
-            <Image
-              onClick={() => setShowlinks(false)}
-              src='/images/main-logo.png'
-              alt='microsoft issatso logo'
-              width={37}
+    <nav className='fixed top-0 z-10 w-full bg-navbar text-white'>
+      <div className='mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4'>
+        {/* Logo Section with custom logo */}
+        <Link
+          href='/'
+          className='flex items-center space-x-3 rtl:space-x-reverse'
+        >
+          <Image
+            src='/images/main-logo.png' // Updated logo source
+            width={37}
               height={37}
-              className='cursor-pointer'
+            className='object-fit h-8 cursor-pointer object-cover'
+            alt='Microsoft Issatso Logo' // Alt text for accessibility
+          />
+          <span
+            className={`${inter.className} hidden self-center whitespace-nowrap text-2xl font-semibold md:block`}
+          >
+            Microsoft Issatso
+          </span>
+        </Link>
+
+        {/* Right Section with Profile Dropdown */}
+        <div className='flex items-center space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse'>
+          {/* Profile Dropdown Toggle */}
+          <button
+            type='button'
+            className='flex rounded-full bg-gray-800 text-sm focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600'
+            aria-expanded={isDropdownOpen ? 'true' : 'false'}
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)} // Toggle dropdown on click
+          >
+            <span className='sr-only'>Open user menu</span>
+            <Image
+              src='/images/big-logo.png' // Updated user image source
+              alt='user photo'
+              width={32}
+              height={32}
+              className='h-8 w-8 rounded-full'
             />
-          </Link>
-          <div
-            onClick={() => setShowlinks(prev => !prev)}
-            className='burger cursor-pointer text-2xl'
-          >
-            <FaBars />
-          </div>
-        </div>
+          </button>
 
-        <SearchBar />
-
-        <div ref={navRef} className='links-container'>
-          <ul
-            onClick={() => setShowlinks(prev => !prev)}
-            ref={linksRef}
-            className={`${inter.className} links`}
-          >
-            <li>
-              <Link href='/#departments'>Departments</Link>
-            </li>
-            <li>
-              <Link href='/Member/sessions'>Sessions</Link>
-            </li>
-            <li>
-              <Link href='/Member/assignments'>Assignments</Link>
-            </li>
-            <div className='flex items-center justify-center'>
-          <ul  
-             className='menu menu-horizontal px-1'>
-            <li>
-              <div className='avatar'>
-                <div className='w-10 rounded-full'>
-                  <img src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' />
-                </div>
-              </div>
-            </li>
-            <li className='self-center '>
-              <details>
-                <summary>Student Name</summary>
-                <ul className='rounded-t-none bg-base-100 p-2'>
-                  <li>
-                    <a>Profile</a>
-                  </li>
-                  <li>
-                    <a>Logout</a>
-                  </li>
-                </ul>
-              </details>
-            </li>
-          </ul>
-        </div>
-          </ul>
-        </div>
-        {/* <div className='flex items-center justify-center'>
-          <ul className='menu menu-horizontal px-1'>
-            <li>
-              <div className='avatar'>
-                <div className='w-10 rounded-full'>
-                  <img src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' />
-                </div>
-              </div>
-            </li>
-            <li className='self-center'>
-              <details>
-                <summary>Student Name</summary>
-                <ul className='rounded-t-none bg-base-100 p-2'>
-                  <li>
-                    <a>Profile</a>
-                  </li>
-                  <li>
-                    <a>Logout</a>
-                  </li>
-                </ul>
-              </details>
-            </li>
-          </ul>
-        </div> */}
-
-        {/* <div className='flex-none gap-2'>
-        
-          <div className='dropdown dropdown-end'>
+          {/* Dropdown Menu */}
+          {isDropdownOpen && (
             <div
-              tabIndex={0}
-              role='button'
-              className='avatar btn btn-circle btn-ghost'
+              className='absolute right-10 top-16 z-50 my-4 list-none divide-y divide-gray-100 rounded-lg bg-white text-base shadow dark:divide-gray-600 dark:bg-gray-700'
+              id='user-dropdown'
             >
-              <div className='w-10 rounded-full'>
-                <img
-                  alt='Tailwind CSS Navbar component'
-                  src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp'
-                />
+              <div className='px-4 py-3'>
+                <span className='block text-sm text-gray-900'>
+                  Student Name
+                </span>
+                <span className='block truncate text-sm text-gray-500'>
+                  email@example.com
+                </span>
               </div>
+              <ul className='py-2' aria-labelledby='user-menu-button'>
+                <li>
+                  <Link
+                    href='/profile'
+                    className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white'
+                  >
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href='/logout'
+                    className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white'
+                  >
+                    Logout
+                  </Link>
+                </li>
+              </ul>
             </div>
-            <ul
-              tabIndex={0}
-              className='menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow'
+          )}
+
+          {/* Mobile Menu Button */}
+          <button
+            type='button'
+            className='inline-flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 md:hidden'
+            aria-controls='navbar-user'
+            aria-expanded={isMenuOpen ? 'true' : 'false'}
+            onClick={() => setIsMenuOpen(!isMenuOpen)} // Toggle mobile menu
+          >
+            <span className='sr-only'>Open main menu</span>
+            <svg
+              className='h-5 w-5'
+              aria-hidden='true'
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 17 14'
             >
-              <li>
-                <a className='justify-between'>
-                  Profile
-                  <span className='badge'>New</span>
-                </a>
-              </li>
-              <li>
-                <a>Settings</a>
-              </li>
-              <li>
-                <a>Logout</a>
-              </li>
-            </ul>
-          </div>
-        </div> */}
-      </nav>
-    </header>
+              <path
+                stroke='currentColor'
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth='2'
+                d='M1 1h15M1 7h15M1 13h15'
+              />
+            </svg>
+          </button>
+        </div>
+
+        {/* Main Navigation Links for Desktop and Mobile */}
+        <div
+          className={`${
+            isMenuOpen ? 'block' : 'hidden'
+          } w-full items-center justify-between md:order-1 md:flex md:w-auto`}
+          id='navbar-user'
+        >
+          <ul className='mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 font-medium dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-navbar md:p-0 md:dark:bg-gray-900 rtl:space-x-reverse'>
+            <li>
+              <Link
+                href='/'
+                className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500'
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                href='/#departments'
+                className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500'
+              >
+                Departments
+              </Link>
+            </li>
+            <li>
+              <Link
+                href='/Member/sessions'
+                className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500'
+              >
+                Sessions
+              </Link>
+            </li>
+            <li>
+              <Link
+                href='/Member/assignments'
+                className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500'
+              >
+                Assignments
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   )
 }

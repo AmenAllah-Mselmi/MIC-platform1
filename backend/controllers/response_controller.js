@@ -18,7 +18,6 @@ const Response_controller = {
             res.status(500).json({ message: "Server error in creating Response" });
         }
     },
-
     update_Response: async (req, res) => {
         try {
             const id = req.params.id;

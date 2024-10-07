@@ -21,6 +21,10 @@ const assignmentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Instructor'
   },
+  DepartementId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Department'
+  },
   Attachments: [
     {
       type: mongoose.Schema.Types.ObjectId,

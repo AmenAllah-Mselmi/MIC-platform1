@@ -18,7 +18,13 @@ const DepartmentSchema = new Schema({
   sessions: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'session'
+      ref: 'Session'
+    }
+  ],
+  assignments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Assignment'
     }
   ]
 })
