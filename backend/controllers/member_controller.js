@@ -34,7 +34,7 @@ const controller = {
         .findById(departmentId)
         .populate({
           path: 'assignments', // Nom du champ assignments dans le modèle department
-          select: 'Title Description DueDate Instructor' // Champs à peupler dans Assignment
+          select: 'Title Description DueDate Attachments' // Champs à peupler dans Assignment
         })
 
       if (!departmentExists) {
