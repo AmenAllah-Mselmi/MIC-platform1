@@ -1,5 +1,3 @@
-// store/memberStore.ts
-
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { State } from '../Models/Member'

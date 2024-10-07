@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { Assignment } from '../Models/Assignment'
-import { fetchAssignments} from '../Controller/AssignmentController'
+import { fetchAssignments } from '../Controller/AssignmentController'
 
 export type State = {
   assignments: Assignment[]

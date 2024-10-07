@@ -10,7 +10,7 @@ const Page = () => {
   useEffect(() => {
     const loadSessions = async () => {
       // id departement donné en paramètre ici
-      await fetchSessions('66fd5e20eac555ee63ec2d9d')
+      await fetchSessions('6701e0b0a401fa3076754383')
       console.log('Members fetched:', sessions)
     }
 
