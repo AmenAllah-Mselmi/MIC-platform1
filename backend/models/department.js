@@ -18,21 +18,15 @@ const DepartmentSchema = new Schema({
   sessions: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'session'
-    },
-  ],
-  Members: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Member'
+      ref: 'Session'
     }
   ],
-  Assignments: [
+  assignments: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Assignment'
     }
-  ],
+  ]
 })
 
 // User model

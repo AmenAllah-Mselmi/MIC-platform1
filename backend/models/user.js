@@ -56,6 +56,12 @@ const User = mongoose.model('User', UserSchema)
 
 // Instructor Schema
 const InstructorSchema = new Schema({
+  Departement: {
+    type: String,
+    enum: ['Basic', 'Intermediate', 'Advanced'],
+    required: false
+  },
+
   DepartmentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'department',
@@ -83,10 +89,9 @@ const InstructorSchema = new Schema({
 
 // Member Schema
 const MemberSchema = new Schema({
-  DepartmentId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'department',
-    required: true
+  Departement: {
+    type: String,
+    enum: ['Basic', 'Intermediate', 'Advanced']
   },
   Responses: [
     {
