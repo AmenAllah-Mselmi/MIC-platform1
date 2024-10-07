@@ -20,5 +20,8 @@ module.exports = {
     }
   },
   darkMode: 'class',
-  plugins: [nextui(), require('daisyui')]
+  plugins: [nextui(), require('daisyui'),
+    require('@tailwindcss/typography'),
+    require('tailwindcss-animate')
+  ]
 }
