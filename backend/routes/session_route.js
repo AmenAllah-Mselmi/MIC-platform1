@@ -32,30 +32,6 @@ route.get('/getSessions', SessionController.getSessions)
 // Get a session by ID
 route.get('/getSessionById/:id', SessionController.getSessionById)
 
-// Get sessions by instructor ID
-/**
- * @swagger
- * /api/session/getSessionsByInstructor/{instructorId}:
- *   get:
- *     summary: Récupérer les sessions par ID de l'instructeur
- *     parameters:
- *       - in: path
- *         name: instructorId
- *         required: true
- *         description: ID de l'instructeur
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Liste des sessions pour l'instructeur spécifié
- *       404:
- *         description: Instructeur non trouvé
- */
-route.get(
-  '/getSessionsByInstructor/:instructorId',
-  SessionController.getSessionsByInstructor
-)
-
 // Get sessions by department ID
 route.get(
   '/department/:departmentId',

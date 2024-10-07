@@ -335,6 +335,136 @@ route.get(
   instructorController.getSessionsByDepartment
 )
 
+/**
+ * @swagger
+ * paths:
+ *   /api/instructor/assignment/Instructor-add-Assignment-to-Session:
+ *     post:
+ *       summary: "Ajouter un Assignment à une Session par l'instructeur"
+ *       description: "Cette fonction permet à un instructeur d'ajouter un Assignment à une session spécifique."
+ *       tags:
+ *         - "Member valider"
+ *       requestBody:
+ *         description: "Données nécessaires pour ajouter un Assignment à une session"
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 instructorId:
+ *                   type: string
+ *                   description: "ID de l'instructeur qui ajoute l'Assignment"
+ *                   example: "64fbad8b6c598b43d788a843"
+ *                 sessionId:
+ *                   type: string
+ *                   description: "ID de la session à laquelle l'Assignment doit être ajouté"
+ *                   example: "64fbad8b6c598b43d788a839"
+ *                 assignmentData:
+ *                   type: object
+ *                   description: "Données de l'Assignment à ajouter"
+ *                   properties:
+ *                     Title:
+ *                       type: string
+ *                       description: "Titre de l'Assignment"
+ *                       example: "Développement API"
+ *                     Description:
+ *                       type: string
+ *                       description: "Description de l'Assignment"
+ *                       example: "Création d'une API REST avec Node.js"
+ *                     DueDate:
+ *                       type: string
+ *                       format: date
+ *                       description: "Date limite de l'Assignment"
+ *                       example: "2024-12-31"
+ *       responses:
+ *         '201':
+ *           description: "Session et Assignment ajoutés avec succès"
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: "Session and Assignment added successfully"
+ *                   session:
+ *                     $ref: '#/components/schemas/Session'
+ *                   assignment:
+ *                     $ref: '#/components/schemas/Assignment'
+ *         '404':
+ *           description: "Session non trouvée"
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: "Session not found"
+ *         '500':
+ *           description: "Erreur serveur"
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: "Internal server error"
+ * components:
+ *   schemas:
+ *     Session:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: "64fbad8b6c598b43d788a839"
+ *         Title:
+ *           type: string
+ *           example: "Introduction au développement"
+ *         Description:
+ *           type: string
+ *           example: "Cours sur les bases du développement logiciel"
+ *         Date:
+ *           type: string
+ *           format: date
+ *           example: "2024-10-05"
+ *         Instructor:
+ *           type: string
+ *           example: "64fbad8b6c598b43d788a843"
+ *         assignment:
+ *           type: string
+ *           example: "64fbad8b6c598b43d788a847"
+ *     Assignment:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: "64fbad8b6c598b43d788a847"
+ *         Title:
+ *           type: string
+ *           example: "Développement API"
+ *         Description:
+ *           type: string
+ *           example: "Création d'une API REST avec Node.js"
+ *         DueDate:
+ *           type: string
+ *           format: date
+ *           example: "2024-12-31"
+ *         Instructor:
+ *           type: string
+ *           example: "64fbad8b6c598b43d788a843"
+ *         session:
+ *           type: string
+ *           example: "64fbad8b6c598b43d788a839"
+ */
+route.post(
+  '/assignment/Instructor-add-Assignment-to-Session',
+  instructorController.Instructor_add_Assignment_to_Session
+)
+
+route.get('/all', instructorController.afficher_All)
 route.put('/update/:id', instructorController.update_Instructor)
 route.delete('/delete/:id', instructorController.delete_Instructor)
 route.get('/find/:id', instructorController.findInstructor)

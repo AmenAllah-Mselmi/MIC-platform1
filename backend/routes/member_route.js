@@ -4,12 +4,53 @@ const MemberController = require('../controllers/member_controller')
 
 /**
  * @swagger
+ * /api/member/department/{departmentId}:
+ *   get:
+ *     summary: Récupérer la liste des assignments à partir d'un department
+ *     tags:
+ *       - Assignments
+ *     parameters:
+ *       - in: path
+ *         name: departmentId
+ *         required: true
+ *         description: L'ID du département
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Liste des assignments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: ID de la session
+ *                   Assignment:
+ *                     type: string
+ *                     description: Détails de l'assignement de la session
+ *       404:
+ *         description: Département non trouvé ou erreurs lors de la récupération des assignments
+ */
+route.get(
+  '/department/:departmentId',
+  MemberController.Member_get_assignments_of_his_department
+)
+
+/**
+ * @swagger
  * /api/member/all:
  *   get:
  *     summary: Récupérer la liste des membres dans l'instructor show members
+ *     tags:
+ *         - "implementer dans interface instructor"
  *     responses:
  *       200:
  *         description: Liste des membres
+ *
  *         content:
  *           application/json:
  *             schema:

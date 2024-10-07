@@ -26,25 +26,6 @@ const controller = {
     }
   },
 
-  getSessionsByInstructor: async (req, res) => {
-    try {
-      const { instructorId } = req.params
-
-      // Check if the instructor exists
-      const instructorExists = await Instructor.findById(instructorId)
-      if (!instructorExists) {
-        return res.status(404).json({ message: 'Instructor not found' })
-      }
-
-      // Find all sessions related to this instructor
-      const sessions = await Session.find({ Instructor: instructorId })
-      res.status(200).json(sessions)
-    } catch (error) {
-      res
-        .status(500)
-        .json({ message: 'Error retrieving sessions', error: error.message })
-    }
-  },
 
   deleteSession: async (req, res) => {
     try {

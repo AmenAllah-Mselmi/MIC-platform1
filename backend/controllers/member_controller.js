@@ -1,5 +1,9 @@
 const { Member } = require('../models/user')
+const { Instructor } = require('../models/user')
 const { department } = require('../models/department')
+const session = require('../models/session')
+const Assignment = require('../models/Assignment')
+
 const controller = {
   // modifier par mariem
   afficher_All: async (req, res) => {
@@ -20,33 +24,41 @@ const controller = {
       })
     }
   },
-
-  create_Member: async (req, res) => {
+  // creer par Mariem for test :
+  Member_get_assignments_of_his_department: async (req, res) => {
     try {
-      const { departmentId, MemberData } = req.body 
+      const { departmentId } = req.params
 
-      const Mydepartment = await department.findById(departmentId) 
-      if (!Mydepartment) {
+      // Vérifiez si le département existe et peupler les assignments directement
+      const departmentExists = await department
+        .findById(departmentId)
+        .populate({
+          path: 'assignments', // Nom du champ assignments dans le modèle department
+          select: 'Title Description DueDate Instructor' // Champs à peupler dans Assignment
+        })
+
+      if (!departmentExists) {
         return res.status(404).json({ message: 'Department not found' })
       }
-console.log("hello")
-      const AddMember = new Member({
-        ...MemberData,
-        DepartmentId: departmentId
-      })
-      console.log(AddMember)
-      const savedMember = await AddMember.save()
-      Mydepartment.Members.push(savedMember._id) 
-      await Mydepartment.save() 
-      return res.status(201).json({
-        message: 'Member added successfully',
-        Member: savedMember
-      })
+
+      res.status(200).json(
+        departmentExists.assignments // Renvoie les assignments peuplés
+      )
     } catch (error) {
-      console.error(error)
-      return res
+      res
         .status(500)
-        .json({ message: 'Error adding Member to department' })
+        .json({ message: 'Error retrieving assignments', error: error.message })
+    }
+  },
+  // end test
+  create_Member: async (req, res) => {
+    try {
+      const create = await Member.create(req.body)
+      res
+        .status(201)
+        .json({ message: 'Member created successfully', Member: create })
+    } catch (error) {
+      res.status(404).json({ message: 'Error in creating Members' })
     }
   },
 
@@ -102,8 +114,6 @@ console.log("hello")
       res.status(404).json({ message: 'Error in counting Members' })
     }
   }
-
-  
 }
 
 module.exports = controller

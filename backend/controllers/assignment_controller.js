@@ -1,6 +1,10 @@
+const Assignment = require('../models/Assignment')
+const { department } = require('../models/department')
+
 const assignmentController = {
   addAssignment: async (req, res) => {
     try {
+      const { departmentId } = req.params
       const {
         Title,
         Description,
@@ -9,21 +13,42 @@ const assignmentController = {
         Attachments,
         Responses
       } = req.body
+
+      // Vérifier si le département existe
+      const departmentFind = await department.findById(departmentId)
+      if (!departmentFind) {
+        return res.status(404).json({ message: 'Department not found' })
+      }
+
+      // Créer le nouvel assignment
       const newAssignment = new Assignment({
         Title,
         Description,
         DueDate,
         Instructor,
         Attachments,
-        Responses
+        Responses,
+        DepartementId: departmentId
       })
-      await newAssignment.save()
-      res.status(201).json({ message: 'Assignment created successfully' })
+
+      // Sauvegarder l'assignement dans la base de données
+      const savedAssignment = await newAssignment.save()
+
+      // Ajouter l'assignement à la liste des assignments du département
+      departmentFind.assignments.push(savedAssignment._id)
+
+      // Sauvegarder les modifications dans le département
+      await departmentFind.save()
+
+      // Renvoyer la réponse avec le nouvel assignment
+      res.status(201).json({
+        message: 'Assignment added to department successfully',
+        assignment: savedAssignment
+      })
     } catch (error) {
       res.status(500).json({ message: error.message })
     }
   },
-
   deleteAssignment: async (req, res) => {
     try {
       const { id } = req.params
@@ -50,6 +75,8 @@ const assignmentController = {
       res.status(500).json({ message: error.message })
     }
   },
+  // remarque Mariem : get assignments tejibelik les assignments mta3 ay department
+  // autrement peux import il sessions
 
   getAssignments: async (req, res) => {
     try {
