@@ -161,6 +161,11 @@ route.get('/getSessionById/:id', SessionController.getSessionById)
  *         description: Erreur serveur
  */
 
+route.get('getSessionByInstructor/:instructorId', SessionController.getSessionsByInstructor)
+route.get(
+  '/department/:departmentId',
+  SessionController.getSessionsByDepartment
+)
 route.get('/:id', async (req, res) => {
   const { id } = req.params
 

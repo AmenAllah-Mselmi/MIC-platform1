@@ -13,11 +13,10 @@ const sessionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Instructor'
   },
-  Assignment:
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Assignment'
-    },
+  DepartementId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'department'
+  },
   Date: {
     type: Date,
     required: true
@@ -25,7 +24,7 @@ const sessionSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  },
+  }
 })
 
 const Session = mongoose.model('Session', sessionSchema)

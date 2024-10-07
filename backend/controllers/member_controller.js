@@ -1,5 +1,5 @@
 const { Member } = require('../models/user')
-
+const { department } = require('../models/department')
 const controller = {
   // modifier par mariem
   afficher_All: async (req, res) => {
@@ -23,12 +23,30 @@ const controller = {
 
   create_Member: async (req, res) => {
     try {
-      const create = await Member.create(req.body)
-      res
-        .status(201)
-        .json({ message: 'Member created successfully', Member: create })
+      const { departmentId, MemberData } = req.body 
+
+      const Mydepartment = await department.findById(departmentId) 
+      if (!Mydepartment) {
+        return res.status(404).json({ message: 'Department not found' })
+      }
+console.log("hello")
+      const AddMember = new Member({
+        ...MemberData,
+        DepartmentId: departmentId
+      })
+      console.log(AddMember)
+      const savedMember = await AddMember.save()
+      Mydepartment.Members.push(savedMember._id) 
+      await Mydepartment.save() 
+      return res.status(201).json({
+        message: 'Member added successfully',
+        Member: savedMember
+      })
     } catch (error) {
-      res.status(404).json({ message: 'Error in creating Members' })
+      console.error(error)
+      return res
+        .status(500)
+        .json({ message: 'Error adding Member to department' })
     }
   },
 

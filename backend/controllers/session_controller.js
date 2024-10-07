@@ -1,5 +1,6 @@
 const Session = require('../models/session')
-
+const { department } = require('../models/department')
+const { Instructor } = require('../models/user')
 const controller = {
   addSession: async (req, res) => {
     try {
@@ -10,13 +11,36 @@ const controller = {
         Date,
         InstructorId
       })
+      const verifyInstructor = await Instructor.findById(InstructorId)
+      if (!verifyInstructor) {
+        return res.status(404).json({ message: 'Instructor not found' })
+      }
       await newSession.save()
       res.status(201).json({ message: 'Session added successfully' })
     } catch (error) {
       res.status(500).json({ message: error.message })
     }
   },
+  getSessionsByInstructor: async (req, res) => {
+    try {
+      const { instructorId } = req.params
 
+      // Vérifiez si l'instructeur existe
+      const instructorExists = await Instructor.findById(instructorId)
+      if (!instructorExists) {
+        return res.status(404).json({ message: 'Instructor not found' })
+      }
+
+      // Trouvez toutes les sessions liées à cet instructeur
+      const sessions = await Session.find({ Instructor: instructorId })
+
+      res.status(200).json(sessions)
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: 'Error retrieving sessions', error: error.message })
+    }
+  },
   deleteSession: async (req, res) => {
     try {
       const sessionId = req.params.id
@@ -64,7 +88,28 @@ const controller = {
     } catch (error) {
       res.status(500).json({ message: error.message })
     }
-  }
+  },
+  getSessionsByDepartment: async (req, res) => {
+    try {
+      const { departmentId } = req.params
+
+      // Vérifiez si le département existe
+      const departmentExists = await department.findById(departmentId)
+      if (!departmentExists) {
+        return res.status(404).json({ message: 'Department not found' })
+      }
+
+      const sessions = await session.find({
+        _id: { $in: departmentExists.sessions }
+      })
+
+      res.status(200).json(sessions)
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: 'Error retrieving sessions', error: error.message })
+    }
+  },
 }
 
 

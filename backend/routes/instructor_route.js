@@ -113,7 +113,7 @@ route.get('/all', instructorController.afficher_All)
  *                   type: string
  *                   example: "Erreur serveur"
  */
-route.post('/create', instructorController.create_Instructor)
+route.post('/create', instructorController.create_Instructor_with_department);
 
 /**
  * @swagger
@@ -378,7 +378,7 @@ route.post(
  *                   type: string
  *                   example: "Error retrieving sessions"
  */
-route.get('/:instructorId', instructorController.getSessionsByInstructor)
+
 
 /**
  * @swagger
@@ -442,10 +442,7 @@ route.get('/:instructorId', instructorController.getSessionsByInstructor)
  *                   type: string
  *                   example: "Error retrieving sessions"
  */
-route.get(
-  '/department/:departmentId',
-  instructorController.getSessionsByDepartment
-)
+
 
 route.put('/update/:id', instructorController.update_Instructor)
 route.delete('/delete/:id', instructorController.delete_Instructor)

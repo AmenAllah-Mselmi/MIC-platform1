@@ -19,8 +19,20 @@ const DepartmentSchema = new Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'session'
+    },
+  ],
+  Members: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Member'
     }
-  ]
+  ],
+  Assignments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Assignment'
+    }
+  ],
 })
 
 // User model

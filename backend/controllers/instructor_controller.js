@@ -10,26 +10,6 @@ const controller = {
       res.status(404).json({ message: 'Error in generating Instructors' })
     }
   },
-
-  create_Instructor: async (req, res) => {
-    try {
-      console.log('Request body before creation:', req.body) // Log request body
-
-      const create = await Instructor.create(req.body)
-
-      console.log('Request body after creation:', req.body) // Log request body after creation (if this point is reached)
-
-      res.status(201).json({
-        message: 'Instructor created successfully',
-        instructor: create
-      })
-    } catch (error) {
-      console.error('Error in creating Instructor:', error) // Log the error for better insight
-      res
-        .status(400)
-        .json({ message: 'Error in creating Instructor', error: error.message })
-    }
-  },
   // created by Mariem
   create_Instructor_with_department: async (req, res) => {
     try {
@@ -94,50 +74,6 @@ const controller = {
       res.status(500).json({ message: error.message })
     }
   },
-
-  getSessionsByInstructor: async (req, res) => {
-    try {
-      const { instructorId } = req.params
-
-      // Vérifiez si l'instructeur existe
-      const instructorExists = await Instructor.findById(instructorId)
-      if (!instructorExists) {
-        return res.status(404).json({ message: 'Instructor not found' })
-      }
-
-      // Trouvez toutes les sessions liées à cet instructeur
-      const sessions = await session.find({ Instructor: instructorId })
-
-      res.status(200).json(sessions)
-    } catch (error) {
-      res
-        .status(500)
-        .json({ message: 'Error retrieving sessions', error: error.message })
-    }
-  },
-
-  getSessionsByDepartment: async (req, res) => {
-    try {
-      const { departmentId } = req.params
-
-      // Vérifiez si le département existe
-      const departmentExists = await department.findById(departmentId)
-      if (!departmentExists) {
-        return res.status(404).json({ message: 'Department not found' })
-      }
-
-      const sessions = await session.find({
-        _id: { $in: departmentExists.sessions }
-      })
-
-      res.status(200).json(sessions)
-    } catch (error) {
-      res
-        .status(500)
-        .json({ message: 'Error retrieving sessions', error: error.message })
-    }
-  },
-  // end
   update_Instructor: async (req, res) => {
     try {
       const id = req.params.id

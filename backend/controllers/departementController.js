@@ -9,7 +9,6 @@ const controller = {
       res.status(404).json({ message: 'Error in getting all Departement' })
     }
   },
-
   create_Departement: async (req, res) => {
     try {
       console.log('Request body before creation:', req.body) // Log request body
