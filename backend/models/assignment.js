@@ -23,7 +23,7 @@ const assignmentSchema = new mongoose.Schema({
   },
   DepartementId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Department'
+    ref: 'department'
   },
   Attachments: [
     {
@@ -34,12 +34,6 @@ const assignmentSchema = new mongoose.Schema({
   Response: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Response'
-  },
-  session: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Session', // Référence au modèle Session
-    required: true, // Un assignment doit être lié à une session
-    unique: true // Garantit que chaque assignment appartient à une seule session
   }
 })
 
