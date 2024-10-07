@@ -78,7 +78,7 @@
     @apply rounded-md bg-foreground p-2 text-background;
   }
   .editor-content {
-    @apply min-h-[156px] w-full rounded-md border bg-slate-50 px-3 py-2;
+    @apply min-h-[156px] w-full rounded-md border bg-slate-100 border border-slate-900; ;
   }
 
   .toolbar-button {
