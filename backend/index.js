@@ -52,6 +52,7 @@ app.use('/api/response', response)
 app.use('/api/user', user)
 app.use('/api/department', Department)
 
+
 app.listen(PORT, () => {
   console.log(`The server is running on port ${PORT}`)
 })
