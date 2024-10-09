@@ -6,11 +6,21 @@ import { useDisclosure, Button } from '@nextui-org/react'
 import AssignmentModal from './AssignmentModal'
 
 // Component: AssignmentCard
-export default function AssignmentCard() {
+interface AssignmentCardProps {
+  assignment: {
+    _id: string
+    Title: string
+    DueDate: string
+    description: string
+    Attachments: string[]
+  }
+}
+
+export default function AssignmentCard({ assignment }: AssignmentCardProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  
+
   return (
-    <div className='mx-auto mb-4 mt-4 flex h-fit w-11/12  flex-col flex-wrap rounded-lg bg-white p-5'>
+    <div className='mx-auto mb-4 mt-4 flex h-fit w-11/12 flex-col flex-wrap rounded-lg bg-white p-5'>
       <div className='flex items-center'>
         <Image
           src={'/images/Member/MemberBackground.png'}
@@ -20,14 +30,13 @@ export default function AssignmentCard() {
           height={48}
         />
         <div>
-          <h5 className='font-extrabold'>Instructor</h5>
-          <h6 className='text-gray-500 text-sm'>20 Sep</h6>
+          <h5 className='font-extrabold'>{assignment.Title}</h5>
+          <h6 className='text-sm text-gray-500'>{assignment.DueDate}</h6>
         </div>
       </div>
 
-      <p className='text-justify font-extrabold mt-2'>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam
-        eligendi neque reiciendis sunt laborum nobis.
+      <p className='mt-2 text-justify font-extrabold'>
+        {assignment.description}
       </p>
 
       <div className='flex h-11 items-center justify-end'>
@@ -39,7 +48,16 @@ export default function AssignmentCard() {
         </Button>
       </div>
 
-      <AssignmentModal isOpen={isOpen} onOpenChange={onOpenChange} />
+      <AssignmentModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        instructor={assignment.Title}
+        date={assignment.DueDate}
+        content={assignment.description}
+        resources={assignment.Attachments}
+        imageUrl='/images/Member/JohnDoe.png'
+        placeholder='Submit your github repo link here'
+      />
     </div>
   )
 }

@@ -1,21 +1,34 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { Container, Grid, Typography, TextField, Button } from '@mui/material'
+import { Container, Grid, Typography } from '@mui/material'
 import Member_card from '../../_MICcomponents/Member_card/Member_card'
 import { useMemberStore } from '../../../store/MyStore/MembersStore'
+import PaginationComponent from '../../_MICcomponents/PaginationComponent/PaginationComponent'
 
 const Page = () => {
   const members = useMemberStore(state => state.members)
   const fetchMembers = useMemberStore(state => state.fetchMembers)
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 1 // Nombre de membres par page
+
   useEffect(() => {
     const loadMembers = async () => {
-      await fetchMembers()
+      await fetchMembers('6701e0b0a401fa3076754383')
       console.log('Members fetched:', members)
     }
 
     loadMembers()
   }, [fetchMembers])
+
+  // Calculer les membres à afficher pour la page actuelle
+  const indexOfLastMember = currentPage * itemsPerPage
+  const indexOfFirstMember = indexOfLastMember - itemsPerPage
+  const currentMembers = members.slice(indexOfFirstMember, indexOfLastMember)
+
+  const handlePageChange = newPage => {
+    setCurrentPage(newPage)
+  }
 
   return (
     <Container>
@@ -31,8 +44,8 @@ const Page = () => {
 
       {/* Liste des membres */}
       <Grid container spacing={2}>
-        {members.length > 0 ? ( // S'assurer qu'il y a des membres avant de les afficher
-          members.map((member, index) => (
+        {currentMembers.length > 0 ? (
+          currentMembers.map((member, index) => (
             <Grid item xs={12} sm={4} md={2} key={index}>
               <Member_card member={member} />
             </Grid>
@@ -43,6 +56,14 @@ const Page = () => {
           </Typography>
         )}
       </Grid>
+
+      {/* Pagination */}
+      <PaginationComponent
+        currentPage={currentPage}
+        totalItems={members.length}
+        itemsPerPage={itemsPerPage}
+        onPageChange={handlePageChange}
+      />
     </Container>
   )
 }

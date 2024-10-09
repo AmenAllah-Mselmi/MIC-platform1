@@ -19,6 +19,8 @@ export const useAssignmentStore = create<State & Actions>()(
       fetchAssignments: async (departmentId: string) => {
         try {
           const data = await fetchAssignments(departmentId)
+          console.log('store')
+          console.log(data)
           set({ assignments: data })
         } catch (error) {
           console.error('Error fetching assignments:', error)

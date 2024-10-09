@@ -42,15 +42,21 @@ route.get(
 
 /**
  * @swagger
- * /api/member/all:
+ * /api/member/all/{departmentId}:
  *   get:
- *     summary: Récupérer la liste des membres dans l'instructor show members
+ *     summary: Récupérer la liste des membres d'un département spécifique
  *     tags:
- *         - "implementer dans interface instructor"
+ *       - "Member"
+ *     parameters:
+ *       - in: path
+ *         name: departmentId
+ *         required: true
+ *         description: ID du département pour lequel récupérer les membres
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Liste des membres
- *
  *         content:
  *           application/json:
  *             schema:
@@ -59,27 +65,50 @@ route.get(
  *                 type: object
  *                 properties:
  *                   _id:
- *                     type: integer
+ *                     type: string
  *                     description: ID du membre
  *                   NomPrenom:
  *                     type: string
  *                     description: Nom complet du membre
  *                   Departement:
  *                     type: string
- *                     description: Departement du membre
+ *                     description: Département du membre
  *                   ImageLink:
  *                     type: string
- *                     description: Image de profil du membre
+ *                     description: Lien de l'image de profil du membre
  *       404:
- *         description: Erreur lors de la récupération des membres
+ *         description: Aucun membre trouvé ou département non trouvé
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Message d'erreur
+ *       500:
+ *         description: Erreur serveur lors de la récupération des membres
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Message d'erreur
+ *                 error:
+ *                   type: string
+ *                   description: Détail de l'erreur
  */
-route.get('/all', MemberController.afficher_All)
+route.get('/all/:departmentId', MemberController.afficher_All)
 
 /**
  * @swagger
  * /api/member/create:
  *   post:
  *     summary: Créer un nouveau membre
+ *     tags:
+ *       - "Member"
  *     requestBody:
  *       description: Les informations du membre à créer
  *       required: true
@@ -101,6 +130,8 @@ route.post('/create', MemberController.create_Member)
  * /api/member/update/{id}:
  *   put:
  *     summary: Mettre à jour un membre existant
+ *     tags:
+ *       - "Member"
  *     parameters:
  *       - in: path
  *         name: id
@@ -129,6 +160,8 @@ route.put('/update/:id', MemberController.update_Member)
  * /api/member/delete/{id}:
  *   delete:
  *     summary: Supprimer un membre
+ *     tags:
+ *       - "Member"
  *     parameters:
  *       - in: path
  *         name: id
