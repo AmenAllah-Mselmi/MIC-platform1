@@ -16,9 +16,9 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false) // State to manage mobile menu visibility
 
   const handleLogOut = () => {
-
-    Cookies.remove('token')
-    Router.push('/login')
+    // Cookies.remove('token')
+    // Router.push('/login')
+    return
   }
   return (
     <nav className='fixed top-0 z-10 w-full bg-navbar text-white'>

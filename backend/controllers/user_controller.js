@@ -33,21 +33,25 @@ const controller = {
           process.env.JWT_SECRET,
           { expiresIn: '1h' }
         )
-
-        // Return user data along with the token
-        res.status(200).json({
-          message: 'Login successful',
-          token,
-          user: {
-            id: user._id,
-            email: user.Email,
-            role: user.Role,
-            nomPrenom: user.NomPrenom,
-            adresse: user.Adresse,
-            imageLink: user.ImageLink,
-            departmentId: user.DepartmentId
-          }
-        })
+        res
+          .cookie('token', token, {
+            httpOnly: true,
+            secure: false, // Set to false for local development
+            sameSite: 'lax' // Used SameSite=Lax for local development
+          })
+          .status(200)
+          .json({
+            message: 'Login successful',
+            user: {
+              id: user._id,
+              email: user.Email,
+              role: user.Role,
+              nomPrenom: user.NomPrenom,
+              adresse: user.Adresse,
+              imageLink: user.ImageLink,
+              departmentId: user.DepartmentId
+            }
+          })
       } catch (error) {
         console.error('Error in authentication:', error)
         res.status(500).json({ message: 'Error performing authentication' })

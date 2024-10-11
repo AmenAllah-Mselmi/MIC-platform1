@@ -13,7 +13,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { set, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useAuthStore } from '../../../store/MyStore/AuthStore'
 import { useRouter } from 'next/navigation'
 
@@ -45,27 +45,26 @@ export default function LoginForm() {
   })
 
   const user = useAuthStore(state => state.user)
-  console.log('user:', user)
+  
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true)
     try {
-      const res = await login(data.email, data.password)
-      console.log('Login successful:', res)
+       await login(data.email, data.password)
+       
       if (!user) {
         throw new Error('User data not found after login')
       }
 
       if (user.role === 'member') {
         router.push('/Member/assignments')
-        setLoading(false)
       } else if (user.role === 'instructor') {
         router.push('/Instructor/assignments')
-        setLoading(false)
       } else {
         router.push('/SuperAdmin/add')
       }
     } catch (error) {
       console.error('Login failed:', error)
+    } finally {
       setLoading(false)
     }
   }
