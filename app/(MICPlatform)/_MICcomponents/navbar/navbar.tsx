@@ -4,14 +4,22 @@ import Link from 'next/link'
 import { useState } from 'react'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
+import Cookies from 'js-cookie'
+import { useRouter } from 'next/navigation'
 
 // Import the Inter font from Google Fonts
 const inter = Inter({ subsets: ['latin-ext'], weight: '400' })
 
 export default function Navbar() {
+  const Router = useRouter()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false) // State to manage dropdown visibility
   const [isMenuOpen, setIsMenuOpen] = useState(false) // State to manage mobile menu visibility
 
+  const handleLogOut = () => {
+    // Cookies.remove('token')
+    // Router.push('/login')
+    return
+  }
   return (
     <nav className='fixed top-0 z-10 w-full bg-navbar text-white'>
       <div className='mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4'>
@@ -23,7 +31,7 @@ export default function Navbar() {
           <Image
             src='/images/main-logo.png' // Updated logo source
             width={37}
-              height={37}
+            height={37}
             className='object-fit h-8 cursor-pointer object-cover'
             alt='Microsoft Issatso Logo' // Alt text for accessibility
           />
@@ -80,6 +88,7 @@ export default function Navbar() {
                   <Link
                     href='/logout'
                     className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white'
+                    onClick={() => handleLogOut()}
                   >
                     Logout
                   </Link>

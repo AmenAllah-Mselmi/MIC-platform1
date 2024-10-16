@@ -4,7 +4,7 @@ const verifyToken = require("../middlewares/VerifyToken");
 
 const route = express.Router();
 
-route.get("/all", verifyToken, Attachment_controller.Display_All);
+route.get("/all", Attachment_controller.Display_All);
 route.post("/create", Attachment_controller.create_Attachement);
 route.put("/update/:id", Attachment_controller.update_Attachement);
 route.delete("/delete/:id", Attachment_controller.delete_Attachement);

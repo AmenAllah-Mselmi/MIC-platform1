@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function AddUserForm() {
+
+export default function  AddUserForm (){
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     NomPrenom: "",
@@ -187,3 +188,4 @@ export default function AddUserForm() {
     </div>
   );
 }
+
