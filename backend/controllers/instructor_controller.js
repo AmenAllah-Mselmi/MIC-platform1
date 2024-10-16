@@ -41,76 +41,14 @@ const controller = {
     }
   },
 
-  Instructor_add_Session_In_department: async (req, res) => {
-    try {
-      const { departmentId, instructorId, sessionData } = req.body
 
-      // Vérifiez que le département existe
-      const Mydepartment = await department.findById(departmentId) // Correction de 'department' en 'Department'
-      if (!Mydepartment) {
-        return res.status(404).json({ message: 'Department not found' })
-      }
+  // --------------------------------- 
+ 
 
-      const newSession = new session({
-        Date: sessionData.Date,
-        Description: sessionData.Description,
-        Title: sessionData.Title,
-        Instructor: instructorId
-      })
-      const savedSession = await newSession.save()
 
-      // Optionnel : Ajouter l'instructeur au tableau des instructeurs du département (si vous avez un champ 'instructors' dans le modèle de département)
-      Mydepartment.sessions.push(savedSession._id) // Ajoute l'instructeur dans le département
-      await Mydepartment.save() // Sauvegarde les changements dans le département
 
-      res.status(201).json({ message: 'Session added successfully' })
-    } catch (error) {
-      res.status(500).json({ message: error.message })
-    }
-  },
 
-  getSessionsByInstructor: async (req, res) => {
-    try {
-      const { instructorId } = req.params
-
-      // Vérifiez si l'instructeur existe
-      const instructorExists = await Instructor.findById(instructorId)
-      if (!instructorExists) {
-        return res.status(404).json({ message: 'Instructor not found' })
-      }
-
-      // Trouvez toutes les sessions liées à cet instructeur
-      const sessions = await session.find({ Instructor: instructorId })
-
-      res.status(200).json(sessions)
-    } catch (error) {
-      res
-        .status(500)
-        .json({ message: 'Error retrieving sessions', error: error.message })
-    }
-  },
-
-  getSessionsByDepartment: async (req, res) => {
-    try {
-      const { departmentId } = req.params
-
-      // Vérifiez si le département existe
-      const departmentExists = await department.findById(departmentId)
-      if (!departmentExists) {
-        return res.status(404).json({ message: 'Department not found' })
-      }
-
-      const sessions = await session.find({
-        _id: { $in: departmentExists.sessions }
-      })
-
-      res.status(200).json(sessions)
-    } catch (error) {
-      res
-        .status(500)
-        .json({ message: 'Error retrieving sessions', error: error.message })
-    }
-  },
+  // --------------------------
   Instructor_add_Session_with_Assignment: async (req, res) => {
     try {
       const { departmentId } = req.params

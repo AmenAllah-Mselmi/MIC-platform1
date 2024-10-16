@@ -9,6 +9,10 @@ const sessionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  Room: {
+    type: String,
+    required: true
+  },
   Instructor: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Instructor'

@@ -1,6 +1,7 @@
 const express = require('express')
 const route = express.Router()
 const MemberController = require('../controllers/member_controller')
+const authenticateJWT = require('../middlewares/VerifyToken')
 
 /**
  * @swagger
@@ -70,7 +71,7 @@ route.get(
  *                   NomPrenom:
  *                     type: string
  *                     description: Nom complet du membre
- *                   Departement:
+ *                   DepartmentIds:
  *                     type: string
  *                     description: Département du membre
  *                   ImageLink:
@@ -101,6 +102,60 @@ route.get(
  *                   description: Détail de l'erreur
  */
 route.get('/all/:departmentId', MemberController.afficher_All)
+/**
+ * @swagger
+ * /api/member/admin/all:
+ *   get:
+ *     summary: Récupérer la liste des membres d'un département spécifique
+ *     tags:
+ *       - "Member"
+ *     responses:
+ *       200:
+ *         description: Liste des membres
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: ID du membre
+ *                   NomPrenom:
+ *                     type: string
+ *                     description: Nom complet du membre
+ *                   DepartmentIds:
+ *                     type: string
+ *                     description: Département du membre
+ *                   ImageLink:
+ *                     type: string
+ *                     description: Lien de l'image de profil du membre
+ *       404:
+ *         description: Aucun membre trouvé ou département non trouvé
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Message d'erreur
+ *       500:
+ *         description: Erreur serveur lors de la récupération des membres
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Message d'erreur
+ *                 error:
+ *                   type: string
+ *                   description: Détail de l'erreur
+ */
+route.get('/admin/all', MemberController.afficher_All_For_Admin)
 
 /**
  * @swagger
@@ -117,12 +172,71 @@ route.get('/all/:departmentId', MemberController.afficher_All)
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               NomPrenom:
  *                 type: string
+ *                 description: Le nom et prénom du membre
+ *               Email:
+ *                 type: string
+ *                 format: email
+ *                 description: L'adresse email du membre
+ *               Password:
+ *                 type: string
+ *                 description: Le mot de passe du membre
+ *                 minLength: 8
+ *               Adresse:
+ *                 type: string
+ *                 description: L'adresse du membre
+ *               ImageLink:
+ *                 type: string
+ *                 description: L'URL de l'image du membre (facultatif)
+ *               DepartmentIds:
+ *                 type: string
+ *                 enum: [Basic, Intermediate, Advanced]
+ *                 description: Le département auquel le membre appartient
+ *             required:
+ *               - NomPrenom
+ *               - Email
+ *               - Password
+ *               - Adresse
+ *               - DepartmentIds
  *     responses:
  *       201:
  *         description: Membre créé avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Member created successfully'
+ *                 Member:
+ *                   $ref: '#/components/schemas/Member'
+ *       400:
+ *         description: Champs requis manquants
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Missing required fields'
+ *       500:
+ *         description: Erreur lors de la création du membre
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error in creating Member'
+ *                 error:
+ *                   type: string
+ *                   description: Détails de l'erreur
  */
+
 route.post('/create', MemberController.create_Member)
 
 /**
