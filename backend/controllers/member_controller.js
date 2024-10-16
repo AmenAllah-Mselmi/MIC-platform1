@@ -1,17 +1,30 @@
 const { Member } = require('../models/user')
+const { Instructor } = require('../models/user')
 const { department } = require('../models/department')
+const session = require('../models/session')
+const Assignment = require('../models/assignment')
+
 const controller = {
   // modifier par mariem
   afficher_All: async (req, res) => {
     try {
-      const Members = await Member.find()
-        .select('NomPrenom ImageLink Departement -__t') // Sélectionner seulement ces trois champs
+      const { departmentId } = req.params
+      // Vérifier si le département existe
+      const departmentFind = await department.findById(departmentId)
+      if (!departmentFind) {
+        return res.status(404).json({ message: 'Department not found' })
+      }
+      // Requête pour trouver les membres dans le département spécifié
+      const members = await Member.find({
+        Departement: departmentFind.DepartmentName
+      })
+        .select('NomPrenom ImageLink Departement -__t')
         .exec()
 
-      if (!Members || Members.length === 0) {
+      if (!members || members.length === 0) {
         return res.status(404).json({ message: 'Aucun membre trouvé.' })
       }
-      res.status(200).json(Members)
+      res.status(200).json(members)
     } catch (error) {
       console.error('Erreur lors de la récupération des membres:', error) // Affiche l'erreur dans la console
       res.status(500).json({
@@ -21,32 +34,64 @@ const controller = {
     }
   },
 
-  create_Member: async (req, res) => {
+  Member_get_assignments_of_his_department: async (req, res) => {
     try {
-      const { departmentId, MemberData } = req.body 
+      const { departmentId } = req.params
 
-      const Mydepartment = await department.findById(departmentId) 
-      if (!Mydepartment) {
+      // Vérifiez si le département existe et peupler les assignments directement
+      const departmentExists = await department
+        .findById(departmentId)
+        .populate({
+          path: 'assignments', // Nom du champ assignments dans le modèle department
+          select: 'Title Description DueDate Attachments' // Champs à peupler dans Assignment
+        })
+
+      if (!departmentExists) {
         return res.status(404).json({ message: 'Department not found' })
       }
-console.log("hello")
-      const AddMember = new Member({
-        ...MemberData,
-        DepartmentId: departmentId
-      })
-      console.log(AddMember)
-      const savedMember = await AddMember.save()
-      Mydepartment.Members.push(savedMember._id) 
-      await Mydepartment.save() 
-      return res.status(201).json({
-        message: 'Member added successfully',
-        Member: savedMember
-      })
+
+      res.status(200).json(
+        departmentExists.assignments // Renvoie les assignments peuplés
+      )
     } catch (error) {
-      console.error(error)
-      return res
+      res
         .status(500)
-        .json({ message: 'Error adding Member to department' })
+        .json({ message: 'Error retrieving assignments', error: error.message })
+    }
+  },
+ 
+  create_Member: async (req, res) => {
+    try {
+      const { NomPrenom, Email, Password, Adresse, ImageLink, Departement } =
+        req.body
+
+      // Vérifier que les champs obligatoires sont présents
+      if (!NomPrenom || !Email || !Password || !Adresse || !Departement) {
+        return res.status(400).json({ message: 'Missing required fields' })
+      }
+
+      // Créer un nouvel utilisateur en tant que Member
+      const newMember = new Member({
+        NomPrenom,
+        Email,
+        Password,
+        Adresse,
+        ImageLink,
+        Departement,
+        Role: 'member' // Le rôle est explicitement défini ici
+      })
+
+      // Sauvegarder le nouveau membre
+      await newMember.save()
+
+      res
+        .status(201)
+        .json({ message: 'Member created successfully', Member: newMember })
+    } catch (error) {
+      console.error('Error creating member:', error)
+      res
+        .status(500)
+        .json({ message: 'Error in creating Member', error: error.message })
     }
   },
 
@@ -64,7 +109,7 @@ console.log("hello")
       res.status(404).json({ message: 'Error in updating Member' })
     }
   },
-
+ // end test
   delete_Member: async (req, res) => {
     try {
       const id = req.params.id
@@ -102,8 +147,6 @@ console.log("hello")
       res.status(404).json({ message: 'Error in counting Members' })
     }
   }
-
-  
 }
 
 module.exports = controller

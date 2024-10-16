@@ -53,5 +53,6 @@ router.get('/all', departementController.afficher_All)
  *         description: Département créé avec succès
  */
 router.post('/create', departementController.create_Departement)
-
+router.put('/update/:id', departementController.updateDepartement);
+router.delete('/delete/:id', departementController.deleteDepartement)
 module.exports = router

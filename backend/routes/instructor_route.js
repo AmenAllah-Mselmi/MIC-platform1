@@ -200,10 +200,10 @@ route.post(
  *                   type: string
  *                   example: "Error adding session to department"
  */
-route.post(
-  '/add-session-in-department',
-  instructorController.Instructor_add_Session_In_department
-)
+// route.post(
+//   '/add-session-in-department',
+//   instructorController.Instructor_add_Session_In_department
+// )
 /**
  * @swagger
  * /api/instructor/{instructorId}:
@@ -266,7 +266,7 @@ route.post(
  *                   type: string
  *                   example: "Error retrieving sessions"
  */
-route.get('/:instructorId', instructorController.getSessionsByInstructor)
+// route.get('/:instructorId', instructorController.getSessionsByInstructor)
 
 /**
  * @swagger
@@ -330,10 +330,10 @@ route.get('/:instructorId', instructorController.getSessionsByInstructor)
  *                   type: string
  *                   example: "Error retrieving sessions"
  */
-route.get(
-  '/department/:departmentId',
-  instructorController.getSessionsByDepartment
-)
+// route.get(
+//   '/department/:departmentId',
+//   instructorController.getSessionsByDepartment
+// )
 
 /**
  * @swagger
@@ -459,10 +459,10 @@ route.get(
  *           type: string
  *           example: "64fbad8b6c598b43d788a839"
  */
-route.post(
-  '/assignment/Instructor-add-Assignment-to-Session',
-  instructorController.Instructor_add_Assignment_to_Session
-)
+// route.post(
+//   '/assignment/Instructor-add-Assignment-to-Session',
+//   instructorController.Instructor_add_Assignment_to_Session
+// )
 
 route.get('/all', instructorController.afficher_All)
 route.put('/update/:id', instructorController.update_Instructor)

@@ -45,7 +45,7 @@ export default function Create() {
   }
 
   return (
-    <div className='mx-auto max-w-3xl pt-36 text-slate-700 w-11/12'>
+    <div className='mx-auto w-11/12 max-w-3xl pt-36 text-slate-700'>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
