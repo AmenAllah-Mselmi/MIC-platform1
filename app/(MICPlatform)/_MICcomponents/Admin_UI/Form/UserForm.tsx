@@ -44,7 +44,7 @@ const UserForm: React.FC<UserFormProps> = ({
     Adresse: '',
     Image: null
   })
-
+  // Edition de password possible à expliquer
   const convertFormToMemberForAdmin = (form: any): MemberForAdmin => {
     return {
       _id: form._id,
