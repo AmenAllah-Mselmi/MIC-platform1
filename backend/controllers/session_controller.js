@@ -5,7 +5,7 @@ const session = require('../models/session')
 const controller = {
   Instructor_add_Session_In_department: async (req, res) => {
     try {
-      const { departmentId, instructorId, Date, Description, Title, Room } =
+      const { departmentId, instructorId, date, description, title, room } =
         req.body
 
       // Vérifiez que le département existe
@@ -15,13 +15,12 @@ const controller = {
       }
 
       const newSession = new session({
-        Date: Date,
-        Description: Description,
-        Title: Title,
+        Date: date,
+        Description: description,
+        Title: title,
         Instructor: instructorId,
-        Room: Room,
-        DepartementId: departmentId,
-        createdAt: Date.now()
+        Room: room,
+        DepartementId: departmentId
       })
       const savedSession = await newSession.save()
 

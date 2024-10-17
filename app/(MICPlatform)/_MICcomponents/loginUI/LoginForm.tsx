@@ -54,7 +54,7 @@ export default function LoginForm() {
       if (!user) {
         throw new Error('User data not found after login')
       }
-
+      console.log(user)
       if (user.role === 'member') {
         router.push('/Member/assignments')
       } else if (user.role === 'instructor') {

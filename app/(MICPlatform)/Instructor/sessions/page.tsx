@@ -10,19 +10,18 @@ import {
 } from '@mui/material'
 import EnhancedTable from '../../_MICcomponents/Admin_UI/TableComponent/TableComponent'
 import { toast } from 'react-toastify'
-import UserForm from '../../_MICcomponents/Admin_UI/Form/UserForm'
 import { useEffect, useState } from 'react'
-import { shallow } from 'zustand/shallow'
 import PaginationComponent from '../../_MICcomponents/PaginationComponent/PaginationComponent'
 import { useSessionsStore } from '@/app/store/MyStore/SessionsStore'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import SessionCard from '../../_MICcomponents/Instructor_UI/SessionCard/SessionCard'
 import { Session } from '@/app/store/Models/Session'
+import SessionForm from '../../_MICcomponents/sessionForm/SessionForm'
 
 const Page: React.FC = () => {
   const sessions = useSessionsStore(state => state.sessions)
   const fetchSessions = useSessionsStore(state => state.fetchSessions)
-
+  const deleteSession = useSessionsStore(state => state.deleteSession)
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(5) // Nombre d'éléments par page
 
@@ -61,7 +60,6 @@ const Page: React.FC = () => {
       toast.success('Session supprimée avec succès', {
         position: 'bottom-center'
       })
-      await fetchSessions() // Refresh sessions after deletion
     } catch (error) {
       toast.error('Erreur lors de la suppression de la session', {
         position: 'bottom-center'
@@ -71,7 +69,6 @@ const Page: React.FC = () => {
 
   // Définition des colonnes pour la table des sessions
   const headCells = [
-    { id: '_id', numeric: false, disablePadding: true, label: 'ID' },
     { id: 'Title', numeric: false, disablePadding: true, label: 'Titre' },
     {
       id: 'Description',
@@ -155,9 +152,12 @@ const Page: React.FC = () => {
             item
             xs={12}
             md={4}
-            sx={{ marginTop: { xs: 3, md: 0 }, padding: 0 }}
+            sx={{ marginTop: { xs: 0, md: 0 }, padding: 0 }}
           >
-            <p> en attendant le formulaire ici </p>
+            <SessionForm
+              editingSession={editingSession}
+              setEditingSession={setEditingSession}
+            />
             {/* Si vous avez un formulaire de session à placer */}
           </Grid>
         </Grid>

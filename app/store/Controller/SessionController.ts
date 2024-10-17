@@ -16,3 +16,14 @@ export const fetchSessions = async (
     throw error
   }
 }
+export const deleteSession = async (id: string | number): Promise<string> => {
+  try {
+    const response = await axios.delete(
+      ENDPOINTS.DELETE_SESSION_FOR_INSTRUCTOR(id)
+    )
+    console.log(response.data)
+    return 'bonjour'
+  } catch (error) {
+    return 'Erreur lors de la suppression du Session'
+  }
+}

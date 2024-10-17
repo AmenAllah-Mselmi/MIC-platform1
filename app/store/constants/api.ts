@@ -16,6 +16,8 @@ export const ENDPOINTS = {
     `${API_BASE_URL}/member/update/${idUser}`,
   DELETE_MEMBER_FOR_ADMIN: (idUser: string | number) =>
     `${API_BASE_URL}/member/delete/${idUser}`,
+  DELETE_SESSION_FOR_INSTRUCTOR: (idSession: string | number) =>
+    `${API_BASE_URL}/session/${idSession}`,
   ADD_MEMBER_FOR_ADMIN: `${API_BASE_URL}/member/create`,
   
   LOGIN: `${API_BASE_URL}/user/login`,

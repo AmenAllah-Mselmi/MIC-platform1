@@ -26,7 +26,7 @@ const { Member } = require('../models/user')
  *                 type: string
  *                 example: "615c1bc5e70b7e6f30f8f123"
  *                 description: L'ID de l'instructeur qui gérera la session
- *               Title:
+ *               title:
  *                 type: string
  *                 example: "Session de mathématiques"
  *                 description: Le titre de la session
@@ -60,26 +60,26 @@ const { Member } = require('../models/user')
  *                     _id:
  *                       type: string
  *                       example: "615c1bc5e70b7e6f30f8f456"
- *                     Title:
+ *                     title:
  *                       type: string
  *                       example: "Session de mathématiques"
- *                     Description:
+ *                     description:
  *                       type: string
  *                       example: "Cours de mathématiques pour le niveau intermédiaire"
- *                     Room:
+ *                     room:
  *                       type: string
  *                       example: "M12"
- *                     Date:
+ *                     date:
  *                       type: string
  *                       format: date-time
  *                       example: "2024-10-01T09:00:00Z"
- *                     Instructor:
+ *                     instructor:
  *                       type: string
  *                       example: "615c1bc5e70b7e6f30f8f123"
  *                     createdAt:
  *                       type: string
  *                       format: date-time
- *                     DepartementId:
+ *                     departementId:
  *                       type: string
  *                       example: "615c1bc5e70b7e6f30f8f99c"
  *       404:
@@ -340,7 +340,7 @@ route.get(
 )
 /**
  * @swagger
- * /api/session/session/{id}:
+ * /api/session/{id}:
  *   delete:
  *     summary: Supprimer une session par instructeur
  *     description: Supprime une session en fonction de son ID et la retire également de la liste des sessions du département associé.
@@ -386,6 +386,6 @@ route.get(
  *                   type: string
  *                   example: "Error in deleting session"
  */
-route.delete('/session/:id', SessionController.delete_Session_By_Instructor)
+route.delete('/:id', SessionController.delete_Session_By_Instructor)
 
 module.exports = route

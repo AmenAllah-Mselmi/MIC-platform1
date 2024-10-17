@@ -66,14 +66,6 @@ const SessionCard: React.FC<SessionCardProps> = ({
           </Typography>
         </Box>
 
-        {/* Created At */}
-        <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-          <AccessTimeIcon sx={{ mr: 1 }} />
-          <Typography variant='body2' color='text.secondary'>
-            <strong>Created At: </strong> {session.createdAt}
-          </Typography>
-        </Box>
-
         {/* Action Buttons */}
         <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between' }}>
           <Button variant='contained' color='primary'>

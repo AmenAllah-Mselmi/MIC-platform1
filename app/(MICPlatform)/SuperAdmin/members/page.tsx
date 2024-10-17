@@ -8,13 +8,11 @@ import UserForm from '../../_MICcomponents/Admin_UI/Form/UserForm'
 import { useMemberStore } from '@/app/store/MyStore/MembersStore'
 import { useEffect, useState } from 'react'
 import { MemberForAdmin } from '@/app/store/Models/Member'
-import { shallow } from 'zustand/shallow'
 
 const Page: React.FC = () => {
   const members = useMemberStore(state => state.membersForAdmin)
   const fetchMembersForAdmin = useMemberStore(
-    state => state.fetchMembersForAdmin,
-    shallow
+    state => state.fetchMembersForAdmin
   )
   const deleteMembersForAdmin = useMemberStore(
     state => state.deleteMembersForAdmin

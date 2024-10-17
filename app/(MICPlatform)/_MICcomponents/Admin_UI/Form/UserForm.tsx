@@ -59,17 +59,12 @@ const UserForm: React.FC<UserFormProps> = ({
   }
 
   const fetchMembersForAdmin = useMemberStore(
-    state => state.fetchMembersForAdmin,
-    shallow
+    state => state.fetchMembersForAdmin
   )
   const updateMembersForAdmin = useMemberStore(
-    state => state.updateMembersForAdmin,
-    shallow
+    state => state.updateMembersForAdmin
   )
-  const addMembersForAdmin = useMemberStore(
-    state => state.addMembersForAdmin,
-    shallow
-  )
+  const addMembersForAdmin = useMemberStore(state => state.addMembersForAdmin)
 
   useEffect(() => {
     if (editingMember) {
