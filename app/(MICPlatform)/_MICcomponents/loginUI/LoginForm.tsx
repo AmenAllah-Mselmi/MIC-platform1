@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { TypewriterEffectSmoothDemo } from '../typewriterEffect/TypewriterEffectSmoothDemo'
 import { Button } from '@/components/ui/button'
 import {
@@ -14,19 +14,25 @@ import { Input } from '@/components/ui/input'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { useAuthStore } from '../../../store/MyStore/AuthStore'
+import { useRouter } from 'next/navigation'
 
 export default function LoginForm() {
+  const login = useAuthStore(state => state.login)
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+
   const formSchema = z.object({
     email: z
       .string()
-      .email({ message: 'Invalid email address' })
-      .min(10, { message: 'Your email must meet the email format' })
+      // .email({ message: 'Invalid email address' })
+      // .min(10, { message: 'Your email must meet the email format' })
       .max(30),
     password: z
       .string()
-      .min(6, {
-        message: 'Your password must be at least 6 characters'
-      })
+      // .min(6, {
+      //   message: 'Your password must be at least 6 characters'
+      // })
       .max(30)
   })
 
@@ -38,8 +44,29 @@ export default function LoginForm() {
     }
   })
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data)
+  const user = useAuthStore(state => state.user)
+  
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    setLoading(true)
+    try {
+       await login(data.email, data.password)
+       
+      if (!user) {
+        throw new Error('User data not found after login')
+      }
+
+      if (user.role === 'member') {
+        router.push('/Member/assignments')
+      } else if (user.role === 'instructor') {
+        router.push('/Instructor/assignments')
+      } else {
+        router.push('/SuperAdmin/add')
+      }
+    } catch (error) {
+      console.error('Login failed:', error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -84,7 +111,7 @@ export default function LoginForm() {
               type='submit'
               className='h-12 w-full rounded-md bg-gradient-to-r from-secondary to-primary text-white'
             >
-              Login
+              {loading ? 'Loading...' : 'Login'}
             </Button>
           </form>
         </Form>

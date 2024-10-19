@@ -83,10 +83,12 @@ const InstructorSchema = new Schema({
 
 // Member Schema
 const MemberSchema = new Schema({
-  Departement: {
-    type: String,
-    enum: ['Basic', 'Intermediate', 'Advanced']
-  },
+  DepartmentIds: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'department'
+    }
+  ],
   Responses: [
     {
       type: mongoose.Schema.Types.ObjectId,

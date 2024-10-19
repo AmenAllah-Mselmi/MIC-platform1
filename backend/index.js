@@ -57,6 +57,27 @@ app.use('/api/response', response);
 app.use('/api/user', user);
 app.use('/api/department', Department);
 
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  res.setHeader('Access-Control-Allow-Credentials', 'true')
+  next()
+})
+
+app.use('/api/instructor', Instructor)
+app.use('/api/member', Member)
+app.use('/api/super_admin', Super_admin)
+app.use('/api/session', session)
+app.use('/api/assignment', assignment)
+app.use('/api/attachment', attachment)
+app.use('/api/response', response)
+app.use('/api/user', user)
+app.use('/api/department', Department)
+
 // Start server
 app.listen(PORT, () => {
   console.log(`The server is running on port ${PORT}`);

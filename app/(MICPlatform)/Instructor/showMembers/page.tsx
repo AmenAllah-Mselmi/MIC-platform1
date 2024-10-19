@@ -14,7 +14,8 @@ const Page = () => {
 
   useEffect(() => {
     const loadMembers = async () => {
-      await fetchMembers('6701e0b0a401fa3076754383')
+      await fetchMembers('6701e183a401fa3076754391')
+      console.log('test')
       console.log('Members fetched:', members)
     }
 
@@ -24,8 +25,9 @@ const Page = () => {
   // Calculer les membres à afficher pour la page actuelle
   const indexOfLastMember = currentPage * itemsPerPage
   const indexOfFirstMember = indexOfLastMember - itemsPerPage
-  const currentMembers = members.slice(indexOfFirstMember, indexOfLastMember)
-
+  const currentMembers = members
+    ? members.slice(indexOfFirstMember, indexOfLastMember)
+    : []
   const handlePageChange = newPage => {
     setCurrentPage(newPage)
   }
@@ -38,9 +40,7 @@ const Page = () => {
         align='center'
         gutterBottom
         sx={{ fontWeight: 'bold', color: '#fff' }}
-      >
-        Membres du Département
-      </Typography>
+      ></Typography>
 
       {/* Liste des membres */}
       <Grid container spacing={2}>
@@ -60,7 +60,7 @@ const Page = () => {
       {/* Pagination */}
       <PaginationComponent
         currentPage={currentPage}
-        totalItems={members.length}
+        totalItems={members ? members.length : 0}
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
       />

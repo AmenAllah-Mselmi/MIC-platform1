@@ -3,6 +3,8 @@ const { User } = require('../models/user');
 
 const authenticateJWT = async (req, res, next) => {
   const token = req.header('Authorization')?.split(' ')[1];
+  console.log(token)
+
 
   if (!token) {
     return res.status(401).json({ message: 'Access Denied: No token provided' });
@@ -24,5 +26,13 @@ const authenticateJWT = async (req, res, next) => {
     return res.status(400).json({ message: 'Invalid Token' });
   }
 };
+const authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.userRole)) {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+    next();
+  };
+};
 
-module.exports = authenticateJWT;
+module.exports = {authenticateJWT};

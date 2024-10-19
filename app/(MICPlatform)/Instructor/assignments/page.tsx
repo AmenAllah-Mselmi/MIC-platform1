@@ -23,10 +23,9 @@ const Page = () => {
   // Calculer les assignments à afficher pour la page actuelle
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentAssignments = assignments.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  )
+  const currentAssignments = assignments
+    ? assignments.slice(indexOfFirstItem, indexOfLastItem)
+    : []
 
   const handlePageChange = newPage => {
     setCurrentPage(newPage)
@@ -59,7 +58,7 @@ const Page = () => {
       {/* Pagination */}
       <PaginationComponent
         currentPage={currentPage}
-        totalItems={assignments.length}
+        totalItems={assignments ? assignments.length : 0}
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
       />

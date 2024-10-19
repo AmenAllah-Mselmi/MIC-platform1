@@ -22,19 +22,19 @@
 .blob1 {
   top: 5%;
   left: 2%;
-  animation-delay: 5s;
+  animation-delay: 2s;
 }
 
 .blob2 {
-  top: 50%;
-  bottom: 5%;
-  animation-delay: 10s;
+  top: 40%;
+  bottom: 15%;
+  animation-delay: 5s;
 }
 
 .blob3 {
   bottom: 20%;
   left: 15%;
-  animation-delay: 15s;
+  animation-delay: 7s;
 }
 
 @keyframes blobAnimation {

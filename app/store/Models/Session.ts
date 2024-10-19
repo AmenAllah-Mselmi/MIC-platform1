@@ -5,6 +5,7 @@ export type Session = {
   Instructor: string
   Date: string
   createdAt: string
+  Room: string
 }
 
 export type State = {

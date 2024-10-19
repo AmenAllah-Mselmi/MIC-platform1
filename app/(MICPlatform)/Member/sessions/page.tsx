@@ -15,7 +15,7 @@ const Page = () => {
 
   useEffect(() => {
     const loadSessions = async () => {
-      await fetchSessions('6701e0b0a401fa3076754383')
+      await fetchSessions('670792e3ee0e13424434d371')
       console.log('Members fetched:', sessions)
     }
 
@@ -25,7 +25,9 @@ const Page = () => {
   // Calculer les éléments pour la page actuelle
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentSessions = sessions.slice(indexOfFirstItem, indexOfLastItem)
+  const currentSessions = sessions
+    ? sessions.slice(indexOfFirstItem, indexOfLastItem)
+    : []
 
   const handlePageChange = newPage => {
     setCurrentPage(newPage)
@@ -44,7 +46,7 @@ const Page = () => {
       {/* Utiliser le composant de pagination */}
       <PaginationComponent
         currentPage={currentPage}
-        totalItems={sessions.length}
+        totalItems={sessions ? sessions.length : 0}
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
       />

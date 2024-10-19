@@ -8,19 +8,14 @@ type Actions = {
   fetchSessions: (departmentId: string) => Promise<void>
 }
 
-export const useSessionsStore = create<State & Actions>()(
-  persist(
-    set => ({
-      sessions: [],
-      fetchSessions: async (departmentId: string) => {
-        try {
-          const data = await fetchSessions(departmentId)
-          set({ sessions: data })
-        } catch (error) {
-          console.error('Error fetching sessions:', error)
-        }
-      }
-    }),
-    { name: 'session-store', skipHydration: true } // Middleware de persistance avec Zustand
-  )
-)
+export const useSessionsStore = create<State & Actions>()(set => ({
+  sessions: [],
+  fetchSessions: async (departmentId: string) => {
+    try {
+      const data = await fetchSessions(departmentId)
+      set({ sessions: data })
+    } catch (error) {
+      console.error('Error fetching sessions:', error)
+    }
+  }
+}))

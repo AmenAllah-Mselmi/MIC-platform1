@@ -4,6 +4,9 @@ const { department } = require('../models/department')
 const session = require('../models/session')
 const Assignment = require('../models/assignment')
 
+const bcrypt = require('bcryptjs')
+
+
 const controller = {
   // modifier par mariem
   afficher_All: async (req, res) => {
@@ -16,9 +19,31 @@ const controller = {
       }
       // Requête pour trouver les membres dans le département spécifié
       const members = await Member.find({
-        Departement: departmentFind.DepartmentName
+        DepartmentIds: departmentId
       })
-        .select('NomPrenom ImageLink Departement -__t')
+        .select('NomPrenom ImageLink DepartmentIds -__t')
+        .exec()
+
+      if (!members || members.length === 0) {
+        return res.status(404).json({ message: 'Aucun membre trouvé.' })
+      }
+      res.status(200).json(members)
+    } catch (error) {
+      console.error('Erreur lors de la récupération des membres:', error) // Affiche l'erreur dans la console
+      res.status(500).json({
+        message: 'Erreur lors de la génération des membres',
+        error: error.message
+      })
+    }
+  },
+
+  afficher_All_For_Admin: async (req, res) => {
+    try {
+      // Requête pour trouver les membres dans le département spécifié
+      const members = await Member.find({ Role: 'member' })
+        .select(
+          '_id NomPrenom Email Password Role Adresse ImageLink DepartmentIds -__t'
+        )
         .exec()
 
       if (!members || members.length === 0) {
@@ -59,14 +84,14 @@ const controller = {
         .json({ message: 'Error retrieving assignments', error: error.message })
     }
   },
- 
+
   create_Member: async (req, res) => {
     try {
-      const { NomPrenom, Email, Password, Adresse, ImageLink, Departement } =
+      const { NomPrenom, Email, Password, Adresse, ImageLink, DepartmentIds } =
         req.body
 
       // Vérifier que les champs obligatoires sont présents
-      if (!NomPrenom || !Email || !Password || !Adresse || !Departement) {
+      if (!NomPrenom || !Email || !Password || !Adresse || !DepartmentIds) {
         return res.status(400).json({ message: 'Missing required fields' })
       }
 
@@ -77,7 +102,7 @@ const controller = {
         Password,
         Adresse,
         ImageLink,
-        Departement,
+        DepartmentIds,
         Role: 'member' // Le rôle est explicitement défini ici
       })
 
@@ -98,18 +123,43 @@ const controller = {
   update_Member: async (req, res) => {
     try {
       const id = req.params.id
-      const update = await Member.updateOne({ _id: id }, req.body)
-      if (update.nModified === 0) {
-        return res
-          .status(404)
-          .json({ message: 'Member not found or no changes made' })
+
+      // Récupérer le membre existant
+      const member = await Member.findById(id)
+      if (!member) {
+        return res.status(404).json({ message: 'Member not found' })
       }
-      res.status(200).json({ message: 'Member updated successfully' })
+      console.log('initial member')
+      console.log(member)
+      console.log('initial body')
+      console.log(req.body)
+      if (req.body.Password == '') {
+        req.body.Password = member.Password
+        console.log('pass == null ')
+        console.log(req.body)
+      } else {
+        // Si les mots de passe sont différents, crypter le nouveau mot de passe
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(req.body.Password, salt)
+        req.body.Password = hashedPassword // Mettre à jour le mot de passe dans req.body
+        console.log('pass hashedPassword')
+        console.log(req.body)
+      }
+
+      // Mettre à jour le membre avec les nouvelles informations
+      const update = await Member.updateOne({ _id: id }, req.body)
+
+      res
+        .status(200)
+        .json({ message: 'Member updated successfully', member: update })
     } catch (error) {
-      res.status(404).json({ message: 'Error in updating Member' })
+      res
+        .status(500)
+        .json({ message: 'Error in updating Member', erreur: error.message })
+      console.log(error)
     }
   },
- // end test
+  // end test
   delete_Member: async (req, res) => {
     try {
       const id = req.params.id
