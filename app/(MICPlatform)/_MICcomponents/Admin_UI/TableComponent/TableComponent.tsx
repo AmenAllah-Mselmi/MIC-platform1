@@ -182,7 +182,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = ({
                     <TableRow
                       hover
                       onClick={event =>
-                        handleClick(event, row._id as string, row.NomPrenom)
+                        handleClick(event, row._id as string, row.Title)
                       }
                       role='checkbox'
                       aria-checked={isItemSelected}

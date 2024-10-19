@@ -22,11 +22,11 @@ const { Member } = require('../models/user')
  *                 type: string
  *                 example: "615c1bc5e70b7e6f30f8f99c"
  *                 description: L'ID du département auquel la session sera associée
- *               instructorId:
+ *               InstructorId:
  *                 type: string
  *                 example: "615c1bc5e70b7e6f30f8f123"
  *                 description: L'ID de l'instructeur qui gérera la session
- *               title:
+ *               Title:
  *                 type: string
  *                 example: "Session de mathématiques"
  *                 description: Le titre de la session
@@ -60,26 +60,26 @@ const { Member } = require('../models/user')
  *                     _id:
  *                       type: string
  *                       example: "615c1bc5e70b7e6f30f8f456"
- *                     title:
+ *                     Title:
  *                       type: string
  *                       example: "Session de mathématiques"
- *                     description:
+ *                     Description:
  *                       type: string
  *                       example: "Cours de mathématiques pour le niveau intermédiaire"
- *                     room:
+ *                     Room:
  *                       type: string
  *                       example: "M12"
- *                     date:
+ *                     Date:
  *                       type: string
  *                       format: date-time
  *                       example: "2024-10-01T09:00:00Z"
- *                     instructor:
+ *                     Instructor:
  *                       type: string
  *                       example: "615c1bc5e70b7e6f30f8f123"
  *                     createdAt:
  *                       type: string
  *                       format: date-time
- *                     departementId:
+ *                     DepartmentId:
  *                       type: string
  *                       example: "615c1bc5e70b7e6f30f8f99c"
  *       404:
@@ -281,7 +281,7 @@ route.get('/:instructorId', SessionController.getSessionsByInstructor)
  *     tags:
  *       - Sessions
  *     parameters:
- *       - name: departmentId
+ *       - name: DepartmentId
  *         in: path
  *         required: true
  *         schema:
@@ -335,7 +335,7 @@ route.get('/:instructorId', SessionController.getSessionsByInstructor)
  *                   example: "Error retrieving sessions"
  */
 route.get(
-  '/department/:departmentId',
+  '/department/:DepartmentId',
   SessionController.getSessionsByDepartment
 )
 /**

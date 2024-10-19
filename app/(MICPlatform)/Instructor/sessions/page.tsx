@@ -6,7 +6,11 @@ import {
   useTheme,
   useMediaQuery,
   Box,
-  Typography
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
 } from '@mui/material'
 import EnhancedTable from '../../_MICcomponents/Admin_UI/TableComponent/TableComponent'
 import { toast } from 'react-toastify'
@@ -23,7 +27,9 @@ const Page: React.FC = () => {
   const fetchSessions = useSessionsStore(state => state.fetchSessions)
   const deleteSession = useSessionsStore(state => state.deleteSession)
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage] = useState(5) // Nombre d'éléments par page
+  const [itemsPerPage] = useState(5)
+  const [editingSession, setEditingSession] = useState<Session | null>(null)
+  const [openDialog, setOpenDialog] = useState(false) // État pour le modal
 
   useEffect(() => {
     const loadSessions = async () => {
@@ -34,7 +40,6 @@ const Page: React.FC = () => {
     loadSessions()
   }, [fetchSessions])
 
-  // Calculer les éléments pour la page actuelle
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentSessions = sessions
@@ -44,14 +49,18 @@ const Page: React.FC = () => {
   const handlePageChange = newPage => {
     setCurrentPage(newPage)
   }
-  const [editingSession, setEditingSession] = useState<Session | null>(null)
+
   const handleEditSession = (id: string | number) => {
     const session = sessions.find(session => session._id === id)
     if (session) {
       setEditingSession(session)
-      console.log(session)
-      console.log(editingSession)
+      setOpenDialog(true) // Ouvrir le modal
     }
+  }
+
+  const handleCloseDialog = () => {
+    setEditingSession(null) // Réinitialiser l'édition de session
+    setOpenDialog(false) // Fermer le modal
   }
 
   const handleDeleteSession = async (id: string) => {
@@ -67,7 +76,6 @@ const Page: React.FC = () => {
     }
   }
 
-  // Définition des colonnes pour la table des sessions
   const headCells = [
     { id: 'Title', numeric: false, disablePadding: true, label: 'Titre' },
     {
@@ -129,15 +137,32 @@ const Page: React.FC = () => {
             itemsPerPage={itemsPerPage}
             onPageChange={handlePageChange}
           />
+
+          {/* Modal pour modifier une session */}
+          <Dialog open={openDialog} onClose={handleCloseDialog}>
+            <DialogTitle>Edit Session</DialogTitle>
+            <DialogContent>
+              <SessionForm
+                editingSession={editingSession}
+                setEditingSession={setEditingSession}
+                onClose={handleCloseDialog} // Fermer le modal après modification
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDialog} color='primary'>
+                Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
       ) : (
         <Grid container spacing={7} sx={{ margin: 0, padding: 0 }}>
           <Grid item xs={12} md={8} sx={{ margin: 0, padding: 0 }}>
             <EnhancedTable
-              data={sessions} // Utiliser les sessions au lieu des membres
-              headCells={headCells} // Utiliser les colonnes de sessions
-              title='List of Sessions' // Titre adapté
-              onDelete={handleDeleteSession} // Fonction de suppression de session
+              data={sessions}
+              headCells={headCells}
+              title='List of Sessions'
+              onDelete={handleDeleteSession}
               renderRowActions={row => (
                 <Button
                   variant='outlined'
@@ -157,8 +182,8 @@ const Page: React.FC = () => {
             <SessionForm
               editingSession={editingSession}
               setEditingSession={setEditingSession}
+              onClose={handleCloseDialog}
             />
-            {/* Si vous avez un formulaire de session à placer */}
           </Grid>
         </Grid>
       )}

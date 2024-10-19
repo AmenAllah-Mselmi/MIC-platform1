@@ -40,14 +40,30 @@ const controller = {
         .json({ message: 'Error adding instructor to department' })
     }
   },
+  // ---------------------------------
 
+  get_Instructors_names_and_ids_in_department: async (req, res) => {
+    const { DepartmentId } = req.body
 
-  // --------------------------------- 
- 
+    try {
+      const result = await department
+        .findById(DepartmentId)
+        .populate({
+          path: 'instructors',
+          select: '_id NomPrenom -__t'
+        })
+        .select('instructors')
 
+      if (!result) {
+        return res.status(404).json({ message: 'Département non trouvé' })
+      }
 
-
-
+      return res.status(200).json({ instructors: result.instructors })
+    } catch (error) {
+      console.error('Error fetching instructors:', error)
+      return res.status(500).json({ message: 'Erreur serveur' })
+    }
+  },
   // --------------------------
   Instructor_add_Session_with_Assignment: async (req, res) => {
     try {

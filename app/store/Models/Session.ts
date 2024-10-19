@@ -3,6 +3,7 @@ export type Session = {
   Title: string
   Description: string
   Instructor: string
+  InstructorId: string
   Date: string
   createdAt: string
   Room: string

@@ -5,23 +5,24 @@ const session = require('../models/session')
 const controller = {
   Instructor_add_Session_In_department: async (req, res) => {
     try {
-      const { departmentId, instructorId, date, description, title, room } =
+      const { DepartmentId, InstructorId, Date, Description, Title, Room } =
         req.body
 
       // Vérifiez que le département existe
-      const Mydepartment = await department.findById(departmentId) // Correction de 'department' en 'Department'
+      const Mydepartment = await department.findById(DepartmentId) // Correction de 'department' en 'Department'
       if (!Mydepartment) {
         return res.status(404).json({ message: 'Department not found' })
       }
 
       const newSession = new session({
-        Date: date,
-        Description: description,
-        Title: title,
-        Instructor: instructorId,
-        Room: room,
-        DepartementId: departmentId
+        Date: Date,
+        Description: Description,
+        Title: Title,
+        Instructor: InstructorId,
+        Room: Room,
+        DepartmentId: DepartmentId
       })
+
       const savedSession = await newSession.save()
 
       // Optionnel : Ajouter l'instructeur au tableau des instructeurs du département (si vous avez un champ 'instructors' dans le modèle de département)
@@ -36,30 +37,44 @@ const controller = {
 
   Instructor_modify_Session_In_department: async (req, res) => {
     try {
-      const { sessionId, sessionData } = req.body
+      const { Title, Description, Date, Room, Instructor, sessionId } = req.body // Récupérer les attributs du corps de la requête
 
-      // Vérifiez que la session existe
+      // Récupérer la session existante
       const existingSession = await session.findById(sessionId)
       if (!existingSession) {
-        console.log(existingSession)
         return res.status(404).json({ message: 'Session not found' })
       }
 
-      // Mettre à jour la session
-      const updatedSession = await session.findByIdAndUpdate(
-        sessionId,
-        { ...sessionData }, // Spread operator pour inclure tous les champs de sessionData
-        { new: true, runValidators: true } // new: true pour retourner le document mis à jour, runValidators: true pour valider les mises à jour
-      )
+      console.log('Initial session:', existingSession)
+      console.log('Request body:', req.body)
 
-      res
-        .status(200)
-        .json({ message: 'Session updated successfully', updatedSession })
+      // Créer un objet avec les nouvelles valeurs pour la mise à jour
+      const sessionData = {
+        Title,
+        Description,
+        Date: Date, // Assurez-vous que la date est au format Date
+        Room,
+        instructorId: Instructor // Renommer Instructor en instructorId
+      }
+
+      // Mettre à jour la session avec les nouvelles informations
+      const update = await session.updateOne({ _id: sessionId }, sessionData)
+
+      if (update.nModified === 0) {
+        return res
+          .status(404)
+          .json({ message: 'No changes were made to the session' })
+      }
+
+      res.status(200).json({
+        message: 'Session updated successfully',
+        session: sessionData // Renvoie les nouvelles données de la session
+      })
     } catch (error) {
-      console.error(error.message) // Utilisation de console.error pour une meilleure visibilité des erreurs
       res
         .status(500)
-        .json({ message: 'Error updating session', error: error.message })
+        .json({ message: 'Error in updating session', error: error.message })
+      console.error(error)
     }
   },
 
@@ -86,10 +101,10 @@ const controller = {
 
   getSessionsByDepartment: async (req, res) => {
     try {
-      const { departmentId } = req.params
+      const { DepartmentId } = req.params
 
       // Vérifiez si le département existe
-      const departmentExists = await department.findById(departmentId)
+      const departmentExists = await department.findById(DepartmentId)
       if (!departmentExists) {
         return res.status(404).json({ message: 'Department not found' })
       }
@@ -129,7 +144,7 @@ const controller = {
       if (!MySession) {
         return res.status(404).json({ message: 'Session not found' })
       }
-      const Mydepartment = await department.findById(MySession.DepartementId)
+      const Mydepartment = await department.findById(MySession.DepartmentId)
       if (!Mydepartment) {
         return res.status(404).json({ message: 'Department not found' })
       }

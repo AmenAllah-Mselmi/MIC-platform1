@@ -23,6 +23,7 @@ import {
 import DatePickerDemo from '@/components/ui/date-picker'
 import { useSessionsStore } from '@/app/store/MyStore/SessionsStore'
 import { toast } from 'react-toastify'
+import InstructorSelect from '../Instructor_UI/InstructorSelect/InstructorSelect'
 
 const sessionSchema = z.object({
   Title: z.string().nonempty({ message: 'Title is required' }),
@@ -32,7 +33,11 @@ const sessionSchema = z.object({
   Instructor: z.string().nonempty({ message: 'Instructor is required' })
 })
 
-export default function SessionForm({ editingSession, setEditingSession }) {
+export default function SessionForm({
+  editingSession,
+  setEditingSession,
+  onClose
+}) {
   const [loading, setLoading] = useState(false)
 
   const form = useForm({
@@ -67,14 +72,17 @@ export default function SessionForm({ editingSession, setEditingSession }) {
   const handleSubmit = async data => {
     try {
       setLoading(true)
-      console.log(data)
       if (editingSession) {
         await updateSession(editingSession._id, data)
         toast.success('Session mise à jour avec succès!', {
           position: 'top-center'
         })
       } else {
-        await addSession(data)
+        const updatedData = {
+          ...data,
+          InstructorId: data.Instructor
+        }
+        await addSession(updatedData, '670792e3ee0e13424434d371')
         toast.success('Session ajoutée avec succès!', {
           position: 'top-center'
         })
@@ -83,6 +91,9 @@ export default function SessionForm({ editingSession, setEditingSession }) {
       await fetchSessions('670792e3ee0e13424434d371')
       form.reset()
       setEditingSession(null)
+      if (onClose) {
+        onClose() // Appel de la fonction pour fermer le modal
+      }
     } catch (error) {
       toast.error("Erreur lors de l'opération", { position: 'top-center' })
     } finally {
@@ -174,31 +185,7 @@ export default function SessionForm({ editingSession, setEditingSession }) {
                 <FormItem className='col-span-2'>
                   <FormLabel>Instructor</FormLabel>
                   <FormControl>
-                    <Controller
-                      name='Instructor'
-                      control={form.control}
-                      render={({ field }) => (
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
-                          <SelectTrigger className='rounded-md border border-gray-300 bg-white shadow-sm'>
-                            <SelectValue placeholder='Select instructor' />
-                          </SelectTrigger>
-                          <SelectContent className='rounded-md border border-gray-300 bg-white shadow-lg'>
-                            <SelectItem value='Instructor 1'>
-                              Instructor 1
-                            </SelectItem>
-                            <SelectItem value='Instructor 2'>
-                              Instructor 2
-                            </SelectItem>
-                            <SelectItem value='Instructor 3'>
-                              Instructor 3
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                      )}
-                    />
+                    <InstructorSelect form={{ form }} />
                   </FormControl>
                   <FormMessage>
                     {form.formState.errors.Instructor?.message}
