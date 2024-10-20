@@ -65,7 +65,6 @@ const route = express.Router()
  *         description: Server error
  */
 route.post('/login', controller.login)
-
-//route.post('/logout', controller.logout)
+route.post('/logout', controller.logout)
 
 module.exports = route
