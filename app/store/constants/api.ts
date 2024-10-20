@@ -11,6 +11,9 @@ export const ENDPOINTS = {
   ADD_SESSION: `${API_BASE_URL}/session/add-session-in-department/`,
   GET_INSTRUCTORS_NAMES: `${API_BASE_URL}/instructor/get-instructors-names`,
 
+  // DEPARTMENTS
+  GET_DEPARTMENTS_NAMES_IDS: `${API_BASE_URL}/department/names-ids`,
+
   // Members :
   FETCH_MEMBERS: (departmentId: string) =>
     `${API_BASE_URL}/member/all/${departmentId}`,

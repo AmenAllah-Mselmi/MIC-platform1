@@ -139,6 +139,8 @@ const Page: React.FC = () => {
           />
 
           {/* Modal pour modifier une session */}
+          {/* TODO:  BY GHASSEN*/}
+
           <Dialog open={openDialog} onClose={handleCloseDialog}>
             <DialogTitle>Edit Session</DialogTitle>
             <DialogContent>

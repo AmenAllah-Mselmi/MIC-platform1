@@ -54,12 +54,17 @@ export default function LoginForm() {
       if (!user) {
         throw new Error('User data not found after login')
       }
+      console.log('bonjour')
       console.log(user)
       if (user.role === 'member') {
         router.push('/Member/assignments')
+        console.log('bonjour member')
       } else if (user.role === 'instructor') {
+        console.log('bonjour Instructor')
         router.push('/Instructor/assignments')
+        console.log('bonjour Instructor')
       } else {
+        console.log('bonjour SuperAdmin')
         router.push('/SuperAdmin/add')
       }
     } catch (error) {

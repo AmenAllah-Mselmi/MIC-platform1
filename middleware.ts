@@ -17,10 +17,10 @@ export default async function middleware(req: NextRequest) {
   const userRole = isAuth ? await getUserRole(req) : null
   const { pathname } = req.nextUrl
 
-  // console.log('Middleware executed')
-  // console.log('isAuth:', isAuth)
-  // console.log('userRole:', userRole)
-  // console.log('pathname:', pathname)
+   console.log('Middleware executed')
+   console.log('isAuth:', isAuth)
+   console.log('userRole:', userRole)
+   console.log('pathname:', pathname)
 
   // Redirect authenticated users away from the login page
   if (isAuth && pathname === '/login') {

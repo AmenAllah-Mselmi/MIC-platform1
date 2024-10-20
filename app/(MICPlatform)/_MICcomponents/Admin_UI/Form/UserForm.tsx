@@ -14,6 +14,7 @@ import { toast } from 'react-toastify'
 import { useMemberStore } from '@/app/store/MyStore/MembersStore'
 import { MemberForAdmin } from '@/app/store/Models/Member'
 import { shallow } from 'zustand/shallow'
+import DepartmentSelect from '../DepartmentSelect/DepartmentSelect'
 
 interface UserFormProps {
   editingMember: {
@@ -221,6 +222,7 @@ const UserForm: React.FC<UserFormProps> = ({
         onChange={handleChange}
         required
       />
+      <DepartmentSelect form={{ form }} />
 
       <input
         type='file'

@@ -54,4 +54,32 @@ router.get('/all', departementController.afficher_All)
  */
 router.post('/create', departementController.create_Departement)
 
+/**
+ * @swagger
+ * /api/department/names-ids:
+ *   get:
+ *     summary: Récupérer les noms et les IDs des départements
+ *     tags:
+ *       - Department
+ *     responses:
+ *       200:
+ *         description: Liste des départements avec leurs noms et IDs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: ID du département
+ *                   DepartmentName:
+ *                     type: string
+ *                     description: Nom du département
+ *       500:
+ *         description: Erreur lors de la récupération des départements
+ */
+router.get('/names-ids', departementController.get_Departments_names_and_ids)
+
 module.exports = router

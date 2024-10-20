@@ -27,6 +27,18 @@ const controller = {
         .status(400)
         .json({ message: 'Error in creating Instructor', error: error.message })
     }
+  },
+  get_Departments_names_and_ids: async (req, res) => {
+    try {
+      const result = await department
+        .find()
+        .select('DepartmentName _id ')
+
+      return res.status(200).json({ departments: result })
+    } catch (error) {
+      console.error('Error fetching instructors:', error)
+      return res.status(500).json({ message: 'Erreur serveur' })
+    }
   }
 }
 

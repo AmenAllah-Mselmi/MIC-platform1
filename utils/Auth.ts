@@ -7,10 +7,15 @@ interface DecodedToken {
 
 export function isAuthenticated(req: NextRequest): boolean {
   const token = req.cookies.get('token')?.value
-  // console.log('Token:', token) // Debugging line
+  console.log('Token 11111111 11111 :', token) // Debugging line
   if (!token || typeof token !== 'string') return false
 
   try {
+    const secretKey = process.env.JWT_SECRET
+    if (!secretKey) {
+      throw new Error('JWT secret key is missing')
+    }
+    console.log('salut')
     const secret = new TextEncoder().encode(process.env.JWT_SECRET)
     jwtVerify(token, secret)
     return true
@@ -22,7 +27,7 @@ export function isAuthenticated(req: NextRequest): boolean {
 
 export async function getUserRole(req: NextRequest): Promise<string | null> {
   const token = req.cookies.get('token')?.value
-  // console.log('Token:', token) // Debugging line
+  console.log('Token:', token) // Debugging line
   if (!token || typeof token !== 'string') return null
 
   try {
@@ -30,6 +35,9 @@ export async function getUserRole(req: NextRequest): Promise<string | null> {
     const { payload } = (await jwtVerify(token, secret)) as {
       payload: DecodedToken
     }
+
+    console.log('payload.role')
+    console.log(payload.role)
     return payload.role || null
   } catch (error) {
     console.error('Token decoding failed:', error)

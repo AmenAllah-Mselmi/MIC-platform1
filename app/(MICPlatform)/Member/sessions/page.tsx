@@ -16,7 +16,7 @@ const Page = () => {
   useEffect(() => {
     const loadSessions = async () => {
       await fetchSessions('670792e3ee0e13424434d371')
-      console.log('Members fetched:', sessions)
+      console.log('Sessions fetched:', sessions)
     }
 
     loadSessions()

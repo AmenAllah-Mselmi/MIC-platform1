@@ -157,7 +157,7 @@ const controller = {
       console.log(error)
     }
   },
-  // end test
+  
   delete_Member: async (req, res) => {
     try {
       const id = req.params.id
@@ -170,6 +170,7 @@ const controller = {
       res.status(404).json({ message: 'Error in deleting Member' })
     }
   },
+// end test
 
   findMember: async (req, res) => {
     try {
