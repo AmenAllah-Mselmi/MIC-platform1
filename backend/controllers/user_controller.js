@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 const { body, validationResult } = require('express-validator')
 
 const controller = {
-  login: [
+  login: 
     async (req, res) => {
       try {
         const { email, password } = req.body
@@ -64,7 +64,7 @@ const controller = {
           .cookie('token', token, {
             httpOnly: true,
             secure: false,
-            sameSite: 'lax'
+            sameSite: 'lax',
           })
           .status(200)
           .json({
@@ -77,7 +77,15 @@ const controller = {
         res.status(500).json({ message: 'Error performing authentication' })
       }
     }
-  ]
+  ,
+  logout: (req, res) => {
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: false, // Set to false for local development
+      sameSite: 'lax' // Used SameSite=Lax for local development
+    })
+    res.status(200).json({ message: 'Logout successful' })
+  }
 }
 
 module.exports = controller
