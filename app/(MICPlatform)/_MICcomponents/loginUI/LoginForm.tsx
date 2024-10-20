@@ -45,12 +45,12 @@ export default function LoginForm() {
   })
 
   const user = useAuthStore(state => state.user)
-  
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true)
     try {
-       await login(data.email, data.password)
-       
+      await login(data.email, data.password)
+
       if (!user) {
         throw new Error('User data not found after login')
       }

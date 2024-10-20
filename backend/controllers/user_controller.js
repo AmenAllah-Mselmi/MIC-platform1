@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const { body, validationResult } = require('express-validator')
 
 const controller = {
-  login: [
+  login: 
     // Input validation
     // body('email').isEmail().withMessage('Invalid email format'),
     // body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
@@ -42,6 +42,7 @@ const controller = {
           .status(200)
           .json({
             message: 'Login successful',
+            token,
             user: {
               id: user._id,
               email: user.Email,
@@ -49,7 +50,7 @@ const controller = {
               nomPrenom: user.NomPrenom,
               adresse: user.Adresse,
               imageLink: user.ImageLink,
-              departmentId: user.DepartmentId
+              Departement: user.Departement
             }
           })
       } catch (error) {
@@ -57,7 +58,15 @@ const controller = {
         res.status(500).json({ message: 'Error performing authentication' })
       }
     }
-  ]
+  ,
+  logout: (req, res) => {
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: false, // Set to false for local development
+      sameSite: 'lax' // Used SameSite=Lax for local development
+    })
+    res.status(200).json({ message: 'Logout successful' })
+  }
 }
 
 module.exports = controller

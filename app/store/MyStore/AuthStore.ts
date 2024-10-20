@@ -22,17 +22,23 @@ export const useAuthStore = create<AuthState>()(
             email,
             password
           })
-          const { id, role } = response.data.user
+          console.log(response)
+          const { id, role, Departement } = response.data.user
           const token = response.data.token
           axiosInstance.defaults.headers['Authorization'] = `Bearer ${token}`
-          set({ user: { id, role } })
+          console.log('Login successful:', id, role, Departement)
+          set({ user: { id, role, Departement } })
           set({ isAuthenticated: true })
         } catch (error) {
           console.error('Login failed:', error)
           throw error
         }
       },
-      logout: () => set({ user: null })
+      logout: async () => {
+        const response = await axiosInstance.post(ENDPOINTS.LOGOUT)
+        console.log(response)
+        set({ user: null })
+      }
     }),
     { name: 'auth-store' }
   )

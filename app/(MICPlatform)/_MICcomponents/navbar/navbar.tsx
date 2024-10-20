@@ -4,21 +4,25 @@ import Link from 'next/link'
 import { useState } from 'react'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import Cookies from 'js-cookie'
-import { useRouter } from 'next/navigation'
+
+import { useAuthStore } from '@/./app/store/MyStore/AuthStore'
 
 // Import the Inter font from Google Fonts
 const inter = Inter({ subsets: ['latin-ext'], weight: '400' })
 
 export default function Navbar() {
-  const Router = useRouter()
+  const logout = useAuthStore(state => state.logout)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false) // State to manage dropdown visibility
   const [isMenuOpen, setIsMenuOpen] = useState(false) // State to manage mobile menu visibility
 
-  const handleLogOut = () => {
-    // Cookies.remove('token')
-    // Router.push('/login')
-    return
+  const handleLogOut = async () => {
+    console.log('Logging out')
+    try {
+      await logout()
+      window.location.href = '/login'
+    } catch (error) {
+      console.error('Logout failed:', error)
+    }
   }
   return (
     <nav className='fixed top-0 z-10 w-full bg-navbar text-white'>
@@ -84,15 +88,13 @@ export default function Navbar() {
                     Profile
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    href='/logout'
-                    className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white'
-                    onClick={() => handleLogOut()}
-                  >
-                    Logout
-                  </Link>
-                </li>
+
+                <button
+                  className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white'
+                  onClick={handleLogOut}
+                >
+                  Logout
+                </button>
               </ul>
             </div>
           )}
@@ -135,7 +137,7 @@ export default function Navbar() {
             <li>
               <Link
                 href='/'
-                className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500'
+                className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-primary md:dark:hover:text-primary'
               >
                 Home
               </Link>
@@ -143,7 +145,7 @@ export default function Navbar() {
             <li>
               <Link
                 href='/#departments'
-                className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500'
+                className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-primary md:dark:hover:text-primary'
               >
                 Departments
               </Link>
@@ -151,7 +153,7 @@ export default function Navbar() {
             <li>
               <Link
                 href='/Member/sessions'
-                className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500'
+                className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-primary md:dark:hover:text-primary'
               >
                 Sessions
               </Link>
@@ -159,7 +161,7 @@ export default function Navbar() {
             <li>
               <Link
                 href='/Member/assignments'
-                className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500'
+                className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-primary md:dark:hover:text-primary'
               >
                 Assignments
               </Link>

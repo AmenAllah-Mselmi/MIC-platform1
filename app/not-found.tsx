@@ -1,28 +1,22 @@
-'use client'
 import Link from 'next/link'
-import React from 'react'
-const NotFound = () => {
+
+export default function NotFound() {
   return (
-    <main
-      className='h-screen w-screen bg-slate-200 text-center'
-      style={{
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center'
-      }}
-    >
-      <h1 className='color text-4xl text-primary'>
-        Sorry, the page you requested could not be found
-      </h1>
-      <h4 style={{ fontSize: '24px', color: 'black' }}>Error 404</h4>
-      <p style={{ fontSize: '20px', color: 'grey' }}>
-        Go back to :{' '}
-        <Link className='underline' href={'/'}>
-          Home page
+    <div className='flex min-h-screen flex-col items-center justify-center bg-gray-100'>
+      <div className='rounded-lg bg-white p-8 text-center shadow-lg'>
+        <h1 className='mb-4 text-6xl font-bold text-red-600'>404</h1>
+        <h2 className='mb-4 text-2xl font-semibold text-gray-800'>
+          Page Not Found
+        </h2>
+        <p className='mb-6 text-lg text-gray-700'>
+          Sorry, the page you are looking for does not exist.
+        </p>
+        <Link href='/'>
+          <p className='inline-block rounded-lg bg-primary px-6 py-3 font-semibold text-white shadow-md transition duration-300 hover:bg-MIC'>
+            Go to Homepage
+          </p>
         </Link>
-      </p>
-    </main>
+      </div>
+    </div>
   )
 }
-export default NotFound
