@@ -21,10 +21,12 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import SessionCard from '../../_MICcomponents/Instructor_UI/SessionCard/SessionCard'
 import { Session } from '@/app/store/Models/Session'
 import SessionForm from '../../_MICcomponents/sessionForm/SessionForm'
+import { useAuthStore } from '@/app/store/MyStore/AuthStore'
 
 const Page: React.FC = () => {
   const sessions = useSessionsStore(state => state.sessions)
   const fetchSessions = useSessionsStore(state => state.fetchSessions)
+  const user = useAuthStore(state => state.user)
   const deleteSession = useSessionsStore(state => state.deleteSession)
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(5)
@@ -33,7 +35,7 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     const loadSessions = async () => {
-      await fetchSessions('670792e3ee0e13424434d371')
+      await fetchSessions(user.DepartmentId)
       console.log('Sessions fetched:', sessions)
     }
 
