@@ -31,10 +31,12 @@ const assignmentSchema = new mongoose.Schema({
       ref: 'Attachment'
     }
   ],
-  Response: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Response'
-  }
+  Responses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Response'
+    }
+  ]
 })
 
 const Assignment = mongoose.model('Assignment', assignmentSchema)

@@ -12,13 +12,21 @@ const responsesSchema = new mongoose.Schema({
   },
   User_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Member'
+    ref: 'Member',
+    required: true
+  },
+  Assignment_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Assignment',
+    required: true
   },
   createdAt: {
     type: Date,
     default: Date.now
   }
 })
+// Assurer qu'un utilisateur ne peut soumettre qu'une seule réponse pour un assignment donné
+responsesSchema.index({ User_id: 1, Assignment_id: 1 }, { unique: true })
 
 const Response = mongoose.model('Response', responsesSchema)
 module.exports = Response
