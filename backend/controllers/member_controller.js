@@ -2,7 +2,7 @@ const { Member } = require('../models/user')
 const { Instructor } = require('../models/user')
 const { department } = require('../models/department')
 const session = require('../models/session')
-const Assignment = require('../models/Assignment')
+const Assignment = require('../models/assignment')
 const bcrypt = require('bcryptjs')
 
 const controller = {
@@ -157,7 +157,7 @@ const controller = {
       console.log(error)
     }
   },
-  
+
   delete_Member: async (req, res) => {
     try {
       const id = req.params.id
@@ -170,7 +170,7 @@ const controller = {
       res.status(404).json({ message: 'Error in deleting Member' })
     }
   },
-// end test
+  // end test
 
   findMember: async (req, res) => {
     try {

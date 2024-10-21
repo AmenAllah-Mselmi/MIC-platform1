@@ -52,6 +52,7 @@ export default function AssignmentCard({ assignment }: AssignmentCardProps) {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         instructor={assignment.Title}
+        assignmentId={assignment._id}
         date={assignment.DueDate}
         content={assignment.description}
         resources={assignment.Attachments}

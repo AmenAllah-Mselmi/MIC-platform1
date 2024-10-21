@@ -1,87 +1,176 @@
-const Response = require('../models/response');
+const Response = require('./../models/response')
+const Assignment = require('../models/assignment')
 
-const Response_controller = {
-    Display_All: async (req, res) => {
-        try {
-            const Responses = await Response.find();
-            res.status(200).json(Responses);
-        } catch (error) {
-            res.status(500).json({ message: "Server error in generating Responses" });
-        }
-    },
+const controller = {
+  // Afficher toutes les réponses
+  Display_All: async (req, res) => {
+    try {
+      const responses = await Response.find()
+        .populate({
+          path: 'User_id',
+          select: 'NomPrenom' // Sélectionne uniquement le champ NomPrenom
+        })
+        .populate({
+          path: 'Assignment_id',
+          select: 'Title' // Sélectionne uniquement le champ Title
+        })
 
-    create_Response: async (req, res) => {
-        try {
-            const create = await Response.create(req.body);
-            res.status(201).json({ message: "Response created successfully", Response: create });
-        } catch (error) {
-            res.status(500).json({ message: "Server error in creating Response" });
-        }
-    },
-    update_Response: async (req, res) => {
-        try {
-            const id = req.params.id;
-            const update = await Response.updateOne({ _id: id }, req.body);
-            if (update.modifiedCount === 0) {
-                return res.status(404).json({ message: "Response not found or no changes made" });
-            }
-            res.status(200).json({ message: "Response updated successfully" });
-        } catch (error) {
-            res.status(500).json({ message: "Server error in updating Response" });
-        }
-    },
+      res.status(200).json(responses)
+    } catch (error) {
+      res.status(500).json({
+        message: 'Erreur serveur lors de la récupération des réponses',
+        error: error.message
+      })
+    }
+  },
 
-    delete_Response: async (req, res) => {
-        try {
-            const id = req.params.id;
-            const deleted = await Response.deleteOne({ _id: id });
-            if (deleted.deletedCount === 0) {
-                return res.status(404).json({ message: "Response not found" });
-            }
-            res.status(200).json({ message: "Response deleted successfully" });
-        } catch (error) {
-            res.status(500).json({ message: "Server error in deleting Response" });
-        }
-    },
+  // Soummettre une réponse dans la partie du member
+  create_Response: async (req, res) => {
+    const { userId, assignmentId, content } = req.body
 
-    findResponsebyId: async (req, res) => {
-        try {
-            const id = req.params.id;
-            const Response_Result = await Response.findById(id);
+    try {
+      // Vérifier si l'Assignment existe avant de créer la réponse
+      const assignment = await Assignment.findById(assignmentId)
+      if (!assignment) {
+        return res.status(404).json({ message: 'Assignment non trouvé.' })
+      }
 
-            if (!Response_Result) {
-                return res.status(404).json({ message: "This Response doesn't exist" });
-            }
+      // Vérifier si une réponse existe déjà pour cet utilisateur et cet assignment
+      const existingResponse = await Response.findOne({
+        User_id: userId,
+        Assignment_id: assignmentId
+      })
 
-            return res.status(200).json(Response_Result);
-        } catch (error) {
-            res.status(500).json({ message: "Server error in finding Response" });
-        }
-    },
+      if (existingResponse) {
+        return res.status(400).json({
+          message:
+            "L'utilisateur a déjà soumis une réponse pour cet assignment."
+        })
+      }
 
-    findResponsebyUserId: async (req, res) => {
-        try {
-            const id = req.params.id;
-            const Response_Result = await Response.find({ User_id: id });
+      // Créer une nouvelle réponse
+      const response = new Response({
+        Content: content,
+        User_id: userId,
+        Assignment_id: assignmentId
+      })
 
-            if (!Response_Result.length) {
-                return res.status(404).json({ message: "This Response doesn't exist" });
-            }
+      // Sauvegarder la réponse
+      const savedResponse = await response.save()
 
-            return res.status(200).json(Response_Result);
-        } catch (error) {
-            res.status(500).json({ message: "Server error in finding Response" });
-        }
-    },
+      // Mettre à jour l'Assignment pour inclure cette réponse
+      assignment.Responses.push(savedResponse._id) // Ajout direct dans le tableau des réponses de l'Assignment
+      await assignment.save() // Sauvegarde de l'assignement avec la nouvelle réponse
 
-    count: async (req, res) => {
-        try {
-            const Responses = await Response.countDocuments();
-            res.status(200).json(Responses);
-        } catch (error) {
-            res.status(500).json({ message: "Server error in counting Responses" });
-        }
-    },
-};
+      // Retourner la réponse créée
+      res.status(201).json(savedResponse)
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({
+        message: 'Erreur lors de la création de la réponse',
+        error: error.message
+      })
+    }
+  },
+  Fetch_Response_By_Assignment_And_User: async (req, res) => {
+    const { assignmentId, userId } = req.query
 
-module.exports = Response_controller;
+    try {
+      const response = await Response.findOne({
+        Assignment_id: assignmentId,
+        User_id: userId
+      })
+      if (!response) {
+        return res.status(404).json({ message: 'Response not found' })
+      }
+      return res.json(response)
+    } catch (error) {
+      console.error('Error fetching response:', error)
+      return res.status(500).json({ message: 'Internal server error' })
+    }
+  },
+
+  update_Response: async (req, res) => {
+    try {
+      const id = req.params.id
+      const update = await Response.updateOne({ _id: id }, req.body)
+
+      if (update.modifiedCount === 0) {
+        return res.status(404).json({
+          message: 'Réponse non trouvée ou aucune modification effectuée.'
+        })
+      }
+      res.status(200).json({ message: 'Réponse mise à jour avec succès' })
+    } catch (error) {
+      res.status(500).json({
+        message: 'Erreur serveur lors de la mise à jour de la réponse',
+        error: error.message
+      })
+    }
+  },
+
+  delete_Response: async (req, res) => {
+    try {
+      const id = req.params.id
+      const deleted = await Response.deleteOne({ _id: id })
+
+      if (deleted.deletedCount === 0) {
+        return res.status(404).json({ message: 'Réponse non trouvée' })
+      }
+
+      // Mettre à jour l'Assignment pour retirer cette réponse
+      await Assignment.updateMany({}, { $pull: { Responses: id } })
+
+      res.status(200).json({ message: 'Réponse supprimée avec succès' })
+    } catch (error) {
+      res.status(500).json({
+        message: 'Erreur serveur lors de la suppression de la réponse',
+        error: error.message
+      })
+    }
+  },
+
+  findResponsebyId: async (req, res) => {
+    try {
+      const id = req.params.id
+      const response = await Response.findById(id).populate(
+        'User_id Assignment_id'
+      )
+
+      if (!response) {
+        return res.status(404).json({ message: "Cette réponse n'existe pas" })
+      }
+
+      return res.status(200).json(response)
+    } catch (error) {
+      res.status(500).json({
+        message: 'Erreur serveur lors de la récupération de la réponse',
+        error: error.message
+      })
+    }
+  },
+
+  findResponsebyUserId: async (req, res) => {
+    try {
+      const id = req.params.id
+      const responses = await Response.find({ User_id: id }).populate(
+        'Assignment_id'
+      )
+
+      if (!responses.length) {
+        return res.status(404).json({
+          message: "Cet utilisateur n'a pas encore soumis de réponses"
+        })
+      }
+
+      return res.status(200).json(responses)
+    } catch (error) {
+      res.status(500).json({
+        message: 'Erreur serveur lors de la récupération des réponses',
+        error: error.message
+      })
+    }
+  }
+}
+
+module.exports = controller

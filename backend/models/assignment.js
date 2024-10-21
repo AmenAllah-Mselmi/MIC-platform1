@@ -39,5 +39,8 @@ const assignmentSchema = new mongoose.Schema({
   ]
 })
 
-const Assignment = mongoose.model('Assignment', assignmentSchema)
+// Vérifie si le modèle existe déjà avant de le définir
+const Assignment =
+  mongoose.models.Assignment || mongoose.model('Assignment', assignmentSchema)
+
 module.exports = Assignment

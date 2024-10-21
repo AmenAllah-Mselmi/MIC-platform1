@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Modal,
   ModalContent,
@@ -11,7 +11,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Input } from '@/components/ui/input'
 import { Send } from 'lucide-react'
-// mariem : remarque instructor image zayeda
+import { useResponseStore } from '@/app/store/MyStore/ResponseStore' // Importez votre store ici
+import type { Response } from '@/app/store/Models/Response' // Assurez-vous que le chemin est correct
+import ResponseSearch from '../../Member/testResponse/ResponseSearch'
+import { useAuthStore } from '@/app/store/MyStore/AuthStore'
+
 export default function AssignmentModal({
   isOpen,
   onOpenChange,
@@ -20,8 +24,39 @@ export default function AssignmentModal({
   content,
   resources,
   imageUrl,
+  assignmentId,
   placeholder
 }) {
+  const { responses, fetchResponses, addResponse } = useResponseStore()
+  const [responseContent, setResponseContent] = useState('')
+  const user = useAuthStore(state => state.user)
+  const [User_Id] = useState(user.id) // Utilisateur statique pour le test
+  const [Assignment_Id] = useState(assignmentId) // Assignment statique pour le test
+
+  // Simuler la récupération des réponses au chargement du composant
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await fetchResponses(User_Id) // Simulez l'appel avec l'ID d'utilisateur statique
+      } catch (error) {
+        console.error('Erreur lors de la récupération des réponses', error)
+      }
+    }
+    fetchData()
+  }, [fetchResponses, User_Id])
+
+  // Fonction pour gérer l'ajout d'une réponse
+  const handleAddResponse = async () => {
+    if (responseContent) {
+      try {
+        await addResponse(responseContent, User_Id, Assignment_Id)
+        setResponseContent('') // Réinitialiser le champ de saisie après l'ajout
+      } catch (error) {
+        console.error("Erreur lors de l'ajout de la réponse", error)
+      }
+    }
+  }
+
   return (
     <Modal size={'3xl'} isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
@@ -48,14 +83,20 @@ export default function AssignmentModal({
                     <p className='mt-2 w-full text-sm text-gray-700 md:text-base'>
                       {content}
                     </p>
-                    <Link
+                    {/*<Link
                       href={'#'}
                       className='mt-2 inline-block text-primary hover:underline'
                     >
-                      Link for some resources a faire by mariem: {resources}
-                    </Link>
+                      Link for some resources: {resources}
+                    </Link>*/}
                   </div>
                 </div>
+
+                {/* Affichage de la réponse correspondante */}
+                <div className='w-full'>
+                  <ResponseSearch Assignment_Id={Assignment_Id} />
+                </div>
+
                 <div className='flex w-full items-center gap-3 px-3'>
                   <Image
                     src={'/images/Member/MemberBackground.png'}
@@ -65,6 +106,8 @@ export default function AssignmentModal({
                     height={48}
                   />
                   <Input
+                    value={responseContent}
+                    onChange={e => setResponseContent(e.target.value)}
                     placeholder={placeholder}
                     className='max-w-3/4 mt-2 rounded-lg border border-solid border-gray-400 md:w-full'
                   />
@@ -72,6 +115,7 @@ export default function AssignmentModal({
                     color='primary'
                     variant='light'
                     className='mt-2 px-1 py-3 md:w-auto'
+                    onClick={handleAddResponse} // Ajoutez la fonction ici
                   >
                     <Send size={24} />
                   </Button>

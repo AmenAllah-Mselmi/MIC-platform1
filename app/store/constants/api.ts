@@ -26,6 +26,12 @@ export const ENDPOINTS = {
     `${API_BASE_URL}/session/${idSession}`,
   ADD_MEMBER_FOR_ADMIN: `${API_BASE_URL}/member/create`,
 
+  // Response :
+  FETCH_RESPONSES: `${API_BASE_URL}/response/responses`,
+  ADD_RESPONSE_FOR_MEMBER: `${API_BASE_URL}/response/responses`,
+  FETCH_RESPONSE_BY_ASSIGNMENT_AND_USER: `${API_BASE_URL}/response/responsesByAssignmentIdAndUserId`,
+
+  // Authentification
   LOGIN: `${API_BASE_URL}/user/login`,
   LOGOUT: `${API_BASE_URL}/user/logout`
 }

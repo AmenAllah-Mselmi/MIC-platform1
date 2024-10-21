@@ -17,7 +17,7 @@ const Page = () => {
   useEffect(() => {
     const loadMembers = async () => {
       await fetchMembers(user.DepartmentId)
-      console.log('test')
+      
       console.log('Members fetched:', members)
     }
 

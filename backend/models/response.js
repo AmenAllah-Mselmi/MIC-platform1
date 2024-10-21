@@ -20,6 +20,12 @@ const responsesSchema = new mongoose.Schema({
     ref: 'Assignment',
     required: true
   },
+  status: {
+    type: String,
+    enum: ['AWAITING FOR REVIEW', 'APPROVED'],
+    default: 'AWAITING FOR REVIEW', // Valeur par défaut
+    required: true
+  },
   createdAt: {
     type: Date,
     default: Date.now
