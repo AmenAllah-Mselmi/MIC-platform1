@@ -42,6 +42,7 @@ export const useAuthStore = create<AuthState>()(
               id,
               role,
               nomPrenom,
+              email,
               adresse,
               imageLink,
               DepartmentIds: role == 'member' ? DepartmentIds : undefined, // Récupérer departmentIds seulement pour les membres

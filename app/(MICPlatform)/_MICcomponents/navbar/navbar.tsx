@@ -12,6 +12,8 @@ const inter = Inter({ subsets: ['latin-ext'], weight: '400' })
 
 export default function Navbar() {
   const logout = useAuthStore(state => state.logout)
+  const user = useAuthStore(state => state.user)
+  console.log('User:', user)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false) // State to manage dropdown visibility
   const [isMenuOpen, setIsMenuOpen] = useState(false) // State to manage mobile menu visibility
 
@@ -25,7 +27,7 @@ export default function Navbar() {
     }
   }
   return (
-    <nav className='fixed top-0 z-10 w-full bg-navbar text-white'>
+    <nav className='fixed left-0 top-0 z-10 w-full bg-navbar py-3 text-white'>
       <div className='mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4'>
         {/* Logo Section with custom logo */}
         <Link
@@ -73,10 +75,10 @@ export default function Navbar() {
             >
               <div className='px-4 py-3'>
                 <span className='block text-sm text-gray-900'>
-                  Student Name
+                  {user?.nomPrenom}
                 </span>
                 <span className='block truncate text-sm text-gray-500'>
-                  email@example.com
+                  {user?.email}
                 </span>
               </div>
               <ul className='py-2' aria-labelledby='user-menu-button'>
@@ -143,24 +145,45 @@ export default function Navbar() {
               </Link>
             </li>
             <li>
-              <Link
-                href='/#departments'
-                className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-primary md:dark:hover:text-primary'
-              >
-                Departments
-              </Link>
+              {user.role === 'member' ? (
+                <Link
+                  href='/Member/'
+                  className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-primary md:dark:hover:text-primary'
+                >
+                  Departments
+                </Link>
+              ) : (
+                ''
+              )}
+            </li>
+            <li>
+              {user.role === 'superAdmin' ? (
+                <Link
+                  href='SuperAdmin/members'
+                  className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-primary md:dark:hover:text-primary'
+                >
+                  Members
+                </Link>
+              ) : (
+                <Link
+                  href={
+                    user.role === 'member'
+                      ? '/Member/sessions'
+                      : '/Instructor/sessions'
+                  }
+                  className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-primary md:dark:hover:text-primary'
+                >
+                  Sessions
+                </Link>
+              )}
             </li>
             <li>
               <Link
-                href='/Member/sessions'
-                className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-primary md:dark:hover:text-primary'
-              >
-                Sessions
-              </Link>
-            </li>
-            <li>
-              <Link
-                href='/Member/assignments'
+                href={
+                  user.role === 'member'
+                    ? '/Member/assignments'
+                    : '/Instructor/assignments'
+                }
                 className='block rounded px-3 py-2 text-black hover:bg-gray-100 dark:text-white md:p-0 md:text-gray-300 md:hover:bg-transparent md:hover:text-primary md:dark:hover:text-primary'
               >
                 Assignments
