@@ -463,6 +463,84 @@ route.post(
 //   '/assignment/Instructor-add-Assignment-to-Session',
 //   instructorController.Instructor_add_Assignment_to_Session
 // )
+route.post(
+  '/assignment/Instructor-add-Assignment-to-Session',
+  instructorController.Instructor_add_Assignment_to_Session
+)
+/**
+ * @swagger
+ * paths:
+ *   /api/instructor/get-instructors-names:
+ *     post:
+ *       summary: "Obtenir les noms et IDs des instructeurs dans un département"
+ *       description: "Cette fonction renvoie les noms et IDs des instructeurs d'un département spécifique."
+ *       tags:
+ *         - "Instructeurs"
+ *       requestBody:
+ *         description: "ID du département pour lequel récupérer les instructeurs"
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 DepartmentId:
+ *                   type: string
+ *                   description: "ID du département"
+ *                   example: "670792e3ee0e13424434d371"
+ *       responses:
+ *         '200':
+ *           description: "Liste des instructeurs dans le département"
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   instructors:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           description: "ID de l'instructeur"
+ *                           example: "64fbad8b6c598b43d788a840"
+ *                         NomPrenom:
+ *                           type: string
+ *                           description: "Nom complet de l'instructeur"
+ *                           example: "John Doe"
+ *               example:
+ *                 instructors:
+ *                   - _id: "64fbad8b6c598b43d788a840"
+ *                     NomPrenom: "John Doe"
+ *                   - _id: "64fbad8b6c598b43d788a841"
+ *                     NomPrenom: "Jane Smith"
+ *         '404':
+ *           description: "Département non trouvé"
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: "Département non trouvé"
+ *         '500':
+ *           description: "Erreur serveur"
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: "Erreur serveur"
+ */
+route.post(
+  '/get-instructors-names',
+  instructorController.get_Instructors_names_and_ids_in_department
+)
+
 
 route.get('/all', instructorController.afficher_All)
 route.put('/update/:id', instructorController.update_Instructor)

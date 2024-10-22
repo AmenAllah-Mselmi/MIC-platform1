@@ -22,7 +22,7 @@ const { Member } = require('../models/user')
  *                 type: string
  *                 example: "615c1bc5e70b7e6f30f8f99c"
  *                 description: L'ID du département auquel la session sera associée
- *               instructorId:
+ *               InstructorId:
  *                 type: string
  *                 example: "615c1bc5e70b7e6f30f8f123"
  *                 description: L'ID de l'instructeur qui gérera la session
@@ -79,7 +79,7 @@ const { Member } = require('../models/user')
  *                     createdAt:
  *                       type: string
  *                       format: date-time
- *                     DepartementId:
+ *                     DepartmentId:
  *                       type: string
  *                       example: "615c1bc5e70b7e6f30f8f99c"
  *       404:
@@ -281,7 +281,7 @@ route.get('/:instructorId', SessionController.getSessionsByInstructor)
  *     tags:
  *       - Sessions
  *     parameters:
- *       - name: departmentId
+ *       - name: DepartmentId
  *         in: path
  *         required: true
  *         schema:
@@ -335,12 +335,12 @@ route.get('/:instructorId', SessionController.getSessionsByInstructor)
  *                   example: "Error retrieving sessions"
  */
 route.get(
-  '/department/:departmentId',
+  '/department/:DepartmentId',
   SessionController.getSessionsByDepartment
 )
 /**
  * @swagger
- * /api/session/session/{id}:
+ * /api/session/{id}:
  *   delete:
  *     summary: Supprimer une session par instructeur
  *     description: Supprime une session en fonction de son ID et la retire également de la liste des sessions du département associé.
@@ -386,6 +386,6 @@ route.get(
  *                   type: string
  *                   example: "Error in deleting session"
  */
-route.delete('/session/:id', SessionController.delete_Session_By_Instructor)
+route.delete('/:id', SessionController.delete_Session_By_Instructor)
 
 module.exports = route

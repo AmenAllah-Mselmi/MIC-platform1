@@ -4,6 +4,8 @@ import Image from 'next/image'
 import React from 'react'
 import { useDisclosure, Button } from '@nextui-org/react'
 import AssignmentModal from './AssignmentModal'
+import EditIcon from '@mui/icons-material/Edit'; // Import Edit Icon
+import DeleteIcon from '@mui/icons-material/Delete'; // Import Delete Icon
 
 // Component: AssignmentCard
 interface AssignmentCardProps {
@@ -14,9 +16,11 @@ interface AssignmentCardProps {
     description: string
     Attachments: string[]
   }
+  onEdit: (id: string) => void; // Prop for edit handler
+  onDelete: (id: string) => void; // Prop for delete handler
 }
 
-export default function AssignmentCard({ assignment }: AssignmentCardProps) {
+export default function AssignmentCard({ assignment, onEdit, onDelete }: AssignmentCardProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   return (
@@ -39,7 +43,22 @@ export default function AssignmentCard({ assignment }: AssignmentCardProps) {
         {assignment.description}
       </p>
 
-      <div className='flex h-11 items-center justify-end'>
+      <div className='flex items-center justify-between h-11 mt-4'>
+        <div className='flex gap-2'>
+          <Button
+            onPress={() => onEdit(assignment._id)}
+            className='flex items-center rounded-full bg-MIC text-white'
+          >
+            <EditIcon fontSize="small" /> {/* Edit Icon */}
+          </Button>
+          <Button
+            onPress={() => onDelete(assignment._id)}
+            className='flex items-center rounded-full bg-red-500 text-white'
+          >
+            <DeleteIcon fontSize="small" /> {/* Delete Icon */}
+          </Button>
+        </div>
+        
         <Button
           onPress={onOpen}
           className='flex h-full w-32 cursor-pointer items-center justify-center rounded-full bg-MIC text-white'

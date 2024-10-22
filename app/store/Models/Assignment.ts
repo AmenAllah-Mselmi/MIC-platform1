@@ -4,6 +4,8 @@ export type Assignment = {
   Description: string
   DueDate: string
   Attachments: string[]
+  DepartementId:String;
+  Responses:String[];
 }
 export type State = {
   assignments: Assignment[]

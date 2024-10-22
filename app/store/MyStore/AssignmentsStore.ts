@@ -1,101 +1,94 @@
-import { create } from 'zustand'
-import { Assignment } from '../Models/Assignment'
-import { assignmentController } from '../Controller/AssignmentController';
+import { create } from 'zustand';
+import { Assignment } from '../Models/Assignment';
+import assignmentService from '../Controller/AssignmentController';
 
-// Define the state type for the store
-type AssignmentState = {
-  assignments: Assignment[]
-  loading: boolean
-  error: string | null
-  fetchAssignments: (departmentId: string) => Promise<void>
-  fetchAllAssignments: () => Promise<void>
-  createAssignment: (newAssignment: Omit<Assignment, '_id'>) => Promise<void>
-  updateAssignment: (assignmentId: string, updatedAssignment: Partial<Assignment>) => Promise<void>
-  deleteAssignment: (assignmentId: string) => Promise<void>
+interface AssignmentState {
+  assignments: Assignment[];
+  isLoading: boolean;
+  error: string | null;
+
+  fetchAssignments: (departmentId: string) => Promise<void>;
+  fetchAllAssignments: () => Promise<void>;
+  createAssignment: (newAssignment: Omit<Assignment, '_id'>, departmentId: string) => Promise<void>;
+  updateAssignment: (assignmentId: string, updatedAssignment: Partial<Assignment>) => Promise<void>;
+  deleteAssignment: (assignmentId: string) => Promise<void>;
 }
 
-// Create the Zustand store
 export const useAssignmentStore = create<AssignmentState>((set) => ({
   assignments: [],
-  loading: false,
+  isLoading: false,
   error: null,
 
   // Fetch assignments by department ID
   fetchAssignments: async (departmentId: string) => {
-    set({ loading: true, error: null })
+    set({ isLoading: true, error: null });
     try {
-      const assignments = await assignmentController.fetchAssignments(departmentId)
-      if (assignments) {
-        set({ assignments })
-      }
+      const assignments = await assignmentService.fetchAssignments(departmentId);
+      set({ assignments: assignments || [], isLoading: false });
     } catch (error) {
-      set({ error: 'Failed to fetch assignments' })
-    } finally {
-      set({ loading: false })
+      set({ error: 'Error fetching assignments', isLoading: false });
     }
   },
 
   // Fetch all assignments
   fetchAllAssignments: async () => {
-    set({ loading: true, error: null })
+    set({ isLoading: true, error: null });
     try {
-      const assignments = await assignmentController.fetchAllAssignments()
-      if (assignments) {
-        set({ assignments })
-      }
+      const assignments = await assignmentService.fetchAllAssignments();
+      set({ assignments: assignments || [], isLoading: false });
     } catch (error) {
-      set({ error: 'Failed to fetch all assignments' })
-    } finally {
-      set({ loading: false })
+      set({ error: 'Error fetching all assignments', isLoading: false });
     }
   },
 
   // Create a new assignment
-  createAssignment: async (newAssignment: Omit<Assignment, '_id'>) => {
-    set({ loading: true, error: null })
+  createAssignment: async (newAssignment: Omit<Assignment, '_id'>, departmentId: string) => {
+    set({ isLoading: true, error: null });
     try {
-      const createdAssignment = await assignmentController.createAssignment(newAssignment)
-      if (createdAssignment) {
-        set((state) => ({ assignments: [...state.assignments, createdAssignment] }))
-      }
+      const createdAssignment = await assignmentService.createAssignment(newAssignment, departmentId);
+      set((state) => ({
+        assignments: [...state.assignments, { ...newAssignment, _id: createdAssignment._id }],
+        isLoading: false,
+      }));
     } catch (error) {
-      set({ error: 'Failed to create assignment' })
-    } finally {
-      set({ loading: false })
+      set({ error: 'Error creating assignment', isLoading: false });
     }
   },
 
-  // Update an existing assignment
+  // Update an assignment
   updateAssignment: async (assignmentId: string, updatedAssignment: Partial<Assignment>) => {
-    set({ loading: true, error: null })
+    // Set loading state and clear previous error
+    set({ isLoading: true, error: null });
+  
     try {
-      const updated = await assignmentController.updateAssignment(assignmentId, updatedAssignment)
-      if (updated) {
-        set((state) => ({
-          assignments: state.assignments.map((assignment) =>
-            assignment._id === assignmentId ? updated : assignment
-          ),
-        }))
-      }
+      // Attempt to update the assignment via the service
+      await assignmentService.updateAssignment(assignmentId, updatedAssignment);
+      
+      // Update the state with the new assignment data
+      set((state) => ({
+        assignments: state.assignments.map((assignment) =>
+          assignment._id === assignmentId ? { ...assignment, ...updatedAssignment } : assignment
+        ),
+        isLoading: false, // Reset loading state on success
+      }));
     } catch (error) {
-      set({ error: 'Failed to update assignment' })
-    } finally {
-      set({ loading: false })
+      // Handle error by setting error message and resetting loading state
+      set({ error: 'Error updating assignment', isLoading: false });
     }
   },
+  
 
   // Delete an assignment
   deleteAssignment: async (assignmentId: string) => {
-    set({ loading: true, error: null })
+    set({ isLoading: true, error: null });
     try {
-      await assignmentController.deleteAssignment(assignmentId)
+      await assignmentService.deleteAssignment(assignmentId);
       set((state) => ({
         assignments: state.assignments.filter((assignment) => assignment._id !== assignmentId),
-      }))
+        isLoading: false,
+      }));
     } catch (error) {
-      set({ error: 'Failed to delete assignment' })
-    } finally {
-      set({ loading: false })
+      set({ error: 'Error deleting assignment', isLoading: false });
     }
   },
-}))
+}));

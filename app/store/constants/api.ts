@@ -2,11 +2,11 @@ import UpdateDepartement from "@/app/(MICPlatform)/_MICcomponents/CRUDDepartemen
 
 export const API_BASE_URL = 'http://localhost:4000/api'
 export const ENDPOINTS = {
-  // Assignments : 
+  // Assignments :
   FETCH_ASSIGNMENTS: (departmentId: string) =>
     `${API_BASE_URL}/member/department/${departmentId}`,
 CREATE_ASSIGNMENT: (departmentId: string) =>
-    `${API_BASE_URL}/assignment//department/${departmentId}/addAssignment`,
+    `${API_BASE_URL}/assignment/department/${departmentId}/addAssignment`,
 UPDATE_ASSIGNMENT: (assignmentId: string) => 
   `${API_BASE_URL}/assignment/updateAssignment/${assignmentId}`,
 DELETE_ASSIGNMENT: (assignmentId: string) => 
@@ -16,8 +16,12 @@ FETCH_ALL_Assignements: () =>
   // Sessions : 
   FETCH_SESSIONS_BY_DEPARTMENT: (departmentId: string) =>
     `${API_BASE_URL}/session/department/${departmentId}`,
+  // Sessions :
+  UPDATE_SESSION:()=> `${API_BASE_URL}/session/Instructor_modify_Session_In_department/`,
+  ADD_SESSION: ()=>`${API_BASE_URL}/session/add-session-in-department/`,
+  GET_INSTRUCTORS_NAMES:()=> `${API_BASE_URL}/instructor/get-instructors-names`,
 
-  // Members : 
+  // Members :
   FETCH_MEMBERS: (departmentId: string) =>
     `${API_BASE_URL}/member/all/${departmentId}`,
   //Departements :
@@ -39,7 +43,10 @@ FETCH_ALL_Assignements: () =>
     `${API_BASE_URL}/member/update/${idUser}`,
   DELETE_MEMBER_FOR_ADMIN: (idUser: string | number) =>
     `${API_BASE_URL}/member/delete/${idUser}`,
+  DELETE_SESSION_FOR_INSTRUCTOR: (idSession: string | number) =>
+    `${API_BASE_URL}/session/${idSession}`,
   ADD_MEMBER_FOR_ADMIN: `${API_BASE_URL}/member/create`,
   LOGIN: `${API_BASE_URL}/user/login`,
+
 }
 
