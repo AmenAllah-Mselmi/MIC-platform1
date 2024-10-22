@@ -12,6 +12,7 @@ export type MemberForAdmin = {
   Adresse: string
   ImageLink: string
   Departement: string
+  
 }
 export type State = {
   members: Member[]

@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 import { isAuthenticated, getUserRole } from '@/utils/Auth'
 
 const protectedRoutes = {
-  member: ['/Member/assignments', '/Member/sessions'],
+  member: ['/Member /' ,'/Member/assignments', '/Member/sessions'],
   instructor: [
     '/Instructor/assignments',
     '/Instructor/sessions',

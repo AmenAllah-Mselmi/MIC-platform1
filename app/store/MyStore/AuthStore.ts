@@ -22,7 +22,7 @@ export const useAuthStore = create<AuthState>()(
             email,
             password
           })
-          console.log(response)
+          // console.log(response)
 
           const {
             id,
