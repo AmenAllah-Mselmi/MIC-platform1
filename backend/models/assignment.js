@@ -31,11 +31,16 @@ const assignmentSchema = new mongoose.Schema({
       ref: 'Attachment'
     }
   ],
-  Response: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Response'
-  }
+  Responses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Response'
+    }
+  ]
 })
 
-const Assignment = mongoose.model('Assignment', assignmentSchema)
+// Vérifie si le modèle existe déjà avant de le définir
+const Assignment =
+  mongoose.models.Assignment || mongoose.model('Assignment', assignmentSchema)
+
 module.exports = Assignment

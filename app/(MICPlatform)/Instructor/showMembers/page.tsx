@@ -4,18 +4,20 @@ import { Container, Grid, Typography } from '@mui/material'
 import Member_card from '../../_MICcomponents/Member_card/Member_card'
 import { useMemberStore } from '../../../store/MyStore/MembersStore'
 import PaginationComponent from '../../_MICcomponents/PaginationComponent/PaginationComponent'
+import { useAuthStore } from '@/app/store/MyStore/AuthStore'
 
 const Page = () => {
   const members = useMemberStore(state => state.members)
   const fetchMembers = useMemberStore(state => state.fetchMembers)
+  const user = useAuthStore(state => state.user)
 
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 1 // Nombre de membres par page
 
   useEffect(() => {
     const loadMembers = async () => {
-      await fetchMembers('6701e183a401fa3076754391')
-      console.log('test')
+      await fetchMembers(user.DepartmentId)
+      
       console.log('Members fetched:', members)
     }
 

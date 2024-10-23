@@ -24,6 +24,7 @@ import DatePickerDemo from '@/components/ui/date-picker'
 import { useSessionsStore } from '@/app/store/MyStore/SessionsStore'
 import { toast } from 'react-toastify'
 import InstructorSelect from '../Instructor_UI/InstructorSelect/InstructorSelect'
+import DepartmentSelect from '../Admin_UI/DepartmentSelect/DepartmentSelect'
 
 const sessionSchema = z.object({
   Title: z.string().nonempty({ message: 'Title is required' }),
@@ -186,6 +187,7 @@ export default function SessionForm({
                   <FormLabel>Instructor</FormLabel>
                   <FormControl>
                     <InstructorSelect form={{ form }} />
+                    {/* <DepartmentSelect form={{ form }} /> */}
                   </FormControl>
                   <FormMessage>
                     {form.formState.errors.Instructor?.message}

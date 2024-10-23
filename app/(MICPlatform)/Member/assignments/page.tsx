@@ -14,7 +14,7 @@ const Page = () => {
 
   useEffect(() => {
     const loadAssignments = async () => {
-      await fetchAssignments('6701e0b0a401fa3076754383') // ID de département
+      await fetchAssignments('670792e3ee0e13424434d371') // ID de département
     }
 
     loadAssignments()

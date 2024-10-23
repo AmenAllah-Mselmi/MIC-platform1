@@ -8,7 +8,7 @@ type AuthState = {
   user: User | null
   isAuthenticated: boolean
   login: (email: string, password: string) => Promise<void>
-  logout: () => void
+  logout: () => Promise<void>
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -22,17 +22,55 @@ export const useAuthStore = create<AuthState>()(
             email,
             password
           })
-          const { id, role } = response.data.user
+          console.log(response)
+
+          const {
+            id,
+            role,
+            nomPrenom,
+            adresse,
+            imageLink,
+            DepartmentIds,
+            DepartmentId
+          } = response.data.user // Récupération des données de l'utilisateur
           const token = response.data.token
+
           axiosInstance.defaults.headers['Authorization'] = `Bearer ${token}`
-          set({ user: { id, role } })
-          set({ isAuthenticated: true })
+
+          set({
+            user: {
+              id,
+              role,
+              nomPrenom,
+              adresse,
+              imageLink,
+              DepartmentIds: role == 'member' ? DepartmentIds : undefined, // Récupérer departmentIds seulement pour les membres
+              DepartmentId: role == 'instructor' ? DepartmentId : undefined // Récupérer departmentId seulement pour les instructeurs
+            },
+            isAuthenticated: true
+          })
+
+          console.log(
+            'Login successful:',
+            id,
+            role,
+            DepartmentIds,
+            DepartmentId
+          )
         } catch (error) {
           console.error('Login failed:', error)
           throw error
         }
       },
-      logout: () => set({ user: null })
+      logout: async () => {
+        try {
+          const response = await axiosInstance.post(ENDPOINTS.LOGOUT)
+          console.log(response)
+          set({ user: null, isAuthenticated: false }) // Réinitialiser l'état lors de la déconnexion
+        } catch (error) {
+          console.error('Logout failed:', error)
+        }
+      }
     }),
     { name: 'auth-store' }
   )

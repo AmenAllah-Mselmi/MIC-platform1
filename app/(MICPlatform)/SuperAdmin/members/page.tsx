@@ -54,23 +54,6 @@ const Page: React.FC = () => {
       label: 'Image Link'
     }
   ]
-  const headCells2 = [
-    { id: '_id', numeric: false, disablePadding: true, label: 'dfsdfs' },
-    {
-      id: 'NomPrenom',
-      numeric: false,
-      disablePadding: true,
-      label: 'dfsfsdf'
-    },
-    { id: 'Email', numeric: false, disablePadding: false, label: 'Edfsfmail' },
-    { id: 'Adresse', numeric: false, disablePadding: false, label: 'dfsdfs' },
-    {
-      id: 'ImageLink',
-      numeric: false,
-      disablePadding: false,
-      label: 'Image Link'
-    }
-  ]
 
   const handleDelete = async (id: string) => {
     try {

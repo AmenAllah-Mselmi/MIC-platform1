@@ -3,7 +3,6 @@ const { Instructor } = require('../models/user')
 const { department } = require('../models/department')
 const session = require('../models/session')
 const Assignment = require('../models/assignment')
-
 const bcrypt = require('bcryptjs')
 
 
@@ -61,29 +60,31 @@ const controller = {
 
   Member_get_assignments_of_his_department: async (req, res) => {
     try {
-      const { departmentId } = req.params
-
-      // Vérifiez si le département existe et peupler les assignments directement
+      const { departmentId } = req.params;
+  
+      // Check if the department exists and populate the assignments, sorted by DueDate descending
       const departmentExists = await department
         .findById(departmentId)
         .populate({
-          path: 'assignments', // Nom du champ assignments dans le modèle department
-          select: 'Title Description DueDate Attachments' // Champs à peupler dans Assignment
-        })
-
+          path: 'assignments', // Name of the assignments field in the department model
+          select: 'Title Description DueDate Attachments', // Fields to populate from Assignment
+          options: { sort: { DueDate: -1 } } // Sort by DueDate in descending order (most recent first)
+        });
+  
       if (!departmentExists) {
-        return res.status(404).json({ message: 'Department not found' })
+        return res.status(404).json({ message: 'Department not found' });
       }
-
+  
       res.status(200).json(
-        departmentExists.assignments // Renvoie les assignments peuplés
-      )
+        departmentExists.assignments // Return the populated assignments
+      );
     } catch (error) {
       res
         .status(500)
-        .json({ message: 'Error retrieving assignments', error: error.message })
+        .json({ message: 'Error retrieving assignments', error: error.message });
     }
   },
+  
 
   create_Member: async (req, res) => {
     try {
@@ -159,7 +160,7 @@ const controller = {
       console.log(error)
     }
   },
-  // end test
+
   delete_Member: async (req, res) => {
     try {
       const id = req.params.id
@@ -172,6 +173,7 @@ const controller = {
       res.status(404).json({ message: 'Error in deleting Member' })
     }
   },
+  // end test
 
   findMember: async (req, res) => {
     try {

@@ -2,13 +2,14 @@ import axios from 'axios'
 import { Session } from '../Models/Session'
 import { ENDPOINTS } from '../constants/api'
 import { InstructorDTO } from '../Models/InstructorDTO'
+import axiosInstance from '@/app/axiosInstance'
 
 // Fonction pour récupérer les sessions en fonction du département
 export const fetchSessions = async (
   DepartmentId: string
 ): Promise<Session[]> => {
   try {
-    const response = await axios.get<Session[]>(
+    const response = await axiosInstance.get<Session[]>(
       ENDPOINTS.FETCH_SESSIONS_BY_DEPARTMENT(DepartmentId)
     )
     return response.data
@@ -22,7 +23,7 @@ export const fetchInstructorsNames = async (
   DepartmentId: string
 ): Promise<InstructorDTO[]> => {
   try {
-    const response = await axios.get<InstructorDTO[]>(
+    const response = await axiosInstance.get<InstructorDTO[]>(
       ENDPOINTS.FETCH_SESSIONS_BY_DEPARTMENT(DepartmentId)
     )
     return response.data
@@ -35,7 +36,7 @@ export const fetchInstructorsNames = async (
 // Fonction pour supprimer une session par ID
 export const deleteSession = async (id: string | number): Promise<string> => {
   try {
-    const response = await axios.delete(
+    const response = await axiosInstance.delete(
       ENDPOINTS.DELETE_SESSION_FOR_INSTRUCTOR(id)
     )
     console.log(response.data)
@@ -51,7 +52,7 @@ export const addSession = async (
   DepartmentId: string
 ): Promise<Session> => {
   try {
-    const response = await axios.post<Session>(
+    const response = await axiosInstance.post<Session>(
       ENDPOINTS.ADD_SESSION,
       { ...sessionData, DepartmentId } // Fusionne departmentId avec les données de session
     )
@@ -70,7 +71,7 @@ export const updateSession = async (
 ): Promise<Session> => {
   try {
     // Inclure l'ID de la session dans le body de la requête
-    const response = await axios.put<Session>(
+    const response = await axiosInstance.put<Session>(
       ENDPOINTS.UPDATE_SESSION,
       { ...sessionData, sessionId: sessionId } // L'ID est ajouté au corps de la requête
     )

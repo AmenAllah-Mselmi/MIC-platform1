@@ -19,10 +19,10 @@ import { Assignment } from "@/app/store/Models/Assignment";
 import UpdateAssignmentModal from "../../_MICcomponents/assignment_UI/AssignementUpdateModal";
 import DeleteAssignmentModal from "../../_MICcomponents/assignment_UI/AssignementDeleteModal";
 import AssignmentModal from "../../_MICcomponents/assignment_UI/AssignmentModal";
-import { useRouter } from 'next/navigation'; // Import useRouter for navigation
+import { useRouter } from "next/navigation";
 
 const Page: React.FC = () => {
-  const router = useRouter(); // Initialize router for navigation
+  const router = useRouter();
   const assignments = useAssignmentStore((state) => state.assignments);
   const fetchAssignments = useAssignmentStore((state) => state.fetchAssignments);
   const deleteAssignment = useAssignmentStore((state) => state.deleteAssignment);
@@ -41,7 +41,6 @@ const Page: React.FC = () => {
     const loadAssignments = async () => {
       await fetchAssignments("670792e3ee0e13424434d371");
     };
-
     loadAssignments();
   }, [fetchAssignments]);
 
@@ -54,7 +53,7 @@ const Page: React.FC = () => {
   };
 
   const handleEditAssignment = (id: string | number) => {
-    const assignment = assignments.find((assignment) => assignment._id === id);
+    const assignment = assignments?.find((assignment) => assignment?._id === id);
     if (assignment) {
       setEditingAssignment(assignment);
       setOpenUpdateDialog(true);
@@ -67,8 +66,11 @@ const Page: React.FC = () => {
   };
 
   const handleDeleteAssignment = (id: string) => {
-    setAssignmentToDelete(id);
-    setOpenDeleteDialog(true);
+    const assignment = assignments?.find((assignment) => assignment?._id === id);
+    if (assignment) {
+      setAssignmentToDelete(id);
+      setOpenDeleteDialog(true);
+    }
   };
 
   const handleCloseDeleteDialog = () => {
@@ -89,26 +91,6 @@ const Page: React.FC = () => {
     }
   };
 
-  const headCells = [
-    { id: "Title", numeric: false, disablePadding: true, label: "Title" },
-    { id: "Description", numeric: false, disablePadding: true, label: "Description" },
-    { id: "DueDate", numeric: false, disablePadding: false, label: "Due Date" },
-    { id: "Attachments", numeric: false, disablePadding: false, label: "Attachments" },
-  ];
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const handleUpdateAssignment = async (id: string, updatedData: { title: string; description: string; dueDate: string }) => {
-    try {
-      await updateAssignment(id, updatedData);
-      toast.success("Assignment updated successfully", { position: "bottom-center" });
-      handleCloseUpdateDialog();
-    } catch (error) {
-      toast.error("Failed to update assignment", { position: "bottom-center" });
-    }
-  };
-
   const handleOpenAssignmentModal = (assignment: Assignment) => {
     setSelectedAssignment(assignment);
     setOpenAssignmentModal(true);
@@ -119,22 +101,19 @@ const Page: React.FC = () => {
     setSelectedAssignment(null);
   };
 
+  const headCells = [
+    { id: "Title", numeric: false, disablePadding: true, label: "Title" },
+    { id: "DueDate", numeric: false, disablePadding: false, label: "Due Date" },
+  ];
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <>
       {isMobile ? (
-        <Box
-          className="container mx-auto mt-20 flex flex-col items-center justify-around lg:w-[1500px]"
-          sx={{ width: "100%", height: "100vh" }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: 1,
-              marginLeft: 1,
-              marginRight: 1,
-            }}
-          >
+        <Box className="container mx-auto mt-20 flex flex-col items-center justify-around lg:w-[1500px]" sx={{ width: "100%", height: "100vh" }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", gap: 1, marginLeft: 1, marginRight: 1 }}>
             <Button variant="contained" startIcon={<AddCircleOutlineIcon />} onClick={() => router.push("/Instructor/create")}>
               Add new Assignment
             </Button>
@@ -143,11 +122,11 @@ const Page: React.FC = () => {
           {currentAssignments.length > 0 ? (
             currentAssignments.map((assignment) => (
               <AssignmentCard
-                key={assignment._id}
+                key={assignment?._id}
                 assignment={assignment}
-                onEdit={() => handleEditAssignment(assignment._id)}
-                onDelete={() => handleDeleteAssignment(assignment._id)}
-                onOpenAssignmentModal={() => handleOpenAssignmentModal(assignment)} // Handle opening the modal
+                onEdit={() => handleEditAssignment(assignment?._id)}
+                onDelete={() => handleDeleteAssignment(assignment?._id)}
+                onOpenAssignmentModal={() => handleOpenAssignmentModal(assignment)}
               />
             ))
           ) : (
@@ -156,44 +135,57 @@ const Page: React.FC = () => {
 
           <PaginationComponent
             currentPage={currentPage}
-            totalItems={assignments.length}
+            totalItems={assignments ? assignments.length : 0}
             itemsPerPage={itemsPerPage}
             onPageChange={handlePageChange}
           />
         </Box>
       ) : (
-        <Box
-          sx={{
-            width: "100%",
-            height: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Grid container spacing={7} sx={{ margin: 0, padding: 0 }}>
-            <Grid item xs={12} md={8} sx={{ margin: 0, padding: 0 }}>
-              <EnhancedTable
-                data={assignments}
-                headCells={headCells}
-                title="List of Assignments"
-                onDelete={handleDeleteAssignment}
-                renderRowActions={(row) => (
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Button variant="outlined" onClick={() => handleEditAssignment(row._id)}>
-                      Edit
-                    </Button>
-                  </Box>
-                )}
-                sx={{ width: '96%', margin: '0 auto' }} // Center the EnhancedTable
-              />
+        <div className="w-full flex justify-center items-center">
+          <Box
+            sx={{
+              width: "90%",  // Set the width to 90% of the screen
+              height: "100vh",  // Full height of the viewport
+              display: "flex",
+              alignItems: "center",  // Center vertically
+              justifyContent: "center",  // Center horizontally
+              margin: "0 auto",  // Ensure it's centered horizontally
+            }}
+          >
+            <Grid container spacing={7} sx={{ margin: 0, padding: 0 }}>
+              <Grid item xs={11}  sx={{ margin: 0, padding: 0 }}>
+                <EnhancedTable
+                  data={assignments}
+                  headCells={headCells}
+                  title="List of Assignments"
+                  onDelete={handleDeleteAssignment}
+                  renderRowActions={(row) => (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Button variant="outlined" onClick={() => handleEditAssignment(row._id)}>
+                        Edit
+                      </Button>
+                      <Button variant="outlined" onClick={() => handleOpenAssignmentModal(row)}>
+                        View
+                      </Button>
+                      <Button variant="contained" onClick={() => console.log("View Responses", row._id)}>
+                        View Responses
+                      </Button>
+                    </Box>
+                  )}
+                  sx={{ width: "100%", margin: "0 auto" }}  // Ensure table fills its container
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12} md={4} sx={{ marginTop: { xs: 0, md: 0 }, padding: 0 }} />
-          </Grid>
-        </Box>
+          </Box>
+        </div>
       )}
 
-      {/* Dialogs for editing and deleting assignments */}
       {editingAssignment && (
         <UpdateAssignmentModal
           isOpen={openUpdateDialog}
@@ -202,7 +194,7 @@ const Page: React.FC = () => {
           initialTitle={editingAssignment.Title}
           initialDescription={editingAssignment.Description}
           initialDate={editingAssignment.DueDate}
-          onUpdate={handleUpdateAssignment}
+          onUpdate={() => console.log("Update Assignment")}
         />
       )}
 
@@ -214,12 +206,17 @@ const Page: React.FC = () => {
         />
       )}
 
-      {/* Assignment Modal for viewing details */}
       {selectedAssignment && (
         <AssignmentModal
           isOpen={openAssignmentModal}
-          onClose={handleCloseAssignmentModal}
-          assignment={selectedAssignment}
+          onOpenChange={handleCloseAssignmentModal}
+          instructor={selectedAssignment.Instructor}
+          date={selectedAssignment.DueDate}
+          content={selectedAssignment.Description}
+          resources={selectedAssignment.Resources}
+          imageUrl={selectedAssignment.ImageUrl}
+          assignmentId={selectedAssignment._id}
+          placeholder="Add your response here"
         />
       )}
     </>

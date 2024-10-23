@@ -21,6 +21,9 @@ FETCH_ALL_Assignements: () =>
   ADD_SESSION: ()=>`${API_BASE_URL}/session/add-session-in-department/`,
   GET_INSTRUCTORS_NAMES:()=> `${API_BASE_URL}/instructor/get-instructors-names`,
 
+  // DEPARTMENTS
+  GET_DEPARTMENTS_NAMES_IDS: `${API_BASE_URL}/department/names-ids`,
+
   // Members :
   FETCH_MEMBERS: (departmentId: string) =>
     `${API_BASE_URL}/member/all/${departmentId}`,
@@ -46,7 +49,15 @@ FETCH_ALL_Assignements: () =>
   DELETE_SESSION_FOR_INSTRUCTOR: (idSession: string | number) =>
     `${API_BASE_URL}/session/${idSession}`,
   ADD_MEMBER_FOR_ADMIN: `${API_BASE_URL}/member/create`,
-  LOGIN: `${API_BASE_URL}/user/login`,
 
+
+  // Response :
+  FETCH_RESPONSES: `${API_BASE_URL}/response/responses`,
+  ADD_RESPONSE_FOR_MEMBER: `${API_BASE_URL}/response/responses`,
+  FETCH_RESPONSE_BY_ASSIGNMENT_AND_USER: `${API_BASE_URL}/response/responsesByAssignmentIdAndUserId`,
+
+  // Authentification
+  LOGIN: `${API_BASE_URL}/user/login`,
+  LOGOUT: `${API_BASE_URL}/user/logout`
 }
 
