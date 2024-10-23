@@ -1,9 +1,11 @@
 'use client'
 
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDisclosure, Button } from '@nextui-org/react'
 import AssignmentModal from './AssignmentModal'
+import Link from 'next/link'
+import { useMemberStore } from '@/app/store/MyStore/MembersStore'
 
 // Component: AssignmentCard
 interface AssignmentCardProps {
@@ -18,6 +20,19 @@ interface AssignmentCardProps {
 
 export default function AssignmentCard({ assignment }: AssignmentCardProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+
+  const HandleNavigate = (id: string, event: React.MouseEvent) => {
+    console.log('test id ', id)
+    event.preventDefault() // Empêche la navigation par défaut
+
+    localStorage.setItem('selectedAssignmentId', id)
+    window.location.href = '/Instructor/responses'
+  }
+  useEffect(() => {
+    // Récupère l'ID de l'assignement du localStorage dans la page de destination
+    const selectedId = localStorage.getItem('selectedAssignmentId')
+    console.log('Updated selectedAssignmentId:', selectedId)
+  }, [])
 
   return (
     <div className='mx-auto mb-4 mt-4 flex h-fit w-11/12 flex-col flex-wrap rounded-lg bg-white p-5'>
@@ -39,13 +54,24 @@ export default function AssignmentCard({ assignment }: AssignmentCardProps) {
         {assignment.description}
       </p>
 
-      <div className='flex h-11 items-center justify-end'>
-        <Button
-          onPress={onOpen}
-          className='flex h-full w-32 cursor-pointer items-center justify-center rounded-full bg-MIC text-white'
-        >
-          See More
-        </Button>
+      <div className='flex h-11 items-center justify-between'>
+        <div className='flex h-full'>
+          <Button
+            onClick={event => HandleNavigate(assignment._id, event)}
+            className='h-full w-32 cursor-pointer items-center justify-center rounded-full bg-MIC text-white'
+          >
+            Responses
+          </Button>
+        </div>
+
+        <div className='flex h-full'>
+          <Button
+            onPress={onOpen}
+            className='h-full w-32 cursor-pointer items-center justify-center rounded-full bg-MIC text-white'
+          >
+            See More
+          </Button>
+        </div>
       </div>
 
       <AssignmentModal

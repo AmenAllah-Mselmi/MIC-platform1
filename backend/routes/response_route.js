@@ -25,6 +25,36 @@ route.get('/responses', response_controller.Display_All)
 
 /**
  * @swagger
+ * /api/response/responsesByAssignment/{Assignment_id}:
+ *   get:
+ *     summary: Récupère toutes les réponses pour un assignement spécifique
+ *     tags: [Responses]
+ *     parameters:
+ *       - in: path
+ *         name: Assignment_id
+ *         required: true
+ *         description: ID de l'assignement pour lequel récupérer les réponses
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Une liste de toutes les réponses pour l'assignement spécifié
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Response'
+ *       500:
+ *         description: Erreur serveur lors de la récupération des réponses
+ */
+route.get(
+  '/responsesByAssignment/:Assignment_id',
+  response_controller.Display_Responses_By_Assignment_Id
+)
+
+/**
+ * @swagger
  * /api/response/responses:
  *   post:
  *     summary: Créer une nouvelle réponse
@@ -42,7 +72,7 @@ route.get('/responses', response_controller.Display_All)
  *                 example: "6532ab12345678f1abc"
  *               assignmentId:
  *                 type: string
- *                 description: ID de l'assignment
+ *                 description: ID de l'assignement
  *                 example: "7e32ab1234bb78f1xyz"
  *               content:
  *                 type: string
@@ -93,9 +123,9 @@ route.post('/responses', response_controller.create_Response)
  *               properties:
  *                 _id:
  *                   type: string
- *                 User_Id:
+ *                 User_id:
  *                   type: string
- *                 Assignment_Id:
+ *                 Assignment_id:
  *                   type: string
  *                 Content:
  *                   type: string

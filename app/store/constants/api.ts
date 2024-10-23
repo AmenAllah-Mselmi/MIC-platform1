@@ -27,7 +27,9 @@ export const ENDPOINTS = {
   ADD_MEMBER_FOR_ADMIN: `${API_BASE_URL}/member/create`,
 
   // Response :
-  FETCH_RESPONSES: `${API_BASE_URL}/response/responses`,
+  FETCH_RESPONSES_FOR_INSTRUCTOR: (idAssignment: string) =>
+    `${API_BASE_URL}/response/responsesByAssignment/${idAssignment}`,
+
   ADD_RESPONSE_FOR_MEMBER: `${API_BASE_URL}/response/responses`,
   FETCH_RESPONSE_BY_ASSIGNMENT_AND_USER: `${API_BASE_URL}/response/responsesByAssignmentIdAndUserId`,
 

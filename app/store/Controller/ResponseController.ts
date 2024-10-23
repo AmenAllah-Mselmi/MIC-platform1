@@ -2,17 +2,19 @@
 
 import { ENDPOINTS } from '../constants/api'
 import axiosInstance from '@/app/axiosInstance'
-import { Response } from '../Models/Response'
+import { Response, ResponseForInstructor } from '../Models/Response'
 
-export const fetchResponses = async (MemberId: string): Promise<Response[]> => {
+export const fetchResponses = async (
+  id: string
+): Promise<ResponseForInstructor[]> => {
   try {
-    const response = await axiosInstance.get<Response[]>(
-      ENDPOINTS.FETCH_RESPONSES
+    const response = await axiosInstance.get<ResponseForInstructor[]>(
+      ENDPOINTS.FETCH_RESPONSES_FOR_INSTRUCTOR(id)
     )
     console.log(response.data)
     return response.data
   } catch (error) {
-    console.error('Erreur lors de la récupération des membres:', error)
+    console.error('Erreur lors de la récupération des responses:', error)
   }
 }
 

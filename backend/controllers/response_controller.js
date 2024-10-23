@@ -6,16 +6,58 @@ const controller = {
   Display_All: async (req, res) => {
     try {
       const responses = await Response.find()
+        .select('Content status User_id Assignment_id createdAt') // Sélectionne les champs nécessaires, y compris createdAt
         .populate({
           path: 'User_id',
           select: 'NomPrenom' // Sélectionne uniquement le champ NomPrenom
         })
+
+      // Transforme les réponses pour obtenir le format souhaité
+      const formattedResponses = responses.map(response => ({
+        _id: response._id,
+        Content: response.Content,
+        Member: {
+          _id: response.User_id._id,
+          NomPrenom: response.User_id.NomPrenom
+        },
+        Assignment_id: response.Assignment_id,
+        status: response.status,
+        createdAt: response.createdAt // Ajoute createdAt ici
+      }))
+
+      res.status(200).json(formattedResponses)
+    } catch (error) {
+      res.status(500).json({
+        message: 'Erreur serveur lors de la récupération des réponses',
+        error: error.message
+      })
+    }
+  },
+  Display_Responses_By_Assignment_Id: async (req, res) => {
+    try {
+      const { Assignment_id } = req.params
+      const responses = await Response.find({ Assignment_id: Assignment_id })
+        .select('Content status User_id Assignment_id createdAt') // Sélectionne les champs nécessaires, y compris createdAt
         .populate({
-          path: 'Assignment_id',
-          select: 'Title' // Sélectionne uniquement le champ Title
+          path: 'User_id',
+          select: 'NomPrenom Email' // Sélectionne uniquement le champ NomPrenom
         })
 
-      res.status(200).json(responses)
+      // Transforme les réponses pour obtenir le format souhaité
+      const formattedResponses = responses.map(response => ({
+        _id: response._id,
+        Content: response.Content,
+        Member: {
+          _id: response.User_id._id,
+          NomPrenom: response.User_id.NomPrenom,
+          Email: response.User_id.Email
+        },
+        Assignment_id: response.Assignment_id,
+        status: response.status,
+        createdAt: response.createdAt // Ajoute createdAt ici
+      }))
+
+      res.status(200).json(formattedResponses)
     } catch (error) {
       res.status(500).json({
         message: 'Erreur serveur lors de la récupération des réponses',
