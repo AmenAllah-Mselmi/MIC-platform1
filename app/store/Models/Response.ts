@@ -6,8 +6,20 @@ export type Response = {
   createdAt: string
   status: string
 }
+export type ResponseForInstructor = {
+  _id: string
+  Content: string
+  Member: {
+    _id: string
+    NomPrenom: string
+    Email: string
+  }
+  Assignment_id: string
+  createdAt: string
+  status: string
+}
 
 export type State = {
-  responses: Response[]
+  responses: ResponseForInstructor[]
   fetchedResponse: Response | null
 }

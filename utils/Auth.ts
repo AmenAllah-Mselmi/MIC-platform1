@@ -7,7 +7,7 @@ interface DecodedToken {
 
 export function isAuthenticated(req: NextRequest): boolean {
   const token = req.cookies.get('token')?.value
-  console.log('Token 11111111 11111 :', token) // Debugging line
+  // console.log('Token:', token) // Debugging line
   if (!token || typeof token !== 'string') return false
 
   try {
@@ -27,7 +27,7 @@ export function isAuthenticated(req: NextRequest): boolean {
 
 export async function getUserRole(req: NextRequest): Promise<string | null> {
   const token = req.cookies.get('token')?.value
-  console.log('Token:', token) // Debugging line
+  // console.log('Token:', token) // Debugging line
   if (!token || typeof token !== 'string') return null
 
   try {
@@ -36,8 +36,7 @@ export async function getUserRole(req: NextRequest): Promise<string | null> {
       payload: DecodedToken
     }
 
-    console.log('payload.role')
-    console.log(payload.role)
+    // console.log('payload.role'+payload.role) // Debugging line
     return payload.role || null
   } catch (error) {
     console.error('Token decoding failed:', error)

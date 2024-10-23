@@ -57,14 +57,14 @@ export default function LoginForm() {
       console.log('bonjour')
       console.log(user)
       if (user.role === 'member') {
-        router.push('/Member/assignments')
-        console.log('bonjour member')
+        router.push('/Member/')
+        // console.log('bonjour member')
       } else if (user.role === 'instructor') {
-        console.log('bonjour Instructor')
+        // console.log('bonjour Instructor')
         router.push('/Instructor/assignments')
-        console.log('bonjour Instructor')
+        // console.log('bonjour Instructor')
       } else {
-        console.log('bonjour SuperAdmin')
+        // console.log('bonjour SuperAdmin')
         router.push('/SuperAdmin/add')
       }
     } catch (error) {

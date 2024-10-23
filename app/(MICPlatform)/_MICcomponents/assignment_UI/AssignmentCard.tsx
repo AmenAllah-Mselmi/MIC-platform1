@@ -1,11 +1,9 @@
 'use client'
 
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDisclosure, Button } from '@nextui-org/react'
 import AssignmentModal from './AssignmentModal'
-import EditIcon from '@mui/icons-material/Edit'; // Import Edit Icon
-import DeleteIcon from '@mui/icons-material/Delete'; // Import Delete Icon
 
 // Component: AssignmentCard
 interface AssignmentCardProps {
@@ -22,6 +20,19 @@ interface AssignmentCardProps {
 
 export default function AssignmentCard({ assignment, onEdit, onDelete }: AssignmentCardProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+
+  const HandleNavigate = (id: string, event: React.MouseEvent) => {
+    console.log('test id ', id)
+    event.preventDefault() // Empêche la navigation par défaut
+
+    localStorage.setItem('selectedAssignmentId', id)
+    window.location.href = '/Instructor/responses'
+  }
+  useEffect(() => {
+    // Récupère l'ID de l'assignement du localStorage dans la page de destination
+    const selectedId = localStorage.getItem('selectedAssignmentId')
+    console.log('Updated selectedAssignmentId:', selectedId)
+  }, [])
 
   return (
     <div className='mx-auto mb-4 mt-4 flex h-fit w-11/12 flex-col flex-wrap rounded-lg bg-white p-5'>
@@ -43,22 +54,7 @@ export default function AssignmentCard({ assignment, onEdit, onDelete }: Assignm
         {assignment.description}
       </p>
 
-      <div className='flex items-center justify-between h-11 mt-4'>
-        <div className='flex gap-2'>
-          <Button
-            onPress={() => onEdit(assignment._id)}
-            className='flex items-center rounded-full bg-MIC text-white'
-          >
-            <EditIcon fontSize="small" /> {/* Edit Icon */}
-          </Button>
-          <Button
-            onPress={() => onDelete(assignment._id)}
-            className='flex items-center rounded-full bg-red-500 text-white'
-          >
-            <DeleteIcon fontSize="small" /> {/* Delete Icon */}
-          </Button>
-        </div>
-        
+      <div className='flex h-11 items-center justify-end'>
         <Button
           onPress={onOpen}
           className='flex h-full w-32 cursor-pointer items-center justify-center rounded-full bg-MIC text-white'

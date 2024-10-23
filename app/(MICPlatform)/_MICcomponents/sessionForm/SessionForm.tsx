@@ -108,7 +108,7 @@ export default function SessionForm({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className='grid grid-cols-2 gap-6 p-8'
+            className='grid grid-cols-1 gap-6 p-8'
           >
             <FormField
               control={form.control}
@@ -144,7 +144,7 @@ export default function SessionForm({
               control={form.control}
               name='Date'
               render={({ field }) => (
-                <FormItem className='col-span-1'>
+                <FormItem className='flex flex-col col-span-2'>
                   <FormLabel>Date</FormLabel>
                   <FormControl>
                     <Controller
@@ -168,7 +168,7 @@ export default function SessionForm({
               control={form.control}
               name='Room'
               render={({ field }) => (
-                <FormItem className='col-span-1'>
+                <FormItem className='col-span-2'>
                   <FormLabel>Room</FormLabel>
                   <FormControl>
                     <Input placeholder='Enter room' {...field} />

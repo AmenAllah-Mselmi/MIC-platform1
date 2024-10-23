@@ -83,6 +83,7 @@ export default function Create() {
 
   return (
     <div className='mx-auto w-11/12 max-w-3xl pt-36 text-slate-700'>
+      <h1 className='text-4xl text-start  mb-7'>Create a new assignment</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {/* Title Input Field */}

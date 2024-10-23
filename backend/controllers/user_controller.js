@@ -58,8 +58,8 @@ const controller = {
             role: user.Role
           }
         }
-
-        console.log(token)
+        //debugging line 
+        // console.log(token)
         res
           .cookie('token', token, {
             httpOnly: true,
