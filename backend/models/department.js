@@ -6,7 +6,7 @@ const { Schema } = mongoose
 const DepartmentSchema = new Schema({
   DepartmentName: {
     type: String,
-    enum: ['Basic', 'Intermediate', 'Advanced'],
+    enum: ['Basic', 'Intermediate', 'Advanced' , 'Mariem Department Attention!!!!!'],
     required: true
   },
   instructors: [

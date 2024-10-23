@@ -92,51 +92,55 @@ const Page: React.FC = () => {
   return (
     <Box>
       <Grid container spacing={2}>
-        {responses.map((response: ResponseForInstructor, index: number) => (
-          <Grid item xs={12} sm={6} md={2} key={response._id}>
-            <Accordion
-              expanded={expanded === `panel${index}`}
-              onChange={handleChange(`panel${index}`)}
-            >
-              <AccordionSummary
-                aria-controls={`panel${index}-content`}
-                id={`panel${index}-header`}
+        {responses && responses.length > 0 ? (
+          responses.map((response: ResponseForInstructor, index: number) => (
+            <Grid item xs={12} sm={6} md={2} key={response._id}>
+              <Accordion
+                expanded={expanded === `panel${index}`}
+                onChange={handleChange(`panel${index}`)}
               >
-                <Typography>{response.Member.NomPrenom}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  <strong>Content:</strong> {response.Content}
-                  <br />
-                  <strong>Status:</strong>
-                  <br />
-                  {response.status === 'AWAITING FOR REVIEW' ? (
-                    <Button variant='outlined' color='error'>
-                      Awaiting for Review
-                    </Button>
-                  ) : (
-                    <Box display='flex' justifyContent='center'>
-                      <Button variant='outlined' color='success'>
-                        Success
+                <AccordionSummary
+                  aria-controls={`panel${index}-content`}
+                  id={`panel${index}-header`}
+                >
+                  <Typography>{response.Member.NomPrenom}</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    <strong>Content:</strong> {response.Content}
+                    <br />
+                    <strong>Status:</strong>
+                    <br />
+                    {response.status === 'AWAITING FOR REVIEW' ? (
+                      <Button variant='outlined' color='error'>
+                        Awaiting for Review
+                      </Button>
+                    ) : (
+                      <Box display='flex' justifyContent='center'>
+                        <Button variant='outlined' color='success'>
+                          Success
+                        </Button>
+                      </Box>
+                    )}
+                    <strong>Created At:</strong>
+                    {new Date(response.createdAt).toLocaleString()}
+                    <br />
+                    <Box display='flex' justifyContent='center' mt={2}>
+                      <Button
+                        variant='contained'
+                        onClick={() => handleOpen(response)}
+                      >
+                        Send comment
                       </Button>
                     </Box>
-                  )}
-                  <strong>Created At:</strong>
-                  {new Date(response.createdAt).toLocaleString()}
-                  <br />
-                  <Box display='flex' justifyContent='center' mt={2}>
-                    <Button
-                      variant='contained'
-                      onClick={() => handleOpen(response)}
-                    >
-                      Send comment
-                    </Button>
-                  </Box>
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-          </Grid>
-        ))}
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+            </Grid>
+          ))
+        ) : (
+          <Typography>No responses available</Typography> // Message si responses est vide
+        )}
       </Grid>
 
       {/* Modal Component */}
