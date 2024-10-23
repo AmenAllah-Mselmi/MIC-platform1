@@ -38,7 +38,9 @@ const Page: React.FC = () => {
   }
 
   const headCells = [
-    { id: '_id', numeric: false, disablePadding: true, label: 'ID' },
+    {
+      /*{ id: '_id', numeric: false, disablePadding: true, label: 'ID' }*/
+    },
     {
       id: 'NomPrenom',
       numeric: false,
@@ -47,6 +49,14 @@ const Page: React.FC = () => {
     },
     { id: 'Email', numeric: false, disablePadding: false, label: 'Email' },
     { id: 'Adresse', numeric: false, disablePadding: false, label: 'Adresse' },
+    {
+      /*{
+      id: 'FormattedDepartmentsIds',
+      numeric: false,
+      disablePadding: false,
+      label: 'DepartmentIds'
+    },*/
+    },
     {
       id: 'ImageLink',
       numeric: false,
@@ -71,12 +81,12 @@ const Page: React.FC = () => {
 
   return (
     <Layout>
-      <Grid container spacing={7} sx={{ margin: 0, padding: 0 }}>
-        <Grid item xs={7} sx={{ margin: 0, padding: 0 }}>
+      <Grid container spacing={1} sx={{ margin: 0, padding: 1 }}>
+        <Grid item xs={8} sx={{ margin: 0, padding: 0 }}>
           <EnhancedTable
             data={members}
             headCells={headCells}
-            title='Liste des Membres'
+            title='List of Membres'
             onDelete={handleDelete}
             renderRowActions={row => (
               <Button variant='outlined' onClick={() => handleEdit(row._id)}>
@@ -85,7 +95,7 @@ const Page: React.FC = () => {
             )}
           />
         </Grid>
-        <Grid item xs={4} sx={{ margin: 1, padding: 0 }}>
+        <Grid item xs={4} sx={{ margin: 0, padding: 1 }}>
           <UserForm
             editingMember={editingMember}
             setEditingMember={setEditingMember}
