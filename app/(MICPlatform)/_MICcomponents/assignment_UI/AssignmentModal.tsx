@@ -8,7 +8,6 @@ import {
   ModalFooter
 } from '@nextui-org/react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Input } from '@/components/ui/input'
 import { Send } from 'lucide-react'
 import { useResponseStore } from '@/app/store/MyStore/ResponseStore' // Importez votre store ici
@@ -30,10 +29,9 @@ export default function AssignmentModal({
   const { responses, fetchResponses, addResponse } = useResponseStore()
   const [responseContent, setResponseContent] = useState('')
   const user = useAuthStore(state => state.user)
-  const [User_Id] = useState(user.id) // Utilisateur statique pour le test
-  const [Assignment_Id] = useState(assignmentId) // Assignment statique pour le test
+  const [User_Id] = useState(user.id)
+  const [Assignment_Id] = useState(assignmentId)
 
-  // Simuler la récupération des réponses au chargement du composant
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,17 +43,18 @@ export default function AssignmentModal({
     fetchData()
   }, [fetchResponses, User_Id])
 
-  // Fonction pour gérer l'ajout d'une réponse
   const handleAddResponse = async () => {
     if (responseContent) {
       try {
         await addResponse(responseContent, User_Id, Assignment_Id)
-        setResponseContent('') // Réinitialiser le champ de saisie après l'ajout
+        setResponseContent('')
       } catch (error) {
         console.error("Erreur lors de l'ajout de la réponse", error)
       }
     }
   }
+
+
 
   return (
     <Modal size={'3xl'} isOpen={isOpen} onOpenChange={onOpenChange}>

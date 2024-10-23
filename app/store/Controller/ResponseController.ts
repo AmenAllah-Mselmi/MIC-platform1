@@ -58,3 +58,20 @@ export const fetchResponseByAssignmentAndUser = async (
     return null
   }
 }
+export const update_Response_By_Member = async (
+  dataResponse: Response
+): Promise<Response> => {
+  try {
+    const response = await axiosInstance.put<Response>(
+      ENDPOINTS.UPDATE_RESPONSE_BY_MEMBER(dataResponse._id),
+      dataResponse
+    )
+
+    console.log('response.data')
+    console.log(response.data)
+    return response.data
+  } catch (error) {
+    console.error('Error while adding the response:', error)
+    return null
+  }
+}

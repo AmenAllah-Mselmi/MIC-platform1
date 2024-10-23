@@ -22,7 +22,7 @@ export default function AssignmentCard({ assignment }: AssignmentCardProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   const HandleNavigate = (id: string, event: React.MouseEvent) => {
-    console.log('test id ', id)
+   
     event.preventDefault() // Empêche la navigation par défaut
 
     localStorage.setItem('selectedAssignmentId', id)
