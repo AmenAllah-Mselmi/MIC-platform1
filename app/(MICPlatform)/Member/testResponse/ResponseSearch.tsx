@@ -34,10 +34,10 @@ const ResponseSearch = ({ Assignment_Id }) => {
     fetchData()
   }, [Assignment_Id, userId, fetchResponseByAssignmentAndUser])
 
-  // Fonction pour gérer l'édition
+ 
   const handleEdit = () => {
     setIsEditing(true)
-    setEditedContent(fetchedResponse.Content) // Charger le contenu actuel pour édition
+    setEditedContent(fetchedResponse.Content) 
   }
 
   const handleSave = async () => {
