@@ -50,19 +50,18 @@ const ResponseSearch = ({ Assignment_Id }) => {
   }
 
   return (
-    <div className='flex w-full flex-col items-center justify-center'>
-      {fetchedResponse && (
-        <Card elevation={3} style={{ width: '100%' }}>
+     <div className='flex w-full flex-col items-center justify-center'>
+      {fetchedResponse ? (
+        <Card elevation={3} className='w-full bg-white shadow-md rounded-lg p-4'>
           <CardContent>
             <Grid container alignItems='center' justifyContent='space-between'>
               <Grid item xs={8}>
-                <div className='flex-1 text-start' style={{ width: '100%' }}>
+                <div className='flex-1 text-start w-full'>
                   {!isEditing ? (
                     <>
                       <Typography
                         variant='h5'
-                        className='text-start text-lg font-extrabold'
-                        style={{ wordBreak: 'break-word' }}
+                        className='text-start text-lg font-extrabold break-words'
                       >
                         {fetchedResponse.Content}
                       </Typography>
@@ -79,6 +78,7 @@ const ResponseSearch = ({ Assignment_Id }) => {
                       multiline
                       value={editedContent}
                       onChange={e => setEditedContent(e.target.value)}
+                      className='mt-2 rounded-lg border border-solid border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50'
                     />
                   )}
                 </div>
@@ -91,7 +91,6 @@ const ResponseSearch = ({ Assignment_Id }) => {
                   spacing={2}
                   alignItems='flex-end'
                 >
-                  {/* Statut */}
                   <Grid item>
                     <Button
                       variant='outlined'
@@ -99,10 +98,10 @@ const ResponseSearch = ({ Assignment_Id }) => {
                         fetchedResponse.status === 'APPROVED'
                           ? 'success'
                           : fetchedResponse.status === 'AWAITING FOR REVIEW'
-                            ? 'error'
-                            : 'warning'
+                          ? 'error'
+                          : 'warning'
                       }
-                      style={{ minWidth: '150px' }}
+                      className='min-w-[150px]'
                     >
                       {fetchedResponse.status}
                     </Button>
@@ -129,9 +128,7 @@ const ResponseSearch = ({ Assignment_Id }) => {
             </Grid>
           </CardContent>
         </Card>
-      )}
-
-      {!fetchedResponse && (
+      ) : (
         <Typography className='text-red-600'>
           No response found for the given Assignment.
         </Typography>

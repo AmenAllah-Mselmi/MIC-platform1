@@ -10,6 +10,8 @@ const dotenv = require('dotenv')
 const response = require('./routes/response_route')
 const attachment = require('./routes/attachment_route')
 const user = require('./routes/user_route')
+const rateLimiter = require('./rateLimiter')
+const helmet = require('helmet')
 
 dotenv.config()
 // Intégration de Swagger à l'URL /api-docs
@@ -18,6 +20,9 @@ const swaggerSpec = require('./swagger/swaggerConfig')
 
 const app = express()
 const PORT = process.env.PORT || 8080
+
+app.use(rateLimiter)
+app.use(helmet())
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 // fin Intégration de Swagger

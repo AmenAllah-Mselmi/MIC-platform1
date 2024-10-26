@@ -14,11 +14,12 @@ interface Department {
   imgUrl: string
 }
 const departmentImages = {
-  'Basic Web': '@/public/images/departments/basic-web.png',
-  'Advanced Web': '@/public/images/departments/advanced-web.png',
-  'Intermediate Web': '@/public/images/departments/intermediate-web.png',
-  AI: '@/public/images/departments/ml.png'
+  'Basic Web': '/images/departments/basic-web.png',
+  'Advanced Web': '/images/departments/advanced-web.png',
+  'Intermediate Web': '/images/departments/intermediate-web.png',
+  AI: '/images/departments/ml.png'
 }
+console.log(departmentImages['Basic Web'])
 
 export default function Dashboard() {
   const router = useRouter()

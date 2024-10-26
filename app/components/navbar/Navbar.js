@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Inter } from 'next/font/google'
 import { FaBars } from 'react-icons/fa'
 import { useEffect, useRef, useState } from 'react'
+import { useAuthStore } from '@/app/store/MyStore/AuthStore'
 
 const inter = Inter({ subsets: ['latin-ext'], weights: 400 })
 
@@ -14,6 +15,7 @@ export default function Navbar() {
   const navRef = useRef(null)
   const linksRef = useRef(null)
   const headerRef = useRef(null)
+  const user = useAuthStore(state => state.user)
 
   useEffect(() => {
     let linksHeight = linksRef.current.getBoundingClientRect().height
@@ -53,13 +55,13 @@ export default function Navbar() {
               height={37}
             />
           </Link>
-          <div onClick={() => setShowlinks((prev) => !prev)} className='burger'>
+          <div onClick={() => setShowlinks(prev => !prev)} className='burger'>
             <FaBars />
           </div>
         </div>
         <div ref={navRef} className='links-container'>
           <ul
-            onClick={() => setShowlinks((prev) => !prev)}
+            onClick={() => setShowlinks(prev => !prev)}
             ref={linksRef}
             className={`${inter.className} links`}
           >
@@ -81,14 +83,16 @@ export default function Navbar() {
             <li>
               <Link href='/contact'>Contact</Link>
             </li>
-            <li>
-              <Link
-                className='bg-primary px-4 py-1 border rounded-lg hover:bg-secondary transition'
-                href='/login'
-              >
-                Login
-              </Link>
-            </li>
+            {!user && (
+              <li>
+                <Link
+                  className='rounded-lg border bg-primary px-4 py-1 transition hover:bg-secondary'
+                  href='/login'
+                >
+                  Login
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </nav>

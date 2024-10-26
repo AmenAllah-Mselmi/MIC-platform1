@@ -1,6 +1,5 @@
-
 import React from 'react'
-import { Card, CardHeader, CardBody, Image } from "@nextui-org/react"
+import { Card, CardHeader, CardBody, Image } from '@nextui-org/react'
 
 interface DepartmentCardProps {
   name: string
@@ -8,24 +7,21 @@ interface DepartmentCardProps {
 }
 
 const DepartmentCard: React.FC<DepartmentCardProps> = ({ name, imageUrl }) => {
- 
   return (
-    <Card className="py-4">
-    <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-     
-      <h4 className="font-bold text-large">{name}</h4>
-    </CardHeader>
-    <CardBody className="overflow-visible py-2">
-      <Image
-        alt="Card background"
-        className="object-cover rounded-xl"
-        src={imageUrl}
-        width={270}
-        height={150}
-      />
-    </CardBody>
-  </Card>
+    <Card className='py-4'>
+      <CardHeader className='flex-col items-start px-4 pb-0 pt-2'>
+        <h4 className='text-large font-bold'>{name}</h4>
+      </CardHeader>
+      <CardBody className='overflow-visible py-2'>
+        <Image
+          alt='Card background'
+          className='rounded-xl object-contain'
+          src={imageUrl}
+          width={300}
+          height={190}
+        />
+      </CardBody>
+    </Card>
   )
 }
 export default DepartmentCard
-

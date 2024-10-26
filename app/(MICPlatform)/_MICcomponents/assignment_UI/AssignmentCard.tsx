@@ -5,7 +5,7 @@ import React, { useEffect } from 'react'
 import { useDisclosure, Button } from '@nextui-org/react'
 import AssignmentModal from './AssignmentModal'
 import Link from 'next/link'
-import { useMemberStore } from '@/app/store/MyStore/MembersStore'
+import { useAuthStore } from '@/app/store/MyStore/AuthStore'
 
 // Component: AssignmentCard
 interface AssignmentCardProps {
@@ -20,9 +20,9 @@ interface AssignmentCardProps {
 
 export default function AssignmentCard({ assignment }: AssignmentCardProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const user = useAuthStore(state => state.user)
 
   const HandleNavigate = (id: string, event: React.MouseEvent) => {
-   
     event.preventDefault() // Empêche la navigation par défaut
 
     localStorage.setItem('selectedAssignmentId', id)
@@ -55,14 +55,16 @@ export default function AssignmentCard({ assignment }: AssignmentCardProps) {
       </p>
 
       <div className='flex h-11 items-center justify-between'>
-        <div className='flex h-full'>
-          <Button
-            onClick={event => HandleNavigate(assignment._id, event)}
-            className='h-full w-32 cursor-pointer items-center justify-center rounded-full bg-MIC text-white'
-          >
-            Responses
-          </Button>
-        </div>
+        {user?.role == 'instructor' && (
+          <div className='flex h-full'>
+            <Button
+              onClick={event => HandleNavigate(assignment._id, event)}
+              className='h-full w-32 cursor-pointer items-center justify-center rounded-full bg-MIC text-white'
+            >
+              Responses
+            </Button>
+          </div>
+        )}
 
         <div className='flex h-full'>
           <Button

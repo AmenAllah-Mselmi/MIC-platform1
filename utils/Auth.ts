@@ -15,7 +15,6 @@ export function isAuthenticated(req: NextRequest): boolean {
     if (!secretKey) {
       throw new Error('JWT secret key is missing')
     }
-    console.log('salut')
     const secret = new TextEncoder().encode(process.env.JWT_SECRET)
     jwtVerify(token, secret)
     return true
@@ -36,7 +35,6 @@ export async function getUserRole(req: NextRequest): Promise<string | null> {
       payload: DecodedToken
     }
 
-    // console.log('payload.role'+payload.role) // Debugging line
     return payload.role || null
   } catch (error) {
     console.error('Token decoding failed:', error)
