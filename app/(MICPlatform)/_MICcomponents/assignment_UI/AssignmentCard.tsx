@@ -4,6 +4,8 @@ import Image from 'next/image'
 import React, { useEffect } from 'react'
 import { useDisclosure, Button } from '@nextui-org/react'
 import AssignmentModal from './AssignmentModal'
+import Link from 'next/link'
+import { useAuthStore } from '@/app/store/MyStore/AuthStore'
 
 // Component: AssignmentCard
 interface AssignmentCardProps {
@@ -14,15 +16,13 @@ interface AssignmentCardProps {
     description: string
     Attachments: string[]
   }
-  onEdit: (id: string) => void; // Prop for edit handler
-  onDelete: (id: string) => void; // Prop for delete handler
 }
 
-export default function AssignmentCard({ assignment, onEdit, onDelete }: AssignmentCardProps) {
+export default function AssignmentCard({ assignment }: AssignmentCardProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const user = useAuthStore(state => state.user)
 
   const HandleNavigate = (id: string, event: React.MouseEvent) => {
-    console.log('test id ', id)
     event.preventDefault() // Empêche la navigation par défaut
 
     localStorage.setItem('selectedAssignmentId', id)
@@ -54,13 +54,26 @@ export default function AssignmentCard({ assignment, onEdit, onDelete }: Assignm
         {assignment.description}
       </p>
 
-      <div className='flex h-11 items-center justify-end'>
-        <Button
-          onPress={onOpen}
-          className='flex h-full w-32 cursor-pointer items-center justify-center rounded-full bg-MIC text-white'
-        >
-          See More
-        </Button>
+      <div className='flex h-11 items-center justify-between'>
+        {user?.role == 'instructor' && (
+          <div className='flex h-full'>
+            <Button
+              onClick={event => HandleNavigate(assignment._id, event)}
+              className='h-full w-32 cursor-pointer items-center justify-center rounded-full bg-MIC text-white'
+            >
+              Responses
+            </Button>
+          </div>
+        )}
+
+        <div className='flex h-full'>
+          <Button
+            onPress={onOpen}
+            className='h-full w-32 cursor-pointer items-center justify-center rounded-full bg-MIC text-white'
+          >
+            See More
+          </Button>
+        </div>
       </div>
 
       <AssignmentModal
