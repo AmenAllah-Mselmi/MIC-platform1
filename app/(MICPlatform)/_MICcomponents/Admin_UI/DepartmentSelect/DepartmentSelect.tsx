@@ -1,21 +1,16 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import Autocomplete from '@mui/material/Autocomplete'
+import TextField from '@mui/material/TextField'
+import CircularProgress from '@mui/material/CircularProgress'
+import Typography from '@mui/material/Typography'
 import axios from 'axios'
-import { Controller } from 'react-hook-form'
-import {
-  MenuItem,
-  FormControl,
-  Select,
-  CircularProgress,
-  Typography
-} from '@mui/material'
 import { ENDPOINTS } from '@/app/store/constants/api'
 
-const DepartmentSelect = ({ form }) => {
+const DepartmentAutocomplete = ({ value = [], onChange }) => {
   const [departments, setDepartments] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  // Function to fetch instructors
   const fetchDepartments = async () => {
     try {
       const response = await axios.get(ENDPOINTS.GET_DEPARTMENTS_NAMES_IDS)
@@ -32,39 +27,44 @@ const DepartmentSelect = ({ form }) => {
     fetchDepartments() // API call on component mount
   }, [])
 
+  // Handle initial value based on edit or add
+  const initialValues =
+    value.length > 0
+      ? value
+          .map(departmentId =>
+            departments.find(department => department._id === departmentId)
+          )
+          .filter(Boolean) // Filter out any undefined values
+      : [] // Use empty array for new entries
+
   return (
-    <Controller
-      name='departments'
-      control={form.control}
-      render={({ field }) => (
-        <FormControl fullWidth variant='outlined' margin='normal'>
-          {/* Loading state */}
-          {loading ? (
-            <CircularProgress />
-          ) : error ? (
-            <Typography color='error'>{error}</Typography>
-          ) : (
-            <Select
-              {...field} // Apply React Hook Form `field`
-              onChange={e => field.onChange(e.target.value)} // Handle selection change
-              value={field.value || ''} // Set selected value
-              displayEmpty
-            >
-              <MenuItem value='' disabled>
-                Select a department
-              </MenuItem>
-              {/* Map through instructors and display each as a MenuItem */}
-              {departments.map(department => (
-                <MenuItem key={department._id} value={department._id}>
-                  {department.DepartmentName}
-                </MenuItem>
-              ))}
-            </Select>
+    <div>
+      {loading ? (
+        <CircularProgress />
+      ) : error ? (
+        <Typography color='error'>{error}</Typography>
+      ) : (
+        <Autocomplete
+          multiple
+          options={departments}
+          getOptionLabel={option => option.DepartmentName}
+          onChange={(event, newValue) => {
+            onChange(newValue.map(department => department._id))
+          }}
+          value={initialValues}
+          renderInput={params => (
+            <TextField
+              {...params}
+              variant='outlined'
+              label='Select Departments'
+              placeholder='Departments'
+            />
           )}
-        </FormControl>
+          isOptionEqualToValue={(option, value) => option._id === value._id} // For multiple selections
+        />
       )}
-    />
+    </div>
   )
 }
 
-export default DepartmentSelect
+export default DepartmentAutocomplete

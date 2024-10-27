@@ -2,13 +2,15 @@ import { create } from 'zustand'
 import {
   fetchResponses,
   addResponse,
-  fetchResponseByAssignmentAndUser
+  fetchResponseByAssignmentAndUser,
+  update_Response_By_Member
 } from './../Controller/ResponseController'
 import { State } from '../Models/Response'
 
 // Typage des actions du store
 export type Actions = {
   fetchResponses: (MemberId: string) => Promise<void>
+  updateResponseByMember: (dataResponse: Response) => Promise<void>
   addResponse: (
     Content: string,
     User_Id: string,
@@ -53,6 +55,16 @@ export const useResponseStore = create<State & Actions>(set => ({
     } catch (error) {
       console.error('Erreur lors de la récupération de la réponse', error)
       set({ fetchedResponse: null })
+    }
+  },
+  updateResponseByMember: async (dataResponse: Response) => {
+    try {
+      console.log('dataResponse store : ')
+      console.log(dataResponse)
+      const data = await update_Response_By_Member(dataResponse)
+      set({ fetchedResponse: dataResponse })
+    } catch (error) {
+      console.error('Error fetching sessions:', error)
     }
   }
 }))

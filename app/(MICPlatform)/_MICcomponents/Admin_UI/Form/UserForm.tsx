@@ -13,8 +13,7 @@ import {
 import { toast } from 'react-toastify'
 import { useMemberStore } from '@/app/store/MyStore/MembersStore'
 import { MemberForAdmin } from '@/app/store/Models/Member'
-import { shallow } from 'zustand/shallow'
-import DepartmentSelect from '../DepartmentSelect/DepartmentSelect'
+import DepartmentAutocomplete from '../DepartmentSelect/DepartmentSelect'
 
 interface UserFormProps {
   editingMember: {
@@ -25,7 +24,7 @@ interface UserFormProps {
     Role: string
     Adresse: string
     ImageLink: string
-    Departement: string
+    DepartmentIds: string[]
   } | null
   setEditingMember: React.Dispatch<React.SetStateAction<any>>
 }
@@ -34,18 +33,20 @@ const UserForm: React.FC<UserFormProps> = ({
   editingMember,
   setEditingMember
 }) => {
+  const [selectedDepartments, setSelectedDepartments] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
+
   const [form, setForm] = useState({
     _id: '',
     NomPrenom: '',
     Email: '',
     Password: '',
     Role: 'member',
-    Departement: 'Basic',
+    DepartmentIds: [] as string[],
     Adresse: '',
     Image: null
   })
-  // Edition de password possible à expliquer
+
   const convertFormToMemberForAdmin = (form: any): MemberForAdmin => {
     return {
       _id: form._id,
@@ -55,7 +56,8 @@ const UserForm: React.FC<UserFormProps> = ({
       Role: form.Role,
       Adresse: form.Adresse,
       ImageLink: form.Image,
-      Departement: form.Departement
+      DepartmentIds: form.DepartmentIds,
+      FormattedDepartmentsIds: form.DepartmentIds.join(',')
     }
   }
 
@@ -69,19 +71,17 @@ const UserForm: React.FC<UserFormProps> = ({
 
   useEffect(() => {
     if (editingMember) {
-      console.log('initialement')
-      console.log(editingMember.Password)
-
       setForm({
         _id: editingMember._id,
         NomPrenom: editingMember.NomPrenom,
         Email: editingMember.Email,
         Password: '',
         Role: editingMember.Role || 'member',
-        Departement: editingMember.Departement || 'Basic',
+        DepartmentIds: editingMember.DepartmentIds || [],
         Adresse: editingMember.Adresse,
         Image: editingMember.ImageLink || null
       })
+      setSelectedDepartments(editingMember.DepartmentIds || [])
     }
   }, [editingMember])
 
@@ -89,32 +89,27 @@ const UserForm: React.FC<UserFormProps> = ({
     try {
       setLoading(true)
       const memberData = convertFormToMemberForAdmin(form)
-
-      if (editingMember) {
-        // Si le champ mot de passe est vide, conserver l'ancien mot de passe
-        if (form.Password.trim() === '') {
-          memberData.Password = ''
-          console.log('conserver')
+      console.log(memberData)
+      {
+        if (editingMember) {
+          if (form.Password.trim() === '') {
+            memberData.Password = ''
+          } else {
+            memberData.Password = form.Password
+          }
+          await updateMembersForAdmin(form._id, memberData)
+          toast.success('Membre mis à jour avec succès!', {
+            position: 'top-center'
+          })
         } else {
-          // Si un nouveau mot de passe est entré, le mettre à jour
-          memberData.Password = form.Password
+          await addMembersForAdmin(memberData)
+          toast.success('Membre ajouté avec succès!', {
+            position: 'top-center'
+          })
         }
-        console.log('fil requete')
-        console.log(memberData.Password)
 
-        await updateMembersForAdmin(form._id, memberData)
-        console.log('apres')
-        console.log(memberData.Password)
-        toast.success('Membre mis à jour avec succès!', {
-          position: 'top-center'
-        })
-      } else {
-        // Ajouter un nouveau membre
-        await addMembersForAdmin(memberData)
-        toast.success('Membre ajouté avec succès!', { position: 'top-center' })
+        await fetchMembersForAdmin()
       }
-
-      await fetchMembersForAdmin()
       resetForm()
     } catch (error) {
       toast.error("Erreur lors de l'opération", { position: 'top-center' })
@@ -130,10 +125,11 @@ const UserForm: React.FC<UserFormProps> = ({
       Email: '',
       Password: '',
       Role: 'member',
-      Departement: 'Basic',
+      DepartmentIds: [],
       Adresse: '',
       Image: null
     })
+    setSelectedDepartments([])
     setEditingMember(null)
   }
 
@@ -142,8 +138,23 @@ const UserForm: React.FC<UserFormProps> = ({
       | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
       | SelectChangeEvent<string>
   ) => {
-    const { name, value } = e.target as HTMLInputElement
+    const { name, value } = e.target
     setForm(prevForm => ({ ...prevForm, [name!]: value }))
+  }
+
+  const handleDepartmentChange = (departmentIds: string[]) => {
+    setForm(prevForm => ({
+      ...prevForm,
+      DepartmentIds: departmentIds
+    }))
+    setSelectedDepartments(departmentIds)
+  }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setForm(prevForm => ({ ...prevForm, Image: file }))
+    }
   }
 
   return (
@@ -153,7 +164,7 @@ const UserForm: React.FC<UserFormProps> = ({
         e.preventDefault()
         handleSubmit()
       }}
-      sx={{ display: 'flex', flexDirection: 'column', gap: 2, paddingRight: 4 }}
+      sx={{ display: 'flex', flexDirection: 'column', gap: 1, paddingRight: 1 }}
     >
       <TextField
         label='Nom et Prénom'
@@ -175,7 +186,6 @@ const UserForm: React.FC<UserFormProps> = ({
         type='password'
         value={form.Password}
         onChange={handleChange}
-        // Rendre le champ mot de passe non requis si on est en mode édition
         required={!editingMember}
       />
 
@@ -189,6 +199,7 @@ const UserForm: React.FC<UserFormProps> = ({
           label='Rôle'
           onChange={handleChange}
           required
+          disabled
         >
           <MenuItem value='member'>Membre</MenuItem>
           <MenuItem value='instructor'>Instructeur</MenuItem>
@@ -196,24 +207,10 @@ const UserForm: React.FC<UserFormProps> = ({
         </Select>
       </FormControl>
 
-      {form.Role !== 'super_admin' && (
-        <FormControl fullWidth>
-          <InputLabel id='departement-select-label'>Département</InputLabel>
-          <Select
-            labelId='departement-select-label'
-            id='departement-select'
-            name='Departement'
-            value={form.Departement}
-            label='Département'
-            onChange={handleChange}
-            required
-          >
-            <MenuItem value='Basic'>Basique</MenuItem>
-            <MenuItem value='Intermediate'>Intermédiaire</MenuItem>
-            <MenuItem value='Advanced'>Avancé</MenuItem>
-          </Select>
-        </FormControl>
-      )}
+      <DepartmentAutocomplete
+        value={selectedDepartments}
+        onChange={handleDepartmentChange}
+      />
 
       <TextField
         label='Adresse'
@@ -222,12 +219,11 @@ const UserForm: React.FC<UserFormProps> = ({
         onChange={handleChange}
         required
       />
-      <DepartmentSelect form={{ form }} />
 
       <input
         type='file'
         name='Image'
-        onChange={handleChange}
+        onChange={handleImageChange}
         accept='image/*'
       />
 

@@ -156,4 +156,68 @@ route.get(
   response_controller.Fetch_Response_By_Assignment_And_User
 )
 
+/**
+ * @swagger
+ * /api/response/update/{id}:
+ *   put:
+ *     summary: Mettre à jour une réponse
+ *     tags: [Responses]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la réponse à mettre à jour
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               Content:
+ *                 type: string
+ *                 description: Nouveau contenu de la réponse
+ *                 example: "Nouveau contenu de la réponse"
+ *               status:
+ *                 type: string
+ *                 description: Statut de la réponse
+ *                 example: "APPROVED"
+ *     responses:
+ *       200:
+ *         description: Réponse mise à jour avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Réponse mise à jour avec succès"
+ *       404:
+ *         description: Réponse non trouvée ou aucune modification effectuée
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Réponse non trouvée ou aucune modification effectuée."
+ *       500:
+ *         description: Erreur interne du serveur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Erreur serveur lors de la mise à jour de la réponse"
+ *                 error:
+ *                   type: string
+ *                   example: "Détail de l'erreur"
+ */
+route.put('/update/:id', response_controller.update_Response_By_Member)
 module.exports = route

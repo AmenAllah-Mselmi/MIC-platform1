@@ -4,17 +4,22 @@ import AssignmentCard from '../../_MICcomponents/assignment_UI/AssignmentCard'
 import { useAssignmentStore } from './../../../store/MyStore/AssignmentsStore'
 import { Grid, Typography } from '@mui/material'
 import PaginationComponent from '../../_MICcomponents/PaginationComponent/PaginationComponent'
-
+import { useAuthStore } from '@/app/store/MyStore/AuthStore'
+import { useSearchParams } from 'next/navigation'
 const Page = () => {
   const assignments = useAssignmentStore(state => state.assignments)
   const fetchAssignments = useAssignmentStore(state => state.fetchAssignments)
+  const searchParams = useSearchParams()
+  const id_dep = searchParams.get('id_dep') // Récupérer id_dep depuis les query params
+  console.log('id_dep')
+  console.log(id_dep)
 
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 5 // Nombre d'éléments par page
 
   useEffect(() => {
     const loadAssignments = async () => {
-      await fetchAssignments('670792e3ee0e13424434d371') // ID de département
+      await fetchAssignments(id_dep) // ID de département
     }
 
     loadAssignments()

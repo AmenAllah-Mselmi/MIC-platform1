@@ -25,14 +25,14 @@ export default function LoginForm() {
   const formSchema = z.object({
     email: z
       .string()
-      // .email({ message: 'Invalid email address' })
-      // .min(10, { message: 'Your email must meet the email format' })
+      .email({ message: 'Invalid email address' })
+      .min(10, { message: 'Your email must meet the email format' })
       .max(30),
     password: z
       .string()
-      // .min(6, {
-      //   message: 'Your password must be at least 6 characters'
-      // })
+      .min(6, {
+        message: 'Invalid password'
+      })
       .max(30)
   })
 
@@ -58,13 +58,9 @@ export default function LoginForm() {
       console.log(user)
       if (user.role === 'member') {
         router.push('/Member/')
-        // console.log('bonjour member')
       } else if (user.role === 'instructor') {
-        // console.log('bonjour Instructor')
         router.push('/Instructor/assignments')
-        // console.log('bonjour Instructor')
       } else {
-        // console.log('bonjour SuperAdmin')
         router.push('/SuperAdmin/add')
       }
     } catch (error) {
@@ -75,8 +71,8 @@ export default function LoginForm() {
   }
 
   return (
-    <div className='flex h-full flex-col items-center justify-center rounded-xl border bg-slate-300 shadow-2xl'>
-      <div className='w-full max-w-md rounded-lg bg-white p-8 shadow-md'>
+    <div className='mx-5 flex h-full flex-col items-center justify-center rounded-xl border bg-slate-300 shadow-2xl'>
+      <div className='w-full max-w-md rounded-lg bg-white p-7 shadow-xl'>
         <div className='mb-6 w-full text-center'>
           <TypewriterEffectSmoothDemo />
         </div>
@@ -116,7 +112,7 @@ export default function LoginForm() {
               type='submit'
               className='h-12 w-full rounded-md bg-gradient-to-r from-secondary to-primary text-white'
             >
-              {loading ? 'Loading...' : 'Login'}
+              {loading ? <span className="loading loading-spinner loading-md"></span> : 'Login'}
             </Button>
           </form>
         </Form>

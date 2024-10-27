@@ -10,6 +10,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 .blob {
   position: absolute;
@@ -22,19 +23,19 @@
 .blob1 {
   top: 5%;
   left: 2%;
-  animation-delay: 2s;
+  animation-delay: 1s;
 }
 
 .blob2 {
-  top: 40%;
-  bottom: 15%;
-  animation-delay: 5s;
+  top: 30%;
+  bottom: 20%;
+  animation-delay: 3s;
 }
 
 .blob3 {
   bottom: 20%;
   left: 15%;
-  animation-delay: 7s;
+  animation-delay: 5s;
 }
 
 @keyframes blobAnimation {

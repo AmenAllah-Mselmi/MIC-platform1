@@ -21,7 +21,7 @@ const UserSchema = new Schema({
   },
   Role: {
     type: String,
-    enum: ['super_admin', 'member', 'instructor']
+    enum: ['superAdmin', 'member', 'instructor']
   },
   createdAt: {
     type: Date,
@@ -99,7 +99,7 @@ const MemberSchema = new Schema({
 
 // Discriminators for different user roles
 const Instructor = User.discriminator('Instructor', InstructorSchema)
-const SuperAdmin = User.discriminator('SuperAdmin', new Schema({}))
+const SuperAdmin = User.discriminator('SuperAdmin', UserSchema)
 const Member = User.discriminator('Member', MemberSchema)
 
 module.exports = { User, Instructor, SuperAdmin, Member }

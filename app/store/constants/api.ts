@@ -54,9 +54,10 @@ FETCH_ALL_Assignements: () =>
   // Response :
   FETCH_RESPONSES_FOR_INSTRUCTOR: (idAssignment: string) =>
     `${API_BASE_URL}/response/responsesByAssignment/${idAssignment}`,
-
   ADD_RESPONSE_FOR_MEMBER: `${API_BASE_URL}/response/responses`,
   FETCH_RESPONSE_BY_ASSIGNMENT_AND_USER: `${API_BASE_URL}/response/responsesByAssignmentIdAndUserId`,
+  UPDATE_RESPONSE_BY_MEMBER: (idResponse: string) =>
+    `${API_BASE_URL}/response/update/${idResponse}`,
 
   // Authentification
   LOGIN: `${API_BASE_URL}/user/login`,
