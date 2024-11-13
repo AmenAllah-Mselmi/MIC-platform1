@@ -7,7 +7,6 @@ import {
   useMediaQuery,
   Box,
   Typography,
-  IconButton,
 } from "@mui/material";
 import EnhancedTable from "../../_MICcomponents/Admin_UI/TableComponent/TableComponent";
 import { toast } from "react-toastify";
@@ -15,20 +14,19 @@ import { useEffect, useState } from "react";
 import PaginationComponent from "../../_MICcomponents/PaginationComponent/PaginationComponent";
 import { useAssignmentStore } from "@/app/store/MyStore/AssignmentsStore";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import AssignmentCard from "../../_MICcomponents/assignment_UI/AssignmentCardForInstructor";
+import AssignmentCard from "../../_MICcomponents/assignment_UI/AssignmentCard";
 import { Assignment } from "@/app/store/Models/Assignment";
 import UpdateAssignmentModal from "../../_MICcomponents/assignment_UI/AssignementUpdateModal";
 import DeleteAssignmentModal from "../../_MICcomponents/assignment_UI/AssignementDeleteModal";
 import AssignmentModal from "../../_MICcomponents/assignment_UI/AssignmentModal";
 import { useRouter } from "next/navigation";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 const Page: React.FC = () => {
   const router = useRouter();
   const assignments = useAssignmentStore((state) => state.assignments);
   const fetchAssignments = useAssignmentStore((state) => state.fetchAssignments);
   const deleteAssignment = useAssignmentStore((state) => state.deleteAssignment);
+  const updateAssignment = useAssignmentStore((state) => state.updateAssignment);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
@@ -38,12 +36,6 @@ const Page: React.FC = () => {
   const [assignmentToDelete, setAssignmentToDelete] = useState<string | null>(null);
   const [openAssignmentModal, setOpenAssignmentModal] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null);
-
-  const HandleNavigate = (id: string, event: React.MouseEvent) => {
-    event.preventDefault();
-    localStorage.setItem('selectedAssignmentId', id);
-    router.push('/Instructor/responses');
-  };
 
   useEffect(() => {
     const loadAssignments = async () => {
@@ -120,24 +112,9 @@ const Page: React.FC = () => {
   return (
     <>
       {isMobile ? (
-        <Box
-          className="container mx-auto mt-20 flex flex-col items-center justify-around lg:w-[1500px]"
-          sx={{ width: "100%", height: "100vh" }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: 1,
-              marginLeft: 1,
-              marginRight: 1,
-            }}
-          >
-            <Button
-              variant="contained"
-              startIcon={<AddCircleOutlineIcon />}
-              onClick={() => router.push("/Instructor/create")}
-            >
+        <Box className="container mx-auto mt-20 flex flex-col items-center justify-around lg:w-[1500px]" sx={{ width: "100%", height: "100vh" }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", gap: 1, marginLeft: 1, marginRight: 1 }}>
+            <Button variant="contained" startIcon={<AddCircleOutlineIcon />} onClick={() => router.push("/Instructor/create")}>
               Add new Assignment
             </Button>
           </Box>
@@ -149,23 +126,8 @@ const Page: React.FC = () => {
                 assignment={assignment}
                 onEdit={() => handleEditAssignment(assignment?._id)}
                 onDelete={() => handleDeleteAssignment(assignment?._id)}
-              >
-                <Box sx={{ display: "flex", justifyContent: "space-between", marginTop: 1 }}>
-                  <IconButton onClick={() => handleEditAssignment(assignment._id)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton onClick={() => handleDeleteAssignment(assignment._id)}>
-                    <DeleteIcon />
-                  </IconButton>
-                  <Button
-                    variant="contained"
-                    onClick={(event) => HandleNavigate(assignment._id, event)}
-                    sx={{ marginLeft: 1 }}
-                  >
-                    View Responses
-                  </Button>
-                </Box>
-              </AssignmentCard>
+                onOpenAssignmentModal={() => handleOpenAssignmentModal(assignment)}
+              />
             ))
           ) : (
             <Typography variant="body1">No assignments available</Typography>
@@ -182,16 +144,16 @@ const Page: React.FC = () => {
         <div className="w-full flex justify-center items-center">
           <Box
             sx={{
-              width: "90%", // Set the width to 90% of the screen
-              height: "100vh", // Full height of the viewport
+              width: "90%",  // Set the width to 90% of the screen
+              height: "100vh",  // Full height of the viewport
               display: "flex",
-              alignItems: "center", // Center vertically
-              justifyContent: "center", // Center horizontally
-              margin: "0 auto", // Ensure it's centered horizontally
+              alignItems: "center",  // Center vertically
+              justifyContent: "center",  // Center horizontally
+              margin: "0 auto",  // Ensure it's centered horizontally
             }}
           >
             <Grid container spacing={7} sx={{ margin: 0, padding: 0 }}>
-              <Grid item xs={11} sx={{ margin: 0, padding: 0 }}>
+              <Grid item xs={11}  sx={{ margin: 0, padding: 0 }}>
                 <EnhancedTable
                   data={assignments}
                   headCells={headCells}
@@ -211,15 +173,12 @@ const Page: React.FC = () => {
                       <Button variant="outlined" onClick={() => handleOpenAssignmentModal(row)}>
                         View
                       </Button>
-                      <Button
-                        variant="contained"
-                        onClick={(event) => HandleNavigate(row._id, event)}
-                      >
+                      <Button variant="contained" onClick={() => console.log("View Responses", row._id)}>
                         View Responses
                       </Button>
                     </Box>
                   )}
-                  sx={{ width: "100%", margin: "0 auto" }} // Ensure table fills its container
+                  sx={{ width: "100%", margin: "0 auto" }}  // Ensure table fills its container
                 />
               </Grid>
             </Grid>

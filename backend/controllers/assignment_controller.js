@@ -52,7 +52,17 @@ const assignmentController = {
   deleteAssignment: async (req, res) => {
     try {
       const { id } = req.params
-      await Assignment.findByIdAndDelete(id)
+      const assignement=await Assignment.findById(id);
+      if(assignement){
+        const departement=await department.findById(assignement.DepartementId);
+        if(!departement){
+          throw new Error('Departement not found');
+        }
+        console.log("dep",departement.assignments);
+        departement.assignments=departement.assignments.filter((Element)=>Element.toString()!==id);
+          await departement.save();
+          await Assignment.deleteOne({_id:id});
+      }
       res.status(200).json({ message: 'Assignment deleted successfully' })
     } catch (error) {
       res.status(500).json({ message: error.message })

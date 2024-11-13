@@ -56,7 +56,7 @@ const Page = () => {
         )}
       </Grid>
 
-      {/* Pagination */}
+      {/* Pagination modifier */}
       <PaginationComponent
         currentPage={currentPage}
         totalItems={assignments ? assignments.length : 0}
