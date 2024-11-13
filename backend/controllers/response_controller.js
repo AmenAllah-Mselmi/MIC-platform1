@@ -132,7 +132,7 @@ const controller = {
     }
   },
 
-  update_Response_By_Member: async (req, res) => {
+  update_Response: async (req, res) => {
     try {
       const id = req.params.id
       const update = await Response.updateOne({ _id: id }, req.body)

@@ -7,6 +7,7 @@ const { Schema } = mongoose
 const DepartmentSchema = new Schema({
   DepartmentName: {
     type: String,
+    
     required: true
   },
   instructors: [

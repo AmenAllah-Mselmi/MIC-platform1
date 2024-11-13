@@ -87,7 +87,6 @@ const EmailModal = ({ open, handleClose, handleSendEmail, emailMember }) => {
         />
 
         <Button
-          className='rounded-md bg-gradient-to-r from-secondary to-primary text-white'
           variant='contained'
           onClick={handleSubmit}
           endIcon={<SendIcon />}
